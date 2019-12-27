@@ -62,7 +62,7 @@ export default class LoginScreen extends Component {
   };
   submitHandler = async () => {
     axios
-      .get("/users/API/auth", {
+      .get("https://ardwtalabapp.herokuapp.com/users/API/auth", {
         params: {
           email: this.state.email.toLowerCase(),
           password: this.state.password

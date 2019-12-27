@@ -31,7 +31,7 @@ export default class Profile extends Component {
   fetchUsersPosts = async () => {
     let sellerID = await AsyncStorage.getItem("userId");
     axios
-      .get("/posts/API/getUserPosts", {
+      .get("https://ardwtalabapp.herokuapp.com/posts/API/getUserPosts", {
         params: {
           sellerID
         }
@@ -57,7 +57,7 @@ export default class Profile extends Component {
     // `http://localhost:5000/posts/API/deletePost/${id}`
     // '
     axios
-      .delete(`/posts/API/deletePost/${id}`)
+      .delete(`https://ardwtalabapp.herokuapp.com/posts/API/deletePost/${id}`)
       .then(res => console.log(res.data))
       .catch(err => alert(err.message))
       .then(() => {
@@ -74,10 +74,10 @@ export default class Profile extends Component {
   };
   deactivateAccountHandler = async()=>{
 
-    axios.delete(`/posts/API/deleteUserPosts/${this.state.userId}`)
+    axios.delete(`https://ardwtalabapp.herokuapp.com/posts/API/deleteUserPosts/${this.state.userId}`)
     .then(res=>console.log(res.data))
     .catch(err=>console.log(err))
-    .then( axios.delete(`/users/API/delete/${this.state.userId}`)
+    .then( axios.delete(`https://ardwtalabapp.herokuapp.com/users/API/delete/${this.state.userId}`)
       .then(res=>console.log(res))
       .catch(err=>console.log(err))
     )

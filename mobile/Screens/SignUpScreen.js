@@ -66,7 +66,7 @@ export default class SignUp extends Component {
     ) {
       // axios.post('http://192.168.86.33:9002/users/API/new', {
       axios
-        .post("/users/API/new", {
+        .post("https://ardwtalabapp.herokuapp.com/users/API/new", {
           name: this.state.name,
           email: this.state.email,
           password: this.state.password,
