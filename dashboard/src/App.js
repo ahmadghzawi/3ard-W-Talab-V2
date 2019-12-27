@@ -1,27 +1,23 @@
 import React, { Component } from "react";
 // import axios from "axios";
-import LoginPage from './routes/LoginPage'
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import LoginPage from "./routes/LoginPage";
 
 export default class App extends Component {
   state = {};
 
   render() {
     return (
-      <>
+      <div>
         <Router>
-        <Route
+          <Route
             exact
             path="/"
-            component={routerProps => (
-              <LoginPage
-                {...routerProps}
-              />
-            )}
+            component={routerProps => <LoginPage {...routerProps} />}
           ></Route>
         </Router>
-      </>
+      </div>
     );
   }
 }
