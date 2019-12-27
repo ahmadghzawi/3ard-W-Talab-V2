@@ -34,7 +34,7 @@ export default class AddPost extends Component {
   submitPost = () => {
     axios
       .post(
-        "/posts/API/postAdvertisement",
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/postAdvertisement",
         this.state
       )
       .then(res => console.log(res.data))
