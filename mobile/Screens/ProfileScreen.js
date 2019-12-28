@@ -27,23 +27,26 @@ export default class Profile extends Component {
     refreshing: false
   };
 
-  componentDidMount() {
-    this.getUserInfo();
+  async componentDidMount() {
+    await this.getUserInfo();
     this.fetchUsersPosts();
   }
 
   fetchUsersPosts = async () => {
-    let {user_id} = this.state
+    let seller_id = this.state.user_id
+    console.log(seller_id)
     axios
       .get(
         "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserPosts",
         {
           params: {
-            user_id
+            seller_id
           }
         }
       )
-      .then(res => this.setState({ posts: res.data }))
+      .then(res => {
+        console.log(res.data)
+        this.setState({ posts: res.data })})
       .catch(err => console.log(err));
   };
 
@@ -53,13 +56,13 @@ export default class Profile extends Component {
     let name = await AsyncStorage.getItem("name");
     let email = await AsyncStorage.getItem("email");
 
-    this.setState({ user_id, phone_number, name, email });
+    await this.setState({ user_id, phone_number, name, email });
   };
 
   postInfoHandler = (selectedPost, isVisible) => {
     this.setState({ selectedPost, isVisible });
   };
-  
+
   deletePost = id => {
 
     axios
@@ -104,7 +107,6 @@ export default class Profile extends Component {
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
-    console.log(this.state)
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Modal isVisible={this.state.isVisible}>

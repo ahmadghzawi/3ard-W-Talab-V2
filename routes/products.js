@@ -310,12 +310,14 @@ router.put("/deleteOffer/", async (request, response) => {
 /*<=========================== END. DELETE a Post  func.===========================>*/
 router.get("/getUserproducts", async (request, response) => {
   try {
-    let data = await productsData.find(request.query);
+    let { seller_id } = request.query;
+    let data = await productsData.find({ seller_id });
     response.json(data);
   } catch {
     response.status(500).json({ err: err.message });
   }
 });
+
 router.delete("/deletePost/:id", async (request, response) => {
   try {
     await productsData.findByIdAndDelete(request.params.id, (err, doc) => {
