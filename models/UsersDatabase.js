@@ -13,7 +13,7 @@ const usersSchema = new mongoose.Schema({
   password: { type: String, required: true },
   name: String,
   email: String,
-  phoneNumber: String
+  phone_number: String
 });
 
 module.exports = mongoose.model("users", usersSchema);
