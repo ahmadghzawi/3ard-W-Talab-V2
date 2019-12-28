@@ -6,7 +6,6 @@
     204 No Content
     400 Bad Request
     404 Not Found
-
  */
 const express = require('express')
 const router = express.Router()
@@ -91,7 +90,6 @@ async function verifyAccount(user) {
     })
     return p
 }
-
 router.get('/auth', async (request, response) => {
     await verifyAccount(request.query)
         .then((userId) => response.status(202).json(userId))

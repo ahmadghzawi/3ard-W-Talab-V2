@@ -1,5 +1,5 @@
 /**
- * description: this is a  micro service for posts and services
+ * description: this is a  micro service for products and services
  *  200 OK
  *  201 successfully create an object
     202 Accepted 
@@ -12,13 +12,13 @@ const cors = require('cors')
 const router = express.Router()
 router.use(cors())   ///middleware for network
 router.use(express.json())  // middleware as well but this will make all responses with json type !
-const postsData = require('../models/postsDatabase')
+const productsData = require('../models/productsDatabase')
 
 
 /*<===========================this method to fetch all post data ===========================*/
 router.get('/data', async (request, response) => {
     try {
-        let data = await postsData.find()
+        let data = await productsData.find()
         response.status(200).json(data)
     } catch (err) {
         response.status(500).json({ message: err.message })
@@ -50,7 +50,7 @@ router.get('/', async (request, response) => {
         BIG n * 4
 */
 async function categoriesFunc(name) {
-    let Data = await postsData.find(name)
+    let Data = await productsData.find(name)
     return Data
 }
 /*<=========================== END. sort in Category  func.===========================>*/
@@ -61,7 +61,7 @@ async function categoriesFunc(name) {
 async function searchFunc(target) {
     // console.log('target', target) // {postCategories: '' }  {location: ''}name additionalInfo etc.
     let arr = (target ? [] : 'no data found')
-    let data = postsData.find()
+    let data = productsData.find()
     await data.then(DATA => {
         if (target)
             DATA.map((post) => {
@@ -82,7 +82,7 @@ async function searchFunc(target) {
 }
 /*<=========================== END. Search  func.===========================>*/
 
-/*<=========================== START.get Posts API has been applied in following func.===========================>*/
+/*<=========================== START.get products API has been applied in following func.===========================>*/
 /*  params: {sellerID: ''} 
             {buyerOffers: ''}  */
 router.get('/getOffers', (async (request, response) => {
@@ -95,7 +95,7 @@ router.get('/getOffers', (async (request, response) => {
 async function sellerOffers(sellerID) {
     let arr = [] /// Asem or hello
     if (sellerID != null) {
-        let data = postsData.find()
+        let data = productsData.find()
         await data.then(DATA => {
             DATA.map((post) => {
                 if (post._doc.sellerID === sellerID) {
@@ -116,7 +116,7 @@ async function sellerOffers(sellerID) {
 }
 async function buyerOffers(buyerName) {
     let arr = []
-    let data = postsData.find()
+    let data = productsData.find()
     await data.then((DATA) => {
         DATA.map(post => {
             if (post._doc[buyerName] != null) {
@@ -138,15 +138,15 @@ async function buyerOffers(buyerName) {
 
     return arr
 }
-/*<=========================== END.get Posts API   func.===========================>*/
+/*<=========================== END.get products API   func.===========================>*/
 
-/*<=========================== START.add new Posts API has been applied in following func.===========================>*/
+/*<=========================== START.add new products API has been applied in following func.===========================>*/
 router.post('/postAdvertisement', async (request, response) => {
     // console.log(request.body)
     let { sellerID, postCategories, location, name, additionalInfo, imgUrl } = request.body
     if (sellerID != null && postCategories != null && location != null && name != null && additionalInfo != null && imgUrl != null) {
         try {
-            await postsData.create(request.body, (err, doc) => {
+            await productsData.create(request.body, (err, doc) => {
                 if (err) {
                     response.status(400).json({ message: err.message })
                 } else
@@ -159,7 +159,7 @@ router.post('/postAdvertisement', async (request, response) => {
     }
 })
 
-/*<=========================== END. add new Posts  func.===========================>*/
+/*<=========================== END. add new products  func.===========================>*/
 /*<=========================== START.add new offer to particular post   func.===========================>*/
 router.get('/postOffers', async (request, response) => {
     // console.log(request.query)
@@ -169,7 +169,7 @@ router.get('/postOffers', async (request, response) => {
     // console.log(offerPrice)
     let newObj = { [offerMaker]: { price: offerPrice, date: Date(Date.now()), status: "pending", id } }
     try {
-        await postsData.findByIdAndUpdate(id, newObj, (err, doc) => {
+        await productsData.findByIdAndUpdate(id, newObj, (err, doc) => {
             if (err) { response.status(400).json({ message: err.message }) }
             else response.status(201).json(doc)
 
@@ -180,7 +180,7 @@ router.get('/postOffers', async (request, response) => {
     }
 
 })
-/*<=========================== END. add new Posts  func.===========================>*/
+/*<=========================== END. add new products  func.===========================>*/
 /*<=========================== START. DELETE a Post  func.===========================>*/
 let IdsForDeleteArray = []
 router.delete('/deleteAtSpecificTime/:id', async (request, response) => {
@@ -195,7 +195,7 @@ router.delete('/deleteAtSpecificTime/:id', async (request, response) => {
 const DeleteAtSpecificTime = async (id) => {
     let output = null
     try {
-        await postsData.findByIdAndDelete(id, (err, doc) => {
+        await productsData.findByIdAndDelete(id, (err, doc) => {
             if (err) { output = { message: err.message } }
             else {
                 output = { deletion: doc }
@@ -218,10 +218,8 @@ const DeleteTimer = setInterval(() => {
     }
 }, 20000)
 router.put('/acceptOffer/', async (request, response) => {
-    // console.log(request.body.contactNumber)
-    // response.json(request.body.contactNumber)
-    // return
-    await postsData.findById(request.body.postId, async (err, doc) => {
+
+    await productsData.findById(request.body.postId, async (err, doc) => {
         if (err) response.status(401).json(err)
         else {
             let post = doc._doc
@@ -239,7 +237,7 @@ router.put('/acceptOffer/', async (request, response) => {
 
             }
             try {
-                await postsData.findByIdAndUpdate(request.body.postId, newObj, (err, doc) => {
+                await productsData.findByIdAndUpdate(request.body.postId, newObj, (err, doc) => {
                     if (err) { response.status(400).json({ message: err.message }) }
                     else response.status(201).json(doc)
 
@@ -261,7 +259,7 @@ router.put('/deniedOffer/', async (request, response) => {
     // let { offerMaker, postId } = request.body
     let query = request.body.offerMaker + '.status'
     try {
-        await postsData.updateOne({ _id: request.body.postId }, { $set: { [query]: "Rejected" } }, (err, doc) => {
+        await productsData.updateOne({ _id: request.body.postId }, { $set: { [query]: "Rejected" } }, (err, doc) => {
             if (err) { response.status(400).json({ message: err.message }) }
             else response.json(doc)
         })
@@ -273,10 +271,10 @@ router.put('/deniedOffer/', async (request, response) => {
 router.put('/deleteOffer/', async (request, response) => {
     let { offerMaker, postId } = request.body
     // console.log(request.body)
-    let data = await postsData.findById(postId)
+    let data = await productsData.findById(postId)
     let deleteOffer = { [offerMaker]: data._doc[offerMaker] }
     try {
-        let data2 = await postsData.update({ "_id": postId }, { $unset: deleteOffer })
+        let data2 = await productsData.update({ "_id": postId }, { $unset: deleteOffer })
         response.status(201).json(data2['ok'])
     }
     catch{
@@ -284,9 +282,9 @@ router.put('/deleteOffer/', async (request, response) => {
     }
 })
 /*<=========================== END. DELETE a Post  func.===========================>*/
-router.get('/getUserPosts', async (request, response) => {
+router.get('/getUserproducts', async (request, response) => {
     try {
-        let data = await postsData.find(request.query)
+        let data = await productsData.find(request.query)
         response.json(data)
     }
     catch{
@@ -295,7 +293,7 @@ router.get('/getUserPosts', async (request, response) => {
 })
 router.delete('/deletePost/:id', async (request, response) => {
     try {
-        await postsData.findByIdAndDelete(request.params.id, (err, doc) => {
+        await productsData.findByIdAndDelete(request.params.id, (err, doc) => {
             if (err) {
                 response.status(404).json(err)
             } else {
@@ -306,16 +304,16 @@ router.delete('/deletePost/:id', async (request, response) => {
         response.status(500).json(err)
     }
 })
-router.delete('/deleteUserPosts/:id', async (request, response) => {
+router.delete('/deleteUserproducts/:id', async (request, response) => {
     try {
-        await postsData.deleteMany({ sellerID: `${request.params.id}` }, (err, doc) => {
+        await productsData.deleteMany({ sellerID: `${request.params.id}` }, (err, doc) => {
             if (err) { response.status(204).json({ err: err.message }) }
             // else { response.status(201).json(doc) }
         })
     }  catch (err) {
         // response.status(500).json({ message: err.message })
     }try{
-        await postsData.updateMany({}, { $unset: { [request.params.id]: {} } }, (err, doc) => {
+        await productsData.updateMany({}, { $unset: { [request.params.id]: {} } }, (err, doc) => {
             if (err) {response.status(400).json({ message: err.message })}
             else{response.status(201).json(doc.nModified)}
         })
@@ -326,17 +324,3 @@ router.delete('/deleteUserPosts/:id', async (request, response) => {
 
 })
 module.exports = router
-
-
-
-
-// let query = request.body.offerMaker+'.status'
-// try {
-//     await postsData.updateOne( {_id:request.body.postId}, {$set:{[query] : "Accepted"} }, (err, doc) => {
-//         if (err) { response.status(400).json({ message: err.message }) }
-//         else response.json(doc)
-//     })
-// }
-// catch (err) {
-//     response.status(500).json({ message: err.message })
-// }
