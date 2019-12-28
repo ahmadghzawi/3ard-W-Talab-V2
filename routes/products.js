@@ -191,6 +191,7 @@ router.post("/newProduct", async (request, response) => {
 router.get("/postOffers", async (request, response) => {
   let { _id, buyer, offer } = request.query;
   let newObj = {
+    bid: offer,
     [buyer]: { price: offer, date: Date(Date.now()), status: "pending" }
   };
   try {

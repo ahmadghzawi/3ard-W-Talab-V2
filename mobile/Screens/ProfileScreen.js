@@ -15,28 +15,31 @@ import ProfileModal from "./ProfileModal";
 export default class Profile extends Component {
   state = {
     user_id: null,
-    phone_number: null,
-    posts: [],
-    selectedPost: null,
-    isVisible: false,
     name: null,
     email: null,
+    phone_number: null,
+
+    posts: [],
+
+    selectedPost: null,
+    isVisible: false,
+    
     refreshing: false
   };
 
   componentDidMount() {
-    this.fetchUsersPosts();
     this.getUserInfo();
+    this.fetchUsersPosts();
   }
 
   fetchUsersPosts = async () => {
-    let seller_iD = await AsyncStorage.getItem("user_id");
+    let {user_id} = this.state
     axios
       .get(
         "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserPosts",
         {
           params: {
-            seller_iD
+            user_id
           }
         }
       )
@@ -55,12 +58,10 @@ export default class Profile extends Component {
 
   postInfoHandler = (selectedPost, isVisible) => {
     this.setState({ selectedPost, isVisible });
-    console.log(selectedPost);
   };
+  
   deletePost = id => {
-    console.log(id);
-    // `http://localhost:5000/posts/API/deletePost/${id}`
-    // '
+
     axios
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${id}`
@@ -72,6 +73,7 @@ export default class Profile extends Component {
         this.setState({ isVisible: false });
       });
   };
+
   logOut = async () => {
     await AsyncStorage.removeItem("user_id");
     await AsyncStorage.removeItem("phone_number");
@@ -102,6 +104,7 @@ export default class Profile extends Component {
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
+    console.log(this.state)
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Modal isVisible={this.state.isVisible}>
@@ -118,23 +121,20 @@ export default class Profile extends Component {
           <Text style={styles.name}>{`${this.state.email}`}</Text>
 
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            {/* log out button */}
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={this.logOut}
             >
               <Text style={{ color: "white" }}>Log Out</Text>
             </TouchableOpacity>
-            {/* log out button */}
 
-            {/* deactivate account button */}
             <TouchableOpacity
               style={styles.deleteButtonContainer}
               onPress={this.deactivateAccountHandler}
             >
               <Text style={{ color: "white" }}>DEACTIVATE</Text>
             </TouchableOpacity>
-            {/* deactivate account button */}
+
           </View>
         </View>
 

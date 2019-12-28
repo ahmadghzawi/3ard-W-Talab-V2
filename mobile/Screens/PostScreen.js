@@ -14,7 +14,7 @@ import axios from "axios";
 export default class AddPost extends Component {
   state = {
     offer: null,
-    pendingOffer: "",
+    pendingOffer: null,
     showOffer: false,
     user_id: this.props.user_id,
     seller_id: this.props.post["seller_id"]
@@ -37,26 +37,32 @@ export default class AddPost extends Component {
 
   submitOffer = () => {
     this.textInput.clear();
-    let buyerId = this.props.user_id;
-    let _id = this.props.post._id;
+    let buyer = this.props.user_id;
+    let { _id, bid } = this.props.post;
     let offer = this.state.pendingOffer;
-    if (offer != "")
-      axios
-        .get(
-          "https://ard-w-talab-version-2.herokuapp.com/posts/API/postOffers",
-          {
-            params: {
-              _id,
-              buyerId,
-              offer
+    if (offer != null) {
+      if (offer > this.props.post.bid) {
+        axios
+          .get(
+            "https://ard-w-talab-version-2.herokuapp.com/posts/API/postOffers",
+            {
+              params: {
+                _id,
+                buyer,
+                offer
+              }
             }
-          }
-        )
-        .then(res => {
-          this.setState({ offer, showOffer: true });
-          this.props.getPosts();
-        })
-        .catch(err => console.log(err));
+          )
+          .then(res => {
+            console.log(res.data);
+            this.setState({ offer, showOffer: true });
+            this.props.getPosts();
+          })
+          .catch(err => console.log(err));
+      } else {
+        alert(`Your offer must be above ${bid} JOD`);
+      }
+    }
   };
 
   render() {
