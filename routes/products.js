@@ -308,7 +308,7 @@ router.put("/deleteOffer/", async (request, response) => {
   }
 });
 /*<=========================== END. DELETE a Post  func.===========================>*/
-router.get("/getUserproducts", async (request, response) => {
+router.get("/getUserProducts", async (request, response) => {
   try {
     let { seller_id } = request.query;
     let data = await productsData.find({ seller_id });

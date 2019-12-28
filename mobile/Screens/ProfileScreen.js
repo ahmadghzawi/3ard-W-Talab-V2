@@ -37,7 +37,7 @@ export default class Profile extends Component {
     console.log(seller_id)
     axios
       .get(
-        "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserPosts",
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserProducts",
         {
           params: {
             seller_id
