@@ -19,7 +19,7 @@ export default class Home extends Component {
     isVisible: false,
     width: Math.floor(Dimensions.get("window").width / 3) - 2,
     refreshing: false,
-    userId: null
+    user_id: null
   };
 
   componentDidMount() {
@@ -27,8 +27,8 @@ export default class Home extends Component {
   }
 
   getPosts = async () => {
-    let userId = await AsyncStorage.getItem("userId");
-    this.setState({ userId });
+    let user_id = await AsyncStorage.getItem("user_id");
+    this.setState({ user_id });
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(res => {
@@ -70,7 +70,7 @@ export default class Home extends Component {
             isVisible={this.isVisible}
             post={this.state.post}
             getPosts={this.getPosts}
-            userId={this.state.userId}
+            user_id={this.state.user_id}
           />
         </Modal>
       </View>

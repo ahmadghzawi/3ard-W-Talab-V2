@@ -3,7 +3,7 @@ import { AsyncStorage } from "react-native";
 
 export default class LandingScreen extends Component {
   async componentDidMount() {
-    let user = await AsyncStorage.getItem("userId");
+    let user = await AsyncStorage.getItem("user_id");
     if (user != null) {
       this.props.navigation.navigate("tabNavigator");
     } else {

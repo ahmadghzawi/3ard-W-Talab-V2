@@ -22,17 +22,17 @@ export default class AddPost extends Component {
     image_path: null
   };
 
-  componentDidMount = async () => {
-    let seller_id = await AsyncStorage.getItem("userId");
+  async componentDidMount() {
+    let seller_id = await AsyncStorage.getItem("user_id");
     let { image_path } = this.props;
     this.setState({ seller_id, image_path });
-  };
+  }
 
   postData = (event, name) => {
     this.setState({ [name]: event });
   };
 
-  submitPost = () => {
+  submitPost = async () => {
     axios
       .post(
         "https://ard-w-talab-version-2.herokuapp.com/posts/API/newProduct",
@@ -40,18 +40,22 @@ export default class AddPost extends Component {
       )
       .then(res => console.log(res.data))
       .catch(err => console.log(err));
-    this.props.isVisible(false,'submitted');
+    this.props.isVisible(false, "submitted");
   };
 
   render() {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <View style={{  flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>Add Post</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>
+              Add Post
+            </Text>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => this.props.isVisible(false,'cancel')}
+              onPress={() => this.props.isVisible(false, "cancel")}
             >
               <Text style={{ color: "#4280c8", fontWeight: "400" }}>
                 Cancel
@@ -62,31 +66,31 @@ export default class AddPost extends Component {
             <TextInput
               style={styles.input}
               placeholder="  Post Title"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               onChangeText={event => this.postData(event, "title")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Category"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               onChangeText={event => this.postData(event, "product_category")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Location"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               onChangeText={event => this.postData(event, "location")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Info"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               onChangeText={event => this.postData(event, "info")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Starting Price"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               keyboardType="number-pad"
               onChangeText={event => this.postData(event, "bid")}
             ></TextInput>
@@ -104,6 +108,7 @@ export default class AddPost extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",

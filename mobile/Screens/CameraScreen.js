@@ -17,7 +17,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 export default class CameraScreen extends Component {
   state = {
     image_path: null,
-    name: null,
     progress: 0,
     isVisible: false
   };
@@ -38,10 +37,8 @@ export default class CameraScreen extends Component {
   };
 
   uploadToFirebase = async blob => {
-    console.log("UPLOAD");
     let date = Date.now().toString();
-    let name = await AsyncStorage.getItem("userId") + '_' + date 
-    this.state.name = name;
+    let name = await AsyncStorage.getItem("user_id") + '_' + date 
     
     let status = await storage
       .ref(`uploads/${name}`)
@@ -99,9 +96,8 @@ export default class CameraScreen extends Component {
         .then(snapshot => {
           console.log("File uploaded");
         })
-        .then()
         .catch(error => {
-          throw error;
+          console.log(error);
         });
     }
   };
@@ -131,13 +127,13 @@ export default class CameraScreen extends Component {
         })
         .then()
         .catch(error => {
-          throw error;
+          console.log(error);
         });
     }
   };
 
-  isVisible = (condition, from) => {
-    this.setState({ isVisible: condition, progress: 0 });
+  isVisible = (isVisible, from) => {
+    this.setState({ isVisible, progress: 0 });
     if (from !== "cancel") {
       this.props.navigation.navigate("landingStack");
     }

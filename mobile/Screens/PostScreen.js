@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Image,
-  Dimensions
+  Image
 } from "react-native";
 import { vw, vh } from "react-native-expo-viewport-units";
 import axios from "axios";
@@ -15,10 +14,10 @@ import axios from "axios";
 export default class AddPost extends Component {
   state = {
     offer: null,
-    pendingOffer: "", // please keep it as ""
+    pendingOffer: "",
     showOffer: false,
-    userId: this.props.userId,
-    ownerSellerId: this.props.post["sellerID"]
+    user_id: this.props.user_id,
+    seller_id: this.props.post["seller_id"]
   };
 
   componentDidMount() {
@@ -26,9 +25,9 @@ export default class AddPost extends Component {
   }
 
   getOffer = () => {
-    let userId = this.state.userId;
-    if (this.props.post[userId] != null) {
-      this.setState({ offer: this.props.post[userId].price, showOffer: true });
+    let { user_id } = this.state;
+    if (this.props.post[user_id] != null) {
+      this.setState({ offer: this.props.post[user_id].price, showOffer: true });
     }
   };
 
@@ -38,17 +37,21 @@ export default class AddPost extends Component {
 
   submitOffer = () => {
     this.textInput.clear();
-    let buyerId = this.props.userId;
-    let id = this.props.post._id;
+    let buyerId = this.props.user_id;
+    let _id = this.props.post._id;
     let offer = this.state.pendingOffer;
-    if (this.state.pendingOffer != "")
+    if (offer != "")
       axios
-        .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/postOffers", {
-          params: {
-            id,
-            [buyerId]: offer
+        .get(
+          "https://ard-w-talab-version-2.herokuapp.com/posts/API/postOffers",
+          {
+            params: {
+              _id,
+              buyerId,
+              offer
+            }
           }
-        })
+        )
         .then(res => {
           this.setState({ offer, showOffer: true });
           this.props.getPosts();
@@ -57,16 +60,16 @@ export default class AddPost extends Component {
   };
 
   render() {
-    let { offer, showOffer } = this.state;
+    let { user_id, seller_id, offer, showOffer } = this.state;
     if (this.props.post === undefined) return null;
     let {
-      name,
-      postCategories,
+      title,
+      product_category,
       location,
-      additionalInfo,
-      imgUrl
+      info,
+      bid,
+      image_path
     } = this.props.post;
-    let { userId, ownerSellerId } = this.state;
 
     return (
       <ScrollView>
@@ -75,7 +78,7 @@ export default class AddPost extends Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>
-              {name}
+              {title}
             </Text>
             <TouchableOpacity
               style={styles.backButton}
@@ -86,7 +89,7 @@ export default class AddPost extends Component {
           </View>
           <View style={styles.bodyContent}>
             <Image
-              source={{ uri: imgUrl }}
+              source={{ uri: image_path }}
               style={{ width: vw(100), height: vh(40) / 1.5 }}
             />
             <View style={styles.textContainer}>
@@ -96,11 +99,15 @@ export default class AddPost extends Component {
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Category: </Text>
-                {postCategories}
+                {product_category}
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Info: </Text>
-                {additionalInfo}
+                {info}
+              </Text>
+              <Text style={styles.textWrapper}>
+                <Text style={styles.text}>Bid: </Text>
+                {bid}
               </Text>
               <View
                 style={{
@@ -108,7 +115,7 @@ export default class AddPost extends Component {
                 }}
               />
             </View>
-            {userId !== ownerSellerId ? (
+            {user_id !== seller_id ? (
               <View
                 style={{
                   flex: 1,
@@ -134,7 +141,7 @@ export default class AddPost extends Component {
                 <TextInput
                   style={styles.input}
                   placeholder="  Make an Offer"
-                  placeholderTextColor='darkgrey'
+                  placeholderTextColor="darkgrey"
                   blurOnSubmit
                   autoCapitalize="none"
                   autoCorrect={false}

@@ -8,7 +8,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   AsyncStorage,
-  YellowBox
 } from "react-native";
 import Modal from "react-native-modal";
 import SignUp from "./SignUpScreen";
@@ -40,14 +39,12 @@ export default class LoginScreen extends Component {
 
   submitHandler = async () => {
     const { email, password } = this.state;
-    console.log(this.state);
     if (email !== "" && password !== "") {
       axios
         .get("https://ard-w-talab-version-2.herokuapp.com/users/API/auth", {
           params: { email, password }
         })
         .then(async response => {
-          console.log(response.data)
           const { _id, name, email, phone_number } = response.data;
           await AsyncStorage.setItem("user_id", _id);
           await AsyncStorage.setItem("phone_number", phone_number);
@@ -55,7 +52,6 @@ export default class LoginScreen extends Component {
           await AsyncStorage.setItem("email", email);
 
           this.setState({ isLoggedIn: true });
-          console.log('navigate')
           this.props.navigation.navigate("tabNavigator");
         })
         .catch(error => alert("Invalid Email or Password!"));
@@ -66,7 +62,6 @@ export default class LoginScreen extends Component {
 
   isModalVisibleHandler = async (isVisible, isLoggedIn) => {
     this.setState({ isVisible, isLoggedIn });
-    console.log('navigate')
     if (isLoggedIn) this.props.navigation.navigate("tabNavigator");
   };
 
@@ -142,6 +137,7 @@ export default class LoginScreen extends Component {
 LoginScreen.navigationOptions = {
   title: "3ard w talab"
 };
+
 const styles = StyleSheet.create({
   body: {
     flexDirection: "column",

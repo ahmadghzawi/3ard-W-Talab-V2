@@ -6,7 +6,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView,
   AsyncStorage,
   FlatList
 } from "react-native";
@@ -15,40 +14,43 @@ import Modal from "react-native-modal";
 import ProfileModal from "./ProfileModal";
 export default class Profile extends Component {
   state = {
-    userId: null,
-    phoneNumber: null,
+    user_id: null,
+    phone_number: null,
     posts: [],
     selectedPost: null,
     isVisible: false,
-    username: null,
+    name: null,
     email: null,
     refreshing: false
   };
+
   componentDidMount() {
     this.fetchUsersPosts();
     this.getUserInfo();
   }
+
   fetchUsersPosts = async () => {
-    let sellerID = await AsyncStorage.getItem("userId");
+    let seller_iD = await AsyncStorage.getItem("user_id");
     axios
       .get(
         "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserPosts",
         {
           params: {
-            sellerID
+            seller_iD
           }
         }
       )
       .then(res => this.setState({ posts: res.data }))
       .catch(err => console.log(err));
   };
+
   getUserInfo = async () => {
-    let userId = await AsyncStorage.getItem("userId");
-    let phoneNumber = await AsyncStorage.getItem("phoneNumber");
-    let name = await AsyncStorage.getItem("username");
+    let user_id = await AsyncStorage.getItem("user_id");
+    let phone_number = await AsyncStorage.getItem("phone_number");
+    let name = await AsyncStorage.getItem("name");
     let email = await AsyncStorage.getItem("email");
 
-    this.setState({ userId, phoneNumber, name, email });
+    this.setState({ user_id, phone_number, name, email });
   };
 
   postInfoHandler = (selectedPost, isVisible) => {
@@ -71,30 +73,32 @@ export default class Profile extends Component {
       });
   };
   logOut = async () => {
-    await AsyncStorage.removeItem("userId");
-    await AsyncStorage.removeItem("phoneNumber");
-    await AsyncStorage.removeItem("username");
+    await AsyncStorage.removeItem("user_id");
+    await AsyncStorage.removeItem("phone_number");
+    await AsyncStorage.removeItem("name");
     await AsyncStorage.removeItem("email");
+
     this.props.navigation.navigate("landingStack");
   };
+
   deactivateAccountHandler = async () => {
     axios
       .delete(
-        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${this.state.userId}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${this.state.user_id}`
       )
       .then(res => console.log(res.data))
       .catch(err => console.log(err))
       .then(
         axios
           .delete(
-            `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${this.state.userId}`
+            `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${this.state.user_id}`
           )
           .then(res => console.log(res))
           .catch(err => console.log(err))
       )
       .then(() => this.logOut());
   };
-  // post._id
+
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
@@ -110,7 +114,7 @@ export default class Profile extends Component {
 
         <View style={styles.header}>
           <Text style={styles.name}>{`${this.state.name}`}</Text>
-          <Text style={styles.name}>{`${this.state.phoneNumber}`}</Text>
+          <Text style={styles.name}>{`${this.state.phone_number}`}</Text>
           <Text style={styles.name}>{`${this.state.email}`}</Text>
 
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -135,7 +139,7 @@ export default class Profile extends Component {
         </View>
 
         <FlatList
-          keyExtractor={(post, index) => index.toString()}
+          keyExtractor={post => post._id}
           data={this.state.posts}
           renderItem={post => {
             return (
@@ -155,8 +159,7 @@ export default class Profile extends Component {
                     >
                       <View>
                         <Image
-                          source={{ uri: post.item.imgUrl }}
-                          // source={{ uri: 'https://assets.fontsinuse.com/static/use-media-items/17/16215/full-1052x1052/56702c8b/js.png?resolution=0' }}
+                          source={{ uri: post.item.image_path }}
                           style={{
                             width: vw(20),
                             height: vh(8),
@@ -175,10 +178,10 @@ export default class Profile extends Component {
                         }}
                       >
                         <Text style={{ fontSize: 20, color: "white" }}>
-                          {`Name: ${post.item.name}`}
+                          {`Title: ${post.item.title}`}
                         </Text>
                         <Text style={{ fontSize: 15, color: "lightgray" }}>
-                          {`Category: ${post.item.postCategories}`}
+                          {`Category: ${post.item.product_category}`}
                         </Text>
                         <Text style={{ fontSize: 15, color: "lightgray" }}>
                           {`Location: ${post.item.location}`}

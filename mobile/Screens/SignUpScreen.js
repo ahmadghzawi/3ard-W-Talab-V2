@@ -48,12 +48,10 @@ export default class SignUp extends Component {
 
   submitHandler = () => {
     const { name, email, password, phone_number } = this.state;
-    console.log(this.state);
     if (name !== "" && email !== "" && password !== "" && phone_number !== "") {
       axios
         .post("https://ard-w-talab-version-2.herokuapp.com/users/API/new", this.state)
         .then(async response => {
-          console.log(response.data);
           const { _id, name, email, phone_number } = response.data;
           await AsyncStorage.setItem("user_id", _id);
           await AsyncStorage.setItem("phone_number", phone_number);
@@ -64,6 +62,7 @@ export default class SignUp extends Component {
         .catch(error => alert(error.message));
     }
   };
+  
   render() {
     return (
       <ScrollView>
@@ -129,6 +128,7 @@ export default class SignUp extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
