@@ -13,5 +13,5 @@ app.use(process.env.USER_ROUTE_URL, userRouter)     //      /users/API/
 const postRouter = require('./routes/posts')
 app.use(process.env.POST_ROUTE_URL, postRouter)     //      /posts/API/
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 9000)
 
