@@ -7,7 +7,6 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
-  "proxy" : "https://ard-w-talab-version-2.herokuapp.com",
   "dependencies": {
     "@expo/samples": "~3.0.3",
     "@expo/vector-icons": "^10.0.3",

@@ -31,11 +31,14 @@ export default class Profile extends Component {
   fetchUsersPosts = async () => {
     let sellerID = await AsyncStorage.getItem("userId");
     axios
-      .get("/posts/API/getUserPosts", {
-        params: {
-          sellerID
+      .get(
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserPosts",
+        {
+          params: {
+            sellerID
+          }
         }
-      })
+      )
       .then(res => this.setState({ posts: res.data }))
       .catch(err => console.log(err));
   };
@@ -57,7 +60,9 @@ export default class Profile extends Component {
     // `http://localhost:5000/posts/API/deletePost/${id}`
     // '
     axios
-      .delete(`/posts/API/deletePost/${id}`)
+      .delete(
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${id}`
+      )
       .then(res => console.log(res.data))
       .catch(err => alert(err.message))
       .then(() => {
@@ -72,17 +77,23 @@ export default class Profile extends Component {
     await AsyncStorage.removeItem("email");
     this.props.navigation.navigate("landingStack");
   };
-  deactivateAccountHandler = async()=>{
-
-    axios.delete(`/posts/API/deleteUserPosts/${this.state.userId}`)
-    .then(res=>console.log(res.data))
-    .catch(err=>console.log(err))
-    .then( axios.delete(`/users/API/delete/${this.state.userId}`)
-      .then(res=>console.log(res))
-      .catch(err=>console.log(err))
-    )
-    .then(()=>this.logOut())
-  }
+  deactivateAccountHandler = async () => {
+    axios
+      .delete(
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${this.state.userId}`
+      )
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err))
+      .then(
+        axios
+          .delete(
+            `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${this.state.userId}`
+          )
+          .then(res => console.log(res))
+          .catch(err => console.log(err))
+      )
+      .then(() => this.logOut());
+  };
   // post._id
   isVisible = isVisible => this.setState({ isVisible });
 
@@ -106,15 +117,17 @@ export default class Profile extends Component {
             {/* log out button */}
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={this.logOut}>
+              onPress={this.logOut}
+            >
               <Text style={{ color: "white" }}>Log Out</Text>
             </TouchableOpacity>
-           {/* log out button */}
+            {/* log out button */}
 
             {/* deactivate account button */}
             <TouchableOpacity
               style={styles.deleteButtonContainer}
-              onPress={this.deactivateAccountHandler}>
+              onPress={this.deactivateAccountHandler}
+            >
               <Text style={{ color: "white" }}>DEACTIVATE</Text>
             </TouchableOpacity>
             {/* deactivate account button */}

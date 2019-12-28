@@ -25,7 +25,7 @@ export default class BuyerScreen extends Component {
   };
   fetchBuyerSellerOffers = async () => {
     axios
-      .get("/posts/API/getOffers", {
+      .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/getOffers", {
         params: {
           buyerOffers: await AsyncStorage.getItem("userId")
         }
@@ -42,7 +42,7 @@ export default class BuyerScreen extends Component {
     let offerMaker = await AsyncStorage.getItem("userId");
     let postId = post.id;
     axios
-      .put("/posts/API/deleteOffer/", {
+      .put("https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer/", {
         postId,
         offerMaker
       })
