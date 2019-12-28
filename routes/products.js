@@ -110,8 +110,8 @@ async function sellerOffers(seller_id) {
                   location: post._doc.location,
                   key,
                   buyer: key,
-                  post_id: post._doc[key].id,
-                  info: post._doc.additionalInfo
+                  post_id: post._doc[key]._id,
+                  info: post._doc.info
                 });
               }
             });

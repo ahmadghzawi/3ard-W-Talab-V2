@@ -32,6 +32,7 @@ export default class SellerScreen extends Component {
         }
       })
       .then(res => {
+        console.log(res.data)
         this.setState({
           offers: res.data
         });
