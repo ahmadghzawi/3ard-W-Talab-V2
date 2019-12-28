@@ -56,7 +56,7 @@ export default class Home extends Component {
             return (
               <TouchableOpacity onPress={() => this.isVisible(true, post.item)}>
                 <Image
-                  source={{ uri: post.item.imgUrl }}
+                  source={{ uri: post.item.image_path }}
                   style={{ width, height: width, margin: 1 }}
                 />
               </TouchableOpacity>

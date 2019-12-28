@@ -69,7 +69,7 @@ export default class AddPost extends Component {
               style={styles.input}
               placeholder="  Category"
               placeholderTextColor='darkgrey'
-              onChangeText={event => this.postData(event, "product_categories")}
+              onChangeText={event => this.postData(event, "product_category")}
             ></TextInput>
             <TextInput
               style={styles.input}

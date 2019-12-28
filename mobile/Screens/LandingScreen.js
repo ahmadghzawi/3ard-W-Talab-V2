@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { Component } from "react";
+import { AsyncStorage } from "react-native";
 
 export default class LandingScreen extends Component {
   async componentDidMount() {

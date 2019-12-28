@@ -16,80 +16,59 @@ export default class SignUp extends Component {
     name: "",
     email: "",
     password: "",
-    phoneNumber: "",
-    resID : null,
-    resEmail : null,
-    resPhoneNumber : null,
-    resName : null,
+    phone_number: "",
+    resID: null,
+    resEmail: null,
+    resPhoneNumber: null,
+    resName: null
   };
+
   signUpHandler = (event, name) => {
+    const regexName = /^[a-zA-Z][^#&<>"~;.-_=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
     const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     const regexPassword = /^[0-9a-zA-Z]{8,}$/;
-    const regexName = /^[a-zA-Z]{3,}$/;
-    const regexPhone = /^[0-9]{10,}$/;
+    const regexPhoneNumber = /^[0-9]{9,}$/;
+
     if (name === "name") {
-      this.state.name = event;
-      if (regexName.test(event)) {
-        this.setState({
-          name: event
-        });
-      }
-    } else if (name === "email") {
-      this.state.email = event;
-      if (regexEmail.test(event)) {
-        this.setState({
-          email: event
-        });
-      }
-    } else if (name === "password") {
-      this.state.password = event;
-      if (regexPassword.test(event)) {
-        this.setState({
-          [name]: event
-        });
-      }
-    } else if (name === "phoneNumber") {
-      this.state.phoneNumber = event;
-      if (regexPhone.test(event)) {
-        this.setState({
-          [name]: event
-        });
-      }
+      let name = event;
+      if (regexName.test(event)) this.setState({ name });
+    }
+
+    if (name === "email") {
+      let email = event.toLowerCase();
+      if (regexEmail.test(event)) this.setState({ email });
+    }
+
+    if (name === "password") {
+      let password = event;
+      if (regexPassword.test(event)) this.setState({ password });
+    }
+
+    if (name === "phone_number") {
+      let phone_number = event;
+      if (regexPhoneNumber.test(event)) this.setState({ phone_number });
     }
   };
 
   submitHandler = () => {
-    if (
-      this.state.name != "" &&
-      this.state.email != "" &&
-      this.state.password != ""
-    ) {
-      // axios.post('http://192.168.86.33:9002/users/API/new', {
+    const { name, email, password, phone_number } = this.state;
+    if (name !== "" && email !== "" && password !== "" && phone_number !== "") {
       axios
         .post("https://ard-w-talab-version-2.herokuapp.com/users/API/new", {
-          name: this.state.name,
-          email: this.state.email,
-          password: this.state.password,
-          phoneNumber: this.state.phoneNumber
+          name,
+          email,
+          password,
+          phoneNumber
         })
-        .then( response => {
-          this.setState({
-            resID : response.data._id,
-            resEmail : response.data.email,
-            resPhoneNumber : response.data.phoneNumber,
-            resName : response.data.name,
-          })
-        })
-        .catch(error => {
-          alert(error.message);
-        })
-        .then(async ()=>{
-          await AsyncStorage.setItem("userId", this.state.resID);
-          await AsyncStorage.setItem("phoneNumber", this.state.resPhoneNumber);
-          await AsyncStorage.setItem("username", this.state.resName);
-          await AsyncStorage.setItem("email", this.state.resEmail);
+        .then(async response => {
+          const { _id, name, email, phone_number } = response.data;
+          await AsyncStorage.setItem("user_id", _id);
+          await AsyncStorage.setItem("phone_number", phone_number);
+          await AsyncStorage.setItem("name", name);
+          await AsyncStorage.setItem("email", email);
           this.props.isVisibleHandler(false, true);
         })
+        .catch(error => alert(error.message));
     }
   };
   render() {
@@ -115,21 +94,21 @@ export default class SignUp extends Component {
             <TextInput
               style={styles.input}
               placeholder="  Full name"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               textContentType="name"
               onChangeText={event => this.signUpHandler(event, "name")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Email Address"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               textContentType="emailAddress"
               onChangeText={event => this.signUpHandler(event, "email")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Password"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               textContentType="password"
               secureTextEntry={true}
               onChangeText={event => this.signUpHandler(event, "password")}
@@ -137,7 +116,7 @@ export default class SignUp extends Component {
             <TextInput
               style={styles.input}
               placeholder="  Phone number"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               textContentType="telephoneNumber"
               keyboardType="number-pad"
               onChangeText={event => this.signUpHandler(event, "phoneNumber")}
@@ -146,7 +125,9 @@ export default class SignUp extends Component {
               style={styles.buttonContainer}
               onPress={this.submitHandler}
             >
-              <Text style={{ color: "white", fontWeight: "bold"}}>Register</Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Register
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

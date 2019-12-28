@@ -1,18 +1,17 @@
 import firebase from "../node_modules/@firebase/app";
 import "../node_modules/@firebase/storage";
 
-var Config = {
-  apiKey: "AIzaSyC5n8K36r44yEkafOd6Cyf2CjSFmcD0ioI",
-  authDomain: "ardwtalab-b5d8c.firebaseapp.com",
-  databaseURL: "https://ardwtalab-b5d8c.firebaseio.com",
-  projectId: "ardwtalab-b5d8c",
-  storageBucket: "ardwtalab-b5d8c.appspot.com",
-  messagingSenderId: "875941737379",
-  appId: "1:875941737379:web:6485c36e9b9cdc6f322016"
+const Config = {
+  apiKey: "AIzaSyAkYkM1ZhMDE3I9Yp0mAcWGv4DQdR5m6J4",
+  authDomain: "ard-w-talab-v2.firebaseapp.com",
+  databaseURL: "https://ard-w-talab-v2.firebaseio.com",
+  projectId: "ard-w-talab-v2",
+  storageBucket: "ard-w-talab-v2.appspot.com",
+  messagingSenderId: "55949324677",
+  appId: "1:55949324677:web:dd462552b4151ad62894ec"
 };
 
 firebase.initializeApp(Config);
 
 const storage = firebase.storage();
 export { storage, firebase as default };
-

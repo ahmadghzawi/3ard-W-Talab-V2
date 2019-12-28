@@ -16,86 +16,58 @@ import axios from "axios";
 import { vw, vh } from "react-native-expo-viewport-units";
 
 export default class LoginScreen extends Component {
-
-
   state = {
     isLoggedIn: false,
     email: "",
     password: "",
     isVisible: false
   };
-   componentDidMount() {
-    this.load()
-    YellowBox.ignoreWarnings(["Warning: Can't perform a React state update on an unmounted component"])
-  }
-  load = async ()=>{
-    let getter = await AsyncStorage.getItem("userId");
-    if (getter !== null) {
-      this.setState({
-        isLoggedIn: true
-      });
-      // this.props.navigation.navigate("tabNavigator");
-    } else {
-      this.setState({
-        isLoggedIn: false
-      });
-    }
-  }
-  AuthHandler = (event, name) => {
+
+  authHandler = (event, name) => {
     const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     const regexPassword = /^[0-9a-zA-Z]{8,}$/;
+
     if (name === "email") {
-      this.state.email = event;
-      if (regexEmail.test(event)) {
-        this.setState({
-          email: this.state.email
-        });
-      }
-    } else if (name === "password") {
-      this.state.password = event;
-      if (regexPassword.test(event)) {
-        this.setState({
-          [name]: event
-        });
-      }
+      let email = event.toLowerCase();
+      if (regexEmail.test(event)) this.setState({ email });
     }
-  };
-  submitHandler = async () => {
-    axios
-      .get("https://ard-w-talab-version-2.herokuapp.com/users/API/auth", {
-        params: {
-          email: this.state.email.toLowerCase(),
-          password: this.state.password
-        }
-      })
-      .then(async response => {
-        await AsyncStorage.setItem("userId", response.data.userId);
-        await AsyncStorage.setItem("phoneNumber", response.data.phoneNumber);
-        await AsyncStorage.setItem("username", response.data.username);
-        await AsyncStorage.setItem("email", response.data.email);
-        this.setState({
-          isLoggedIn: true,
-          getId: await AsyncStorage.getItem("userId")
-        });
-        this.props.navigation.navigate("tabNavigator");
-      })
-      .catch(err => {
-        this.setState({
-          isLoggedIn: false
-        });
-        alert('Invalid email or password!');
-      });
+
+    if (name === "password") {
+      let password = event;
+      if (regexPassword.test(event)) this.setState({ password });
+    }
   };
 
-  isModalVisibleHandler = async  (isVisible, isLoggedIn) => {
-     this.setState({
-      isVisible,
-      isLoggedIn
-    });
-    if (isLoggedIn) {
-      this.props.navigation.navigate("tabNavigator");
+  submitHandler = async () => {
+    const { email, password } = this.state;
+    console.log("here");
+    if (email !== "" && password !== "") {
+      axios
+        .get("https://ard-w-talab-version-2.herokuapp.com/users/API/auth", {
+          params: { email, password }
+        })
+        .then(async response => {
+          const { _id, name, email, phone_number } = response.data;
+          await AsyncStorage.setItem("user_id", _id);
+          await AsyncStorage.setItem("phone_number", phone_number);
+          await AsyncStorage.setItem("name", name);
+          await AsyncStorage.setItem("email", email);
+
+          this.setState({ isLoggedIn: true });
+
+          this.props.navigation.navigate("tabNavigator");
+        })
+        .catch(error => alert("Invalid Email or Password!"));
+    } else {
+      alert("Please enter Email & Password");
     }
   };
+
+  isModalVisibleHandler = async (isVisible, isLoggedIn) => {
+    this.setState({ isVisible, isLoggedIn });
+    if (isLoggedIn) this.props.navigation.navigate("tabNavigator");
+  };
+
   render() {
     return (
       <>
@@ -106,31 +78,34 @@ export default class LoginScreen extends Component {
                 uri:
                   "https://cdn1.iconfinder.com/data/icons/hawcons/32/698889-icon-146-tag-512.png"
               }}
-              style={{ width: vw(75), height: vh(40), marginTop:vh(-3), marginBottom: vh(3)}}
+              style={{
+                width: vw(75),
+                height: vh(40),
+                marginTop: vh(-3),
+                marginBottom: vh(3)
+              }}
             />
 
             <TextInput
               style={styles.input}
               placeholder="  Email Address"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               textContentType="emailAddress"
-              onChangeText={event => this.AuthHandler(event, "email")}
+              onChangeText={event => this.authHandler(event, "email")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Password"
-              placeholderTextColor='darkgrey'
+              placeholderTextColor="darkgrey"
               textContentType="password"
               secureTextEntry={true}
-              onChangeText={event => this.AuthHandler(event, "password")}
+              onChangeText={event => this.authHandler(event, "password")}
             ></TextInput>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={this.submitHandler}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                Log in
-              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>Log in</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.signUp}>

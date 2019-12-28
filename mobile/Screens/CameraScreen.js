@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  Platform
+  AsyncStorage
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
@@ -14,7 +14,7 @@ import AddPost from "./AddPostScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default class FirebaseStorageUploader extends Component {
+export default class CameraScreen extends Component {
   state = {
     image_path: null,
     name: null,
@@ -39,9 +39,10 @@ export default class FirebaseStorageUploader extends Component {
 
   uploadToFirebase = async blob => {
     console.log("UPLOAD");
-    let name = Date.now().toString();
+    let date = Date.now().toString();
+    let name = await AsyncStorage.getItem("userId") + '_' + date 
     this.state.name = name;
-
+    
     let status = await storage
       .ref(`uploads/${name}`)
       .put(blob, {
@@ -88,6 +89,7 @@ export default class FirebaseStorageUploader extends Component {
         .then(result => {
           if (!result.cancelled) {
             const { uri } = result;
+            this.setState({ progress: 1 });
             return this.uriToBlob(uri);
           }
         })
@@ -117,6 +119,7 @@ export default class FirebaseStorageUploader extends Component {
         .then(result => {
           if (!result.cancelled) {
             const { uri } = result;
+            this.setState({ progress: 1 });
             return this.uriToBlob(uri);
           }
         })
