@@ -28,11 +28,10 @@ export default class SellerScreen extends Component {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/getOffers", {
         params: {
-          seller_id: await AsyncStorage.getItem("userId")
+          seller_id: await AsyncStorage.getItem("user_id")
         }
       })
       .then(res => {
-        console.log(res.data)
         this.setState({
           offers: res.data
         });

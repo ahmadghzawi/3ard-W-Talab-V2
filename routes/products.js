@@ -87,7 +87,7 @@ router.get("/getOffers", async (request, response) => {
   response.json(
     request.query.seller_id != null
       ? await sellerOffers(request.query.seller_id)
-      : await buyerOffers(request.query.buyerOffers)
+      : await buyerOffers(request.query.buyer)
   );
 }); 
 
@@ -125,20 +125,20 @@ async function sellerOffers(seller_id) {
   }
   return arr;
 }
-async function buyerOffers(buyerName) {
+async function buyerOffers(buyer) {
   let arr = [];
   let data = productsData.find();
   await data
     .then(DATA => {
       DATA.map(post => {
-        if (post._doc[buyerName] != null) {
-          let newObj = post._doc[buyerName];
-          newObj["imgUrl"] = post._doc.imgUrl;
-          newObj["id"] = post._doc._id;
-          newObj["name"] = post._doc.name;
-          newObj["postCategories"] = post._doc.postCategories;
+        if (post._doc[buyer] != null) {
+          let newObj = post._doc[buyer];
+          newObj["image_path"] = post._doc.image_path;
+          newObj["_id"] = post._doc.__id;
+          newObj["title"] = post._doc.title;
+          newObj["product_category"] = post._doc.product_category;
           newObj["location"] = post._doc.location;
-          newObj["additionalInfo"] = post._doc.additionalInfo;
+          newObj["info"] = post._doc.info;
           arr.push(newObj);
         }
       });
@@ -207,14 +207,14 @@ router.get("/postOffers", async (request, response) => {
 /*<=========================== START. DELETE a Post  func.===========================>*/
 let IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:id", async (request, response) => {
-  let ids = request.params.id;
+  let ids = request.params.post_id;
   IdsForDeleteArray.push(ids);
-  // console.log(IdsForDeleteArray)
   if (IdsForDeleteArray.length !== 0) {
     DeleteTimer;
   }
-  response.json("it will have been deleted at 12 AM");
+  response.json("it will be deleted at 12 AM");
 });
+
 const DeleteAtSpecificTime = async id => {
   let output = null;
   try {
@@ -231,6 +231,7 @@ const DeleteAtSpecificTime = async id => {
   }
   return output;
 };
+
 const DeleteTimer = setInterval(() => {
   var date = new Date();
   if (date.getHours() === 0 && date.getMinutes() === 0) {
@@ -240,6 +241,7 @@ const DeleteTimer = setInterval(() => {
     });
   }
 }, 20000);
+
 router.put("/acceptOffer/", async (request, response) => {
   await productsData.findById(request.body.postId, async (err, doc) => {
     if (err) response.status(401).json(err);
@@ -274,6 +276,7 @@ router.put("/acceptOffer/", async (request, response) => {
     }
   });
 });
+
 router.put("/deniedOffer/", async (request, response) => {
   // let { offerMaker, postId } = request.body
   let query = request.body.offerMaker + ".status";
@@ -291,6 +294,7 @@ router.put("/deniedOffer/", async (request, response) => {
     response.status(500).json({ message: err.message });
   }
 });
+
 router.put("/deleteOffer/", async (request, response) => {
   let { offerMaker, postId } = request.body;
   // console.log(request.body)

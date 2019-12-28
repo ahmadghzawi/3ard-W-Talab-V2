@@ -19,7 +19,7 @@ export default class SellerModal extends Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>
-              {this.props.post.name}
+              {this.props.post.title}
             </Text>
             <TouchableOpacity
               style={styles.backButton}
@@ -182,6 +182,3 @@ const styles = StyleSheet.create({
     marginBottom: 10
   }
 });
-
-// <TouchableOpacity style={{backgroundColor:'red', width: vw(20) , margin:vh(1)}} onPress={()=>this.props.operationHandler('denied', this.props.post)}>
-// <TouchableOpacity style={{backgroundColor:'green', width: vw(20)}} onPress={()=>this.props.operationHandler('accept', this.props.post) }>

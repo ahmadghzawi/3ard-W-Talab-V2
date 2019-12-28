@@ -18,7 +18,7 @@ export default class BuyerModal extends Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>
-              {this.props.post.name}
+              {this.props.post.title}
             </Text>
             <TouchableOpacity
               style={styles.backButton}
@@ -55,7 +55,7 @@ export default class BuyerModal extends Component {
             )}
             <Image
               source={{
-                uri: this.props.post.imgUrl
+                uri: this.props.post.image_path
               }}
               style={{ width: vw(100), height: vh(40) / 1.5 }}
             />
@@ -66,11 +66,11 @@ export default class BuyerModal extends Component {
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Category: </Text>
-                {this.props.post.postCategories}
+                {this.props.post.product_category}
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Info: </Text>
-                {this.props.post.additionalInfo}
+                {this.props.post.info}
               </Text>
               <View
                 style={{

@@ -23,21 +23,25 @@ export default class BuyerScreen extends Component {
   componentDidMount = async () => {
     this.fetchBuyerSellerOffers();
   };
+
   fetchBuyerSellerOffers = async () => {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/getOffers", {
         params: {
-          buyerOffers: await AsyncStorage.getItem("userId")
+          buyer: await AsyncStorage.getItem("user_id")
         }
       })
       .then(res => {
+        console.log(res.data)
         this.setState({ offers: res.data });
       })
       .catch(err => console.log(err));
   };
+
   postHandler = (post, isVisible) => {
     this.setState({ post, isVisible });
   };
+
   deleteOfferHandler = async post => {
     let offerMaker = await AsyncStorage.getItem("userId");
     let postId = post.id;
@@ -91,7 +95,7 @@ export default class BuyerScreen extends Component {
                   }}
                 >
                   <Image
-                    source={{ uri: offer.item.imgUrl }}
+                    source={{ uri: offer.item.image_path }}
                     style={{
                       width: vw(20),
                       height: vh(9),
