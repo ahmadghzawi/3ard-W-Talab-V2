@@ -18,7 +18,7 @@ export default class BuyerModal extends Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>
-              {this.props.selectedPost.name}
+              {this.props.selectedPost.title}
             </Text>
             <TouchableOpacity
               style={styles.backButton}
@@ -44,6 +44,10 @@ export default class BuyerModal extends Component {
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Info: </Text>
                 {this.props.selectedPost.info}
+              </Text>
+              <Text style={styles.textWrapper}>
+                <Text style={styles.text}>Bid: </Text>
+                {this.props.selectedPost.bid}
               </Text>
               <View
                   style={{
