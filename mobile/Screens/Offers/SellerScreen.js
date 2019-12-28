@@ -19,15 +19,16 @@ export default class SellerScreen extends Component {
     isVisible: false,
     refreshing: false
   };
+
   componentDidMount = () => {
     this.fetchSellerOffers();
   };
+
   fetchSellerOffers = async () => {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/getOffers", {
         params: {
-          sellerID: await AsyncStorage.getItem("userId")
-          // sellerID: '5dd03149694cc74c0fbe210c' // ahmad@gmail.com
+          seller_id: await AsyncStorage.getItem("userId")
         }
       })
       .then(res => {
@@ -41,20 +42,21 @@ export default class SellerScreen extends Component {
   detailsHandler = (post, isVisible) => {
     this.setState({ post, isVisible });
   };
+
   acceptOfferHandler = async post => {
-    let { offerMaker, postId } = post;
-    let contactNumber = await AsyncStorage.getItem("phoneNumber");
+    let { buyer, post_id } = post;
+    let contactNumber = await AsyncStorage.getItem("phone_number");
     axios
       .delete(
-        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteAtSpecificTime/${postId}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteAtSpecificTime/${post_id}`
       )
       .then(res => console.log(res.data))
       .catch(err => console.log(err.message))
       .then(
         axios
           .put("https://ard-w-talab-version-2.herokuapp.com/posts/API/acceptOffer", {
-            postId,
-            offerMaker,
+            post_id,
+            buyer,
             contactNumber
           })
           .then(res => {
@@ -64,12 +66,13 @@ export default class SellerScreen extends Component {
       )
       .then(() => this.setState({ isVisible: false }));
   };
+
   deniedOfferHandler = post => {
-    let { offerMaker, postId } = post;
+    let { buyer, post_id } = post;
     axios
       .put("https://ard-w-talab-version-2.herokuapp.com/posts/API/deniedOffer/", {
-        postId,
-        offerMaker
+        post_id,
+        buyer
       })
       .then(res => {
         this.fetchSellerOffers();
@@ -77,8 +80,11 @@ export default class SellerScreen extends Component {
       .catch(err => console.log(err))
       .then(() => this.setState({ isVisible: false }));
   };
+
   isVisible = isVisible => this.setState({ isVisible });
+
   render() {
+    console.log(this.state)
     return (
       <View style={{ margin: 10, flex: 1 }}>
         <Modal isVisible={this.state.isVisible}>
@@ -117,11 +123,7 @@ export default class SellerScreen extends Component {
                   }}
                 >
                   <Image
-                    source={{ uri: offer.item.imgUrl }}
-                    // source={{
-                    //   uri:
-                    //     "http://www.websalution.com/wp-content/uploads/2019/08/icon.javascript.png"
-                    // }}
+                    source={{ uri: offer.item.image_path }}
                     style={{
                       width: vw(20),
                       height: vh(8),
@@ -142,7 +144,7 @@ export default class SellerScreen extends Component {
                       style={{ fontSize: 20, color: "white" }}
                     >{`You've got an offer: ${offer.item.price} JOD`}</Text>
                     <Text style={{ fontSize: 15, color: "white" }}>
-                      {offer.item.name}
+                      {offer.item.title}
                     </Text>
                     <Text style={{ fontSize: 15, color: `${statusColor}` }}>
                       {Array.isArray(offer.item.status)

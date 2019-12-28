@@ -11,6 +11,7 @@ import { vw, vh } from "react-native-expo-viewport-units";
 
 export default class SellerModal extends Component {
   render() {
+    console.log(this.props.post)
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -29,7 +30,7 @@ export default class SellerModal extends Component {
           </View>
           <View style={styles.bodyContent}>
             <Image
-              source={{ uri: this.props.post.imgUrl }}
+              source={{ uri: this.props.post.image_path }}
               style={{ width: vw(100), height: vh(40) / 1.5 }}
             />
             <View style={styles.textContainer}>
@@ -39,11 +40,11 @@ export default class SellerModal extends Component {
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Category: </Text>
-                {this.props.post.postCategories}
+                {this.props.post.product_category}
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Info: </Text>
-                {this.props.post.additionalInfo}
+                {this.props.post.info}
               </Text>
               <View
                 style={{

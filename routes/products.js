@@ -82,37 +82,36 @@ async function searchFunc(target) {
 /*<=========================== END. Search  func.===========================>*/
 
 /*<=========================== START.get products API has been applied in following func.===========================>*/
-/*  params: {sellerID: ''} 
-            {buyerOffers: ''}  */
+
 router.get("/getOffers", async (request, response) => {
-  // console.log(request.query.buyerOffers)
   response.json(
-    request.query.sellerID != null
+    request.query.seller_id != null
       ? await sellerOffers(request.query.sellerID)
       : await buyerOffers(request.query.buyerOffers)
   );
-}); /// asem@qaffaf.com
-async function sellerOffers(sellerID) {
-  let arr = []; /// Asem or hello
-  if (sellerID != null) {
+}); 
+
+async function sellerOffers(seller_id) {
+  let arr = []; 
+  if (seller_id != null) {
     let data = productsData.find();
     await data
       .then(DATA => {
         DATA.map(post => {
-          if (post._doc.sellerID === sellerID) {
+          if (post._doc.seller_id === seller_id) {
             Object.keys(post._doc).map(key => {
               if (post._doc[key].price != null) {
                 arr.push({
-                  imgUrl: post._doc.imgUrl,
+                  image_path: post._doc.image_path,
                   price: post._doc[key].price,
                   status: post._doc[key].status,
-                  name: post._doc.name,
-                  postCategories: post._doc.postCategories,
+                  title: post._doc.title,
+                  product_category: post._doc.product_category,
                   location: post._doc.location,
                   key,
-                  offerMaker: key,
-                  postId: post._doc[key].id,
-                  additionalInfo: post._doc.additionalInfo
+                  buyer: key,
+                  post_id: post._doc[key].id,
+                  info: post._doc.additionalInfo
                 });
               }
             });

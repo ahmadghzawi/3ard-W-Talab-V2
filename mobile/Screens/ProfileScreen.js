@@ -12,6 +12,7 @@ import {
 import { vw, vh } from "react-native-expo-viewport-units";
 import Modal from "react-native-modal";
 import ProfileModal from "./ProfileModal";
+
 export default class Profile extends Component {
   state = {
     user_id: null,
@@ -203,6 +204,10 @@ export default class Profile extends Component {
   }
 }
 
+Profile.navigationOptions = {
+  title: "Profile"
+};
+
 const styles = StyleSheet.create({
   header: {
     marginBottom: 10,
@@ -277,6 +282,4 @@ const styles = StyleSheet.create({
   }
 });
 
-Profile.navigationOptions = {
-  title: "Profile"
-};
+
