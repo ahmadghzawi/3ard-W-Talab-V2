@@ -29,7 +29,7 @@ export default class BuyerModal extends Component {
           </View>
           <View style={styles.bodyContent}>
             <Image
-              source={{ uri: this.props.selectedPost.imgUrl }}
+              source={{ uri: this.props.selectedPost.image_path }}
               style={{ width: vw(100), height: vh(40) / 1.5 }}
             />
             <View style={styles.textContainer}>
@@ -39,11 +39,11 @@ export default class BuyerModal extends Component {
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Category: </Text>
-                {this.props.selectedPost.postCategories}
+                {this.props.selectedPost.product_category}
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Info: </Text>
-                {this.props.selectedPost.additionalInfo}
+                {this.props.selectedPost.info}
               </Text>
               <View
                   style={{
