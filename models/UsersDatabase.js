@@ -1,3 +1,5 @@
+require('./database.js')
+
 const usersSchema = new mongoose.Schema({
   username: String,
   password: { type: String, required: true },

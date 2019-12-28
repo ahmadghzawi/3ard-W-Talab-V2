@@ -5,8 +5,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-require('./database.js')
-
 const userRouter = require("./routes/users");
 const postRouter = require("./routes/products");
 

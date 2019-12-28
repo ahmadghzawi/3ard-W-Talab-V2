@@ -1,4 +1,4 @@
-
+require('./database.js')
 
 const productsSchema = new mongoose.Schema(
   {
