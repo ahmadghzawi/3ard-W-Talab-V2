@@ -141,10 +141,10 @@ async function buyerOffers(buyerName) {
 /*<=========================== END.get products API   func.===========================>*/
 
 /*<=========================== START.add new products API has been applied in following func.===========================>*/
-router.post('/postAdvertisement', async (request, response) => {
+router.post('/newProduct', async (request, response) => {
     // console.log(request.body)
-    let { sellerID, postCategories, location, name, additionalInfo, imgUrl } = request.body
-    if (sellerID != null && postCategories != null && location != null && name != null && additionalInfo != null && imgUrl != null) {
+    let { seller_id, product_category, location, title, info, image_path, bid } = request.body
+    if (seller_id != null && product_category != null && location != null && title != null && info != null && image_path != null && bid != null) {
         try {
             await productsData.create(request.body, (err, doc) => {
                 if (err) {

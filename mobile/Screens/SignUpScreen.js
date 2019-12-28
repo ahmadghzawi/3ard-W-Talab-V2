@@ -79,10 +79,6 @@ export default class SignUp extends Component {
             resPhoneNumber : response.data.phoneNumber,
             resName : response.data.name,
           })
-          // await AsyncStorage.setItem("userId", response.data._id);
-          // await AsyncStorage.setItem("phoneNumber", response.data.phoneNumber);
-          // await AsyncStorage.setItem("username", response.data.name);
-          // await AsyncStorage.setItem("email", response.data.email);
         })
         .catch(error => {
           alert(error.message);

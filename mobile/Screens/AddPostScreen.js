@@ -13,18 +13,19 @@ import { vh } from "react-native-expo-viewport-units";
 
 export default class AddPost extends Component {
   state = {
-    sellerID: null,
-    postCategories: null,
+    seller_id: null,
+    product_category: null,
     location: null,
-    name: null,
-    additionalInfo: null,
-    imgUrl: null
+    title: null,
+    info: null,
+    bid: null,
+    image_path: null
   };
 
   componentDidMount = async () => {
-    let sellerID = await AsyncStorage.getItem("userId");
-    let { imgUrl } = this.props;
-    this.setState({ sellerID, imgUrl });
+    let seller_id = await AsyncStorage.getItem("userId");
+    let { image_path } = this.props;
+    this.setState({ seller_id, image_path });
   };
 
   postData = (event, name) => {
@@ -34,7 +35,7 @@ export default class AddPost extends Component {
   submitPost = () => {
     axios
       .post(
-        "https://ard-w-talab-version-2.herokuapp.com/posts/API/postAdvertisement",
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/newProduct",
         this.state
       )
       .then(res => console.log(res.data))
@@ -62,13 +63,13 @@ export default class AddPost extends Component {
               style={styles.input}
               placeholder="  Post Title"
               placeholderTextColor='darkgrey'
-              onChangeText={event => this.postData(event, "name")}
+              onChangeText={event => this.postData(event, "title")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Category"
               placeholderTextColor='darkgrey'
-              onChangeText={event => this.postData(event, "postCategories")}
+              onChangeText={event => this.postData(event, "product_categories")}
             ></TextInput>
             <TextInput
               style={styles.input}
@@ -78,9 +79,16 @@ export default class AddPost extends Component {
             ></TextInput>
             <TextInput
               style={styles.input}
-              placeholder="  Additional Info"
+              placeholder="  Info"
               placeholderTextColor='darkgrey'
-              onChangeText={event => this.postData(event, "additionalInfo")}
+              onChangeText={event => this.postData(event, "info")}
+            ></TextInput>
+            <TextInput
+              style={styles.input}
+              placeholder="  Starting Price"
+              placeholderTextColor='darkgrey'
+              keyboardType="number-pad"
+              onChangeText={event => this.postData(event, "bid")}
             ></TextInput>
             <TouchableOpacity
               style={styles.buttonContainer}

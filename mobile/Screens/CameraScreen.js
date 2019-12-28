@@ -16,7 +16,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class FirebaseStorageUploader extends Component {
   state = {
-    url: null,
+    image_path: null,
     name: null,
     progress: 0,
     isVisible: false
@@ -63,8 +63,8 @@ export default class FirebaseStorageUploader extends Component {
             .ref("uploads")
             .child(name)
             .getDownloadURL()
-            .then(url => {
-              this.setState({ url, progress: 0, isVisible: true });
+            .then(image_path => {
+              this.setState({ image_path, progress: 0, isVisible: true });
             });
         }
       );
@@ -82,7 +82,8 @@ export default class FirebaseStorageUploader extends Component {
 
     if (cameraPerm === "granted" && cameraRollPerm === "granted") {
       ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "Images"
+        mediaTypes: "Images",
+        quality: 0.1
       })
         .then(result => {
           if (!result.cancelled) {
@@ -110,7 +111,8 @@ export default class FirebaseStorageUploader extends Component {
 
     if (cameraRollPerm === "granted") {
       ImagePicker.launchCameraAsync({
-        mediaTypes: "Images"
+        mediaTypes: "Images",
+        quality: 0.1
       })
         .then(result => {
           if (!result.cancelled) {
@@ -169,7 +171,7 @@ export default class FirebaseStorageUploader extends Component {
         </View>
 
         <Modal isVisible={this.state.isVisible}>
-          <AddPost isVisible={this.isVisible} imgUrl={this.state.url} />
+          <AddPost isVisible={this.isVisible} image_path={this.state.image_path} />
         </Modal>
       </View>
     );
