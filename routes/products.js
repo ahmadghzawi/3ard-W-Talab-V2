@@ -86,7 +86,7 @@ async function searchFunc(target) {
 router.get("/getOffers", async (request, response) => {
   response.json(
     request.query.seller_id != null
-      ? await sellerOffers(request.query.sellerID)
+      ? await sellerOffers(request.query.seller_id)
       : await buyerOffers(request.query.buyerOffers)
   );
 }); 
