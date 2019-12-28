@@ -16,15 +16,11 @@ export default class SignUp extends Component {
     name: "",
     email: "",
     password: "",
-    phone_number: "",
-    resID: null,
-    resEmail: null,
-    resPhoneNumber: null,
-    resName: null
+    phone_number: ""
   };
 
-  signUpHandler = (event, name) => {
-    const regexName = /^[a-zA-Z][^#&<>"~;.-_=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
+  formHandler = (event, name) => {
+    const regexName = /^[a-zA-Z][^#&<>"~;.=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
     const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     const regexPassword = /^[0-9a-zA-Z]{8,}$/;
     const regexPhoneNumber = /^[0-9]{9,}$/;
@@ -52,15 +48,12 @@ export default class SignUp extends Component {
 
   submitHandler = () => {
     const { name, email, password, phone_number } = this.state;
+    console.log(this.state);
     if (name !== "" && email !== "" && password !== "" && phone_number !== "") {
       axios
-        .post("https://ard-w-talab-version-2.herokuapp.com/users/API/new", {
-          name,
-          email,
-          password,
-          phoneNumber
-        })
+        .post("https://ard-w-talab-version-2.herokuapp.com/users/API/new", this.state)
         .then(async response => {
+          console.log(response.data);
           const { _id, name, email, phone_number } = response.data;
           await AsyncStorage.setItem("user_id", _id);
           await AsyncStorage.setItem("phone_number", phone_number);
@@ -96,14 +89,15 @@ export default class SignUp extends Component {
               placeholder="  Full name"
               placeholderTextColor="darkgrey"
               textContentType="name"
-              onChangeText={event => this.signUpHandler(event, "name")}
+              onChangeText={event => this.formHandler(event, "name")}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="  Email Address"
               placeholderTextColor="darkgrey"
               textContentType="emailAddress"
-              onChangeText={event => this.signUpHandler(event, "email")}
+              autoCapitalize="none"
+              onChangeText={event => this.formHandler(event, "email")}
             ></TextInput>
             <TextInput
               style={styles.input}
@@ -111,7 +105,7 @@ export default class SignUp extends Component {
               placeholderTextColor="darkgrey"
               textContentType="password"
               secureTextEntry={true}
-              onChangeText={event => this.signUpHandler(event, "password")}
+              onChangeText={event => this.formHandler(event, "password")}
             ></TextInput>
             <TextInput
               style={styles.input}
@@ -119,7 +113,7 @@ export default class SignUp extends Component {
               placeholderTextColor="darkgrey"
               textContentType="telephoneNumber"
               keyboardType="number-pad"
-              onChangeText={event => this.signUpHandler(event, "phoneNumber")}
+              onChangeText={event => this.formHandler(event, "phone_number")}
             ></TextInput>
             <TouchableOpacity
               style={styles.buttonContainer}

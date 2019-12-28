@@ -92,7 +92,7 @@ async function verifyAccount(user) {
 }
 router.get("/auth", async (request, response) => {
   await verifyAccount(request.query)
-    .then(userId => response.status(202).json(userId))
+    .then(user => response.status(202).json(user))
     .catch(error => response.status(400).json({ message: error }));
 });
 /*<=========================== End .verify an existence user  func.===========================>*/
