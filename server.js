@@ -7,11 +7,11 @@ app.use(cors())   ///middleware for network
 app.use(express.json())  // middleware as well but this will make all responses with json type !
 // app.listen(process.env.PORT_NUM, () => console.log(`Connected at port ${process.env.PORT_NUM}`))
 
-app.get('/', (req, res) => res.json('login'))
+// app.get('/', (req, res) => res.json('dashboard'))
 const userRouter = require('./routes/users')
 app.use(process.env.USER_ROUTE_URL, userRouter)     //      /users/API/
 const postRouter = require('./routes/posts')
 app.use(process.env.POST_ROUTE_URL, postRouter)     //      /posts/API/
 
-app.listen(9000)
+app.listen(process.env.PORT || 5000)
 
