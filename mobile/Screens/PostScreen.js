@@ -43,7 +43,7 @@ export default class AddPost extends Component {
     let offer = this.state.pendingOffer;
     if (this.state.pendingOffer != "")
       axios
-        .get("https://ardwtalabapp.herokuapp.com/posts/API/postOffers", {
+        .get("/posts/API/postOffers", {
           params: {
             id,
             [buyerId]: offer

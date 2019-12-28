@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-mongoose.connect('mongodb+srv://owner:9941005586@3ard-w-talab-v2-database-wbxra.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

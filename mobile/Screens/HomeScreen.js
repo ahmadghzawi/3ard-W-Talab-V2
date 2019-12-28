@@ -30,7 +30,7 @@ export default class Home extends Component {
     let userId = await AsyncStorage.getItem("userId");
     this.setState({ userId });
     axios
-      .get("https://ardwtalabapp.herokuapp.com/posts/API/data")
+      .get("/posts/API/data")
       .then(res => {
         this.setState({
           posts: res.data,
