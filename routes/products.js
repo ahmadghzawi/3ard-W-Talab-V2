@@ -154,7 +154,7 @@ async function buyerOffers(buyer) {
         if (post._doc[buyer] != null) {
           let newObj = post._doc[buyer];
           newObj["image_path"] = post._doc.image_path;
-          newObj["_id"] = post._doc.id;
+          newObj["_id"] = post._doc._id;
           newObj["title"] = post._doc.title;
           newObj["product_category"] = post._doc.product_category;
           newObj["location"] = post._doc.location;
