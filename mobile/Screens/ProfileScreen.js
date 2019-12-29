@@ -12,6 +12,7 @@ import {
 import { vw, vh } from "react-native-expo-viewport-units";
 import Modal from "react-native-modal";
 import ProfileModal from "./ProfileModal";
+import EditProfileModal from "./EditProfileModal";
 
 export default class Profile extends Component {
   state = {
@@ -113,6 +114,13 @@ export default class Profile extends Component {
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
+    let { user_id, name, email, phone_number } = this.state;
+    let info = {
+      user_id,
+      name,
+      email,
+      phone_number
+    };
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Modal isVisible={this.state.isVisible}>
@@ -125,15 +133,19 @@ export default class Profile extends Component {
 
         <Modal isVisible={this.state.editModalIsVisible}>
           <EditProfileModal
+            info={info}
             isVisible={this.editModalIsVisible}
           ></EditProfileModal>
         </Modal>
 
         <View style={styles.header}>
-          <Text style={styles.name}>{`${this.state.name}`}</Text>
-          <Text style={styles.name}>{`${this.state.phone_number}`}</Text>
-          <Text style={styles.name}>{`${this.state.email}`}</Text>
-
+          <TouchableOpacity
+            onPress={() => this.setState({ editModalIsVisible: true })}
+          >
+            <Text style={styles.name}>{`${this.state.name}`}</Text>
+            <Text style={styles.name}>{`${this.state.phone_number}`}</Text>
+            <Text style={styles.name}>{`${this.state.email}`}</Text>
+          </TouchableOpacity>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <TouchableOpacity
               style={styles.buttonContainer}

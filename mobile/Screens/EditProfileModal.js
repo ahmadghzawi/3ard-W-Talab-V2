@@ -13,6 +13,7 @@ import { vh } from "react-native-expo-viewport-units";
 
 export default class SignUp extends Component {
   state = {
+    user_id: this.props.info.user_id,
     name: this.props.info.name,
     email: this.props.info.email,
     phone_number: this.props.info.phone_number
@@ -51,16 +52,15 @@ export default class SignUp extends Component {
 
   saveHandler = async () => {
     await this.removeSpace();
-    let user_id = await AsyncStorage.getItem("user_id");
     const { name, email, phone_number } = this.state;
     if (name !== "" && email !== "" && phone_number !== "") {
       axios
-        .post(
+        .put(
           "https://ard-w-talab-version-2.herokuapp.com/users/API/editProfile",
-          { user_id, ...this.state }
+          this.state 
         )
         .then(async response => {
-            console.log(response.data)
+          console.log(response.data);
           const { name, email, phone_number } = response.data;
           await AsyncStorage.setItem("phone_number", phone_number);
           await AsyncStorage.setItem("name", name);
@@ -72,6 +72,7 @@ export default class SignUp extends Component {
   };
 
   render() {
+      let {name, email, phone_number} = this.state
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -83,7 +84,7 @@ export default class SignUp extends Component {
             </Text>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => this.props.isVisibleHandler(false, false)}
+              onPress={() => this.props.isVisible(false, false)}
             >
               <Text style={{ color: "#4280c8", fontWeight: "400" }}>
                 Cancel
@@ -93,6 +94,7 @@ export default class SignUp extends Component {
           <View style={styles.bodyContent}>
             <TextInput
               style={styles.input}
+              value={name}
               placeholder="  Full name"
               placeholderTextColor="darkgrey"
               textContentType="name"
@@ -100,6 +102,7 @@ export default class SignUp extends Component {
             ></TextInput>
             <TextInput
               style={styles.input}
+              value={email}
               placeholder="  Email Address"
               placeholderTextColor="darkgrey"
               textContentType="emailAddress"
@@ -108,6 +111,7 @@ export default class SignUp extends Component {
             ></TextInput>
             <TextInput
               style={styles.input}
+              value={phone_number}
               placeholder="  Phone number"
               placeholderTextColor="darkgrey"
               textContentType="telephoneNumber"
