@@ -31,9 +31,11 @@ export default class Home extends Component {
   }
 
   getCategories = () => {
-    axios.get('https://ard-w-talab-version-2.herokuapp.com/posts/API/categories')
-    .then(res => console.log(res.data))
-  }
+    axios
+      .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/categories")
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  };
 
   getPosts = async () => {
     let user_id = await AsyncStorage.getItem("user_id");

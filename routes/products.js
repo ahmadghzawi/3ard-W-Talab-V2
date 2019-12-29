@@ -15,8 +15,13 @@ router.use(express.json()); // middleware as well but this will make all respons
 const productsData = require("../models/productsDatabase");
 
 router.get('/categories', async (req, res) => {
-  let categories = productsData.distinct("product_category")
-  res.json(categories)
+  try{
+    let categories = await productsData.distinct("product_category")
+    res.status(200).json(categories)
+  } catch {
+    response.status(500).json({ message: err.message });
+  }
+  
 })
 
 // router.get('/selectCategory', async (req, res) => {
