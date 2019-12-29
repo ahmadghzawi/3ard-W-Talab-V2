@@ -15,10 +15,10 @@ router.use(express.json());
 router.put("/editProfile", (req, res) => {
   let { user_id, name, email, phone_number } = req.body;
   try {
-    const user = usersDB.findByIdAndUpdate(
-      { _id: user_id },
-      { name, email, phone_number } 
-    );
+    // const user = usersDB.findByIdAndUpdate(
+    //   { _id: user_id },
+    //   { name, email, phone_number } 
+    // );
     res.status(200).json(req.body);
   } catch (error) {
     res.status(500).json({ message: error.message });
