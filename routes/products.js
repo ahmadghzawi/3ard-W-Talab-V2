@@ -26,7 +26,7 @@ router.get("/categories", async (req, res) => {
 router.get("/getProductsByCategory/:category", async (req, res) => {
   try {
     let products = await productsData.find({product_category: req.params.category})
-    res.status(200).json(products);
+    res.status(200).json(req.params.category+1);
   } catch {
     response.status(500).json({ message: err.message });
   }

@@ -41,11 +41,14 @@ export default class Home extends Component {
     if (category === "All Categories") {
       this.getPosts();
     } else {
+      console.log(category)
       axios
         .get(
           `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProductsByCategory/${category}`
         )
-        .then(res => this.setState({ posts: res.data, refreshing: false }))
+        .then(res => {
+          console.log(res.data)
+          this.setState({ posts: res.data, refreshing: false, selectedCategory: category })})
         .catch(err => console.log(err));
     }
   };
@@ -73,10 +76,11 @@ export default class Home extends Component {
     return (
       <View style={styles.container}>
         <Picker
+          selectedValue={selectedCategory}
           style={{ width: Math.floor(Dimensions.get("window").width) }}
           onValueChange={category => this.getProductsByCategory(category)}
         >
-          <Picker.Item label={selectedCategory} value={selectedCategory} />
+          <Picker.Item label="All Categories" value="All Categories" />
           {categories.map(category => (
             <Picker.Item key={category} label={category} value={category} />
           ))}
