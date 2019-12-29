@@ -81,8 +81,8 @@ export default class Home extends Component {
           onValueChange={category => this.getProductsByCategory(category)}
         >
           <Picker.Item label="All Categories" value="All Categories" />
-          {categories.map(category => (
-            <Picker.Item key={category} label={category} value={category} />
+          {categories.map((category, index) => (
+            <Picker.Item key={index} label={category} value={category} />
           ))}
         </Picker>
         <FlatList

@@ -33,6 +33,11 @@ export default class AddPost extends Component {
   };
 
   submitPost = async () => {
+    let { product_category } = this.state;
+    if (product_category[product_category.length - 1] === " ") {
+      product_category = product_category.slice(0, -1);
+      await this.setState({ product_category });
+    }
     axios
       .post(
         "https://ard-w-talab-version-2.herokuapp.com/posts/API/newProduct",
