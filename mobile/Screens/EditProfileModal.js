@@ -53,14 +53,12 @@ export default class SignUp extends Component {
   saveHandler = async () => {
     await this.removeSpace();
     const { user_id, name, email, phone_number } = this.state;
-    console.log(this.state);
     if (name !== "" && email !== "" && phone_number !== "") {
       axios
         .put(
           `https://ard-w-talab-version-2.herokuapp.com/users/API/editProfile/${user_id}/${name}/${email}/${phone_number}`
         )
         .then(async response => {
-          console.log(response.data);
           const { name, email, phone_number } = this.state;
           await AsyncStorage.setItem("phone_number", phone_number);
           await AsyncStorage.setItem("name", name);

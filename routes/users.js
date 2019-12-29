@@ -12,20 +12,23 @@ const router = express.Router();
 const usersDB = require("./../models/UsersDatabase");
 router.use(express.json());
 
-router.put("/editProfile/:user_id/:name/:email/:phone_number", async (req, res) => {
-  let { user_id, name, email, phone_number } = req.params;
-  await usersDB.updateOne(
-    { _id: user_id },
-    { $set: { name, email, phone_number } },
-    error => {
-      if (error) {
-        res.status(500).json({ message: error.message });
-      } else {
-        res.status(200).json(req.params);
+router.put(
+  "/editProfile/:user_id/:name/:email/:phone_number",
+  async (req, res) => {
+    let { user_id, name, email, phone_number } = req.params;
+    await usersDB.updateOne(
+      { _id: user_id },
+      { $set: { name, email, phone_number } },
+      error => {
+        if (error) {
+          res.status(500).json({ message: error.message });
+        } else {
+          res.status(200).json("ok");
+        }
       }
-    }
-  );
-});
+    );
+  }
+);
 
 /*<=========================== START.fetch all users  func.===========================>*/
 router.get("/data", async (request, response) => {
