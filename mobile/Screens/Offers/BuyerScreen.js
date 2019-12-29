@@ -67,6 +67,7 @@ export default class BuyerScreen extends Component {
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
+    console.log(this.state.offers)
     return (
       <View style={{ margin: 10, flex: 1 }}>
         <Modal isVisible={this.state.isVisible}>

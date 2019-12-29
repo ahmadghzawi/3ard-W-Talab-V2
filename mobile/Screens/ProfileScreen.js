@@ -138,14 +138,13 @@ export default class Profile extends Component {
 
         <View style={styles.header}>
           <TouchableOpacity
-            style={styles.header}
             onPress={() => this.setState({ editModalIsVisible: true })}
           >
             <Text style={styles.name}>{`${this.state.name}`}</Text>
             <Text style={styles.name}>{`${this.state.phone_number}`}</Text>
             <Text style={styles.name}>{`${this.state.email}`}</Text>
           </TouchableOpacity>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10, }}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={this.logOut}
@@ -263,7 +262,8 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 28,
     color: "white",
-    fontWeight: "600"
+    fontWeight: "600",
+    textAlign: "center"
   },
   info: {
     fontSize: 16,
