@@ -323,18 +323,6 @@ router.put("/deleteOffer/", async (request, response) => {
       response.status(200).json("ok");
     }
   });
-
-  // let data = await productsDB.findById(_id);
-  // let deleteOffer = { [buyer]: data._doc[buyer] };
-  // try {
-  //   let data2 = await productsDB.update(
-  //     { _id },
-  //     { $unset: deleteOffer }
-  //   );
-  //   response.status(201).json(data2["ok"]);
-  // } catch {
-  //   response.status(500).json({ message: err.message });
-  // }
 });
 /*<=========================== END. DELETE a Post  func.===========================>*/
 router.get("/getUserProducts", async (request, response) => {
