@@ -12,7 +12,7 @@ const router = express.Router();
 const usersDB = require("./../models/UsersDatabase");
 router.use(express.json());
 
-router.put("/editProfile", async (req, res) => {
+router.put("/editProfile/:user_id/:name/:email/:phone_number", async (req, res) => {
   let { user_id, name, email, phone_number } = req.params;
   await usersDB.updateOne(
     { _id: user_id },

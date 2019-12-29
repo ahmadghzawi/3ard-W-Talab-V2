@@ -10,7 +10,7 @@ db.once("open", () => console.log(`Connected to users database`));
 
 const usersSchema = new mongoose.Schema({
   username: String,
-  password: { type: String, required: true },
+  password: String,
   name: String,
   email: String,
   phone_number: String
