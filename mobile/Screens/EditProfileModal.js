@@ -53,12 +53,12 @@ export default class SignUp extends Component {
   saveHandler = async () => {
     await this.removeSpace();
     const { name, email, phone_number } = this.state;
-    console.log(this.state)
+    console.log(this.state);
     if (name !== "" && email !== "" && phone_number !== "") {
       axios
         .put(
           "https://ard-w-talab-version-2.herokuapp.com/users/API/editProfile",
-          this.state 
+          { params: { ...this.state } }
         )
         .then(async response => {
           console.log(response.data);
@@ -73,7 +73,7 @@ export default class SignUp extends Component {
   };
 
   render() {
-      let {name, email, phone_number} = this.state
+    let { name, email, phone_number } = this.state;
     return (
       <ScrollView>
         <View style={styles.container}>
