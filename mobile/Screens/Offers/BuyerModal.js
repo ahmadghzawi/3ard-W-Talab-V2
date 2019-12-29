@@ -172,24 +172,3 @@ const styles = StyleSheet.create({
     marginTop: 10
   }
 });
-
-// <TouchableOpacity style={{backgroundColor:'red', width: vw(20) , margin:vh(1)}} onPress={()=>this.props.operationHandler('denied', this.props.post)}>
-// <TouchableOpacity style={{backgroundColor:'green', width: vw(20)}} onPress={()=>this.props.operationHandler('accept', this.props.post) }>
-
-// <Text style={styles.textWrapper}>
-// <Text style={styles.text}>Post Name: </Text>
-// {this.props.post.name}
-// </Text>
-// <Text style={styles.textWrapper}>
-// <Text style={styles.text}>Post Category: </Text>
-// {this.props.post.postCategories}
-// </Text>
-// <Text style={styles.textWrapper}>
-// <Text style={styles.text}>Location: </Text>
-// {this.props.post.location}
-// </Text>
-
-// {this.props.post.status === 'Rejected' ?
-
-// <Text style={{ fontSize: vw(5), marginBottom: 50, color='red' }}>{"Unfortunately your offer has been : " + this.props.post.status + ".." }</Text> :
-// <Text style={{ fontSize: vw(5), marginBottom: 50 }}>{"Status: " + this.props.post.status + ".." }</Text>}

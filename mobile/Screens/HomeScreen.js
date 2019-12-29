@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  AsyncStorage
+  AsyncStorage,
+  Picker
 } from "react-native";
 import axios from "axios";
 import Modal from "react-native-modal";
@@ -19,11 +20,19 @@ export default class Home extends Component {
     isVisible: false,
     width: Math.floor(Dimensions.get("window").width / 3) - 2,
     refreshing: false,
-    user_id: null
+    user_id: null,
+    selectedCategory: "All Categories",
+    categories: []
   };
 
   componentDidMount() {
     this.getPosts();
+    this.getCategories();
+  }
+
+  getCategories = () => {
+    axios.get('https://ard-w-talab-version-2.herokuapp.com/posts/API/categories')
+    .then(res => console.log(res.data))
   }
 
   getPosts = async () => {
@@ -45,9 +54,15 @@ export default class Home extends Component {
   };
 
   render() {
-    let { width, posts, refreshing } = this.state;
+    let { width, posts, refreshing, selectedCategory } = this.state;
     return (
       <View style={styles.container}>
+        <Picker
+          style={{ width: Math.floor(Dimensions.get("window").width) }}
+          onValueChange={category => this.setState({ category })}
+        >
+          <Picker.Item label={selectedCategory} value={selectedCategory} />
+        </Picker>
         <FlatList
           keyExtractor={post => post._id}
           data={posts}

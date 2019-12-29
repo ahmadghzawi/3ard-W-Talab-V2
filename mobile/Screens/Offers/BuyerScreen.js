@@ -20,6 +20,7 @@ export default class BuyerScreen extends Component {
     isVisible: false,
     refreshing: false
   };
+  
   componentDidMount = async () => {
     this.fetchBuyerSellerOffers();
   };

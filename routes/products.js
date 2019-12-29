@@ -14,6 +14,15 @@ router.use(cors()); ///middleware for network
 router.use(express.json()); // middleware as well but this will make all responses with json type !
 const productsData = require("../models/productsDatabase");
 
+router.get('/categories', async (req, res) => {
+  let categories = productsData.distinct("product_category")
+  res.json(categories)
+})
+
+// router.get('/selectCategory', async (req, res) => {
+
+// })
+
 /*<===========================this method to fetch all post data ===========================*/
 router.get("/data", async (request, response) => {
   try {
