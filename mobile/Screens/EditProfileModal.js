@@ -11,25 +11,32 @@ import {
 import axios from "axios";
 import { vh } from "react-native-expo-viewport-units";
 
-export default class AddPost extends Component {
+export default class SignUp extends Component {
   state = {
-    seller_id: null,
-    product_category: null,
-    location: null,
-    title: null,
-    info: null,
-    bid: null,
-    image_path: null
+    name: this.props.info.name,
+    email: this.props.info.email,
+    phone_number: this.props.info.phone_number
   };
 
-  async componentDidMount() {
-    let seller_id = await AsyncStorage.getItem("user_id");
-    let { image_path } = this.props;
-    this.setState({ seller_id, image_path });
-  }
+  formHandler = (event, name) => {
+    const regexName = /^[a-zA-Z][^#&<>"~;.=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
+    const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+    const regexPhoneNumber = /^[0-9]{9,}$/;
 
-  postData = (event, name) => {
-    this.setState({ [name]: event });
+    if (name === "name") {
+      let name = event;
+      if (regexName.test(event)) this.setState({ name });
+    }
+
+    if (name === "email") {
+      let email = event.toLowerCase();
+      if (regexEmail.test(event)) this.setState({ email });
+    }
+
+    if (name === "phone_number") {
+      let phone_number = event;
+      if (regexPhoneNumber.test(event)) this.setState({ phone_number });
+    }
   };
 
   removeSpace = () => {
@@ -42,16 +49,26 @@ export default class AddPost extends Component {
     }
   };
 
-  submitPost = async () => {
+  saveHandler = async () => {
     await this.removeSpace();
-    axios
-      .post(
-        "https://ard-w-talab-version-2.herokuapp.com/posts/API/newProduct",
-        this.state
-      )
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
-    this.props.isVisible(false, "submitted");
+    let user_id = await AsyncStorage.getItem("user_id");
+    const { name, email, phone_number } = this.state;
+    if (name !== "" && email !== "" && phone_number !== "") {
+      axios
+        .post(
+          "https://ard-w-talab-version-2.herokuapp.com/users/API/editProfile",
+          { user_id, ...this.state }
+        )
+        .then(async response => {
+            console.log(response.data)
+          const { name, email, phone_number } = response.data;
+          await AsyncStorage.setItem("phone_number", phone_number);
+          await AsyncStorage.setItem("name", name);
+          await AsyncStorage.setItem("email", email);
+          this.props.isVisibleHandler(false, this.state);
+        })
+        .catch(error => alert(error.message));
+    }
   };
 
   render() {
@@ -62,11 +79,11 @@ export default class AddPost extends Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontSize: 27, marginLeft: 20, marginTop: 5 }}>
-              Add Post
+              Edit Profile
             </Text>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => this.props.isVisible(false, "cancel")}
+              onPress={() => this.props.isVisibleHandler(false, false)}
             >
               <Text style={{ color: "#4280c8", fontWeight: "400" }}>
                 Cancel
@@ -76,42 +93,32 @@ export default class AddPost extends Component {
           <View style={styles.bodyContent}>
             <TextInput
               style={styles.input}
-              placeholder="  Post Title"
+              placeholder="  Full name"
               placeholderTextColor="darkgrey"
-              onChangeText={event => this.postData(event, "title")}
+              textContentType="name"
+              onChangeText={event => this.formHandler(event, "name")}
             ></TextInput>
             <TextInput
               style={styles.input}
-              placeholder="  Category"
+              placeholder="  Email Address"
               placeholderTextColor="darkgrey"
-              onChangeText={event => this.postData(event, "product_category")}
+              textContentType="emailAddress"
+              autoCapitalize="none"
+              onChangeText={event => this.formHandler(event, "email")}
             ></TextInput>
             <TextInput
               style={styles.input}
-              placeholder="  Location"
+              placeholder="  Phone number"
               placeholderTextColor="darkgrey"
-              onChangeText={event => this.postData(event, "location")}
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              placeholder="  Info"
-              placeholderTextColor="darkgrey"
-              onChangeText={event => this.postData(event, "info")}
-            ></TextInput>
-            <TextInput
-              style={styles.input}
-              placeholder="  Starting Price"
-              placeholderTextColor="darkgrey"
+              textContentType="telephoneNumber"
               keyboardType="number-pad"
-              onChangeText={event => this.postData(event, "bid")}
+              onChangeText={event => this.formHandler(event, "phone_number")}
             ></TextInput>
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={this.submitPost}
+              onPress={this.saveHandler}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                Add Post
-              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -129,8 +136,7 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     flex: 1,
-    alignItems: "center",
-    padding: 30
+    alignItems: "center"
   },
   backButton: {
     height: 30,
@@ -161,6 +167,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: "90%",
     borderRadius: 10,
-    backgroundColor: "#00BFFF"
+    backgroundColor: "green"
   }
 });

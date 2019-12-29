@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  AsyncStorage,
+  AsyncStorage
 } from "react-native";
 import Modal from "react-native-modal";
 import SignUp from "./SignUpScreen";
@@ -37,7 +37,19 @@ export default class LoginScreen extends Component {
     }
   };
 
+  removeSpace = () => {
+    for (let key in this.state) {
+      if (typeof this.state[key] === "string") {
+        while (this.state[key][this.state[key].length - 1] === " ") {
+          this.state[key] = this.state[key].slice(0, -1);
+        }
+      }
+    }
+  };
+
   submitHandler = async () => {
+    await this.removeSpace();
+    console.log(this.state);
     const { email, password } = this.state;
     if (email !== "" && password !== "") {
       axios

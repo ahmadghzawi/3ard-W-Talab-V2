@@ -9,21 +9,36 @@
  */
 const express = require("express");
 const router = express.Router();
-const userDB = require("./../models/UsersDatabase");
+const usersDB = require("./../models/UsersDatabase");
 router.use(express.json());
+
+router.put("/editProfile", (req, res) => {
+  let { user_id, name, email, phone_number } = req.body;
+  try {
+    const user = usersDB.findOneAndUpdate(
+      { _id: user_id },
+      { $set: { name, email, phone_number } }
+    );
+    response.status(200).json(user);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+});
+
 /*<=========================== START.fetch all users  func.===========================>*/
 router.get("/data", async (request, response) => {
   try {
-    const users = await userDB.find();
+    const users = await usersDB.find();
     response.status(200).json(users);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
 });
+
 /*<=========================== fetch  user by id  ===========================>*/
 router.get("/data/:id", async (request, response) => {
   try {
-    const users = await userDB.findById(request.params.id, (err, res) => {
+    const users = await usersDB.findById(request.params.id, (err, res) => {
       if (err) {
         response.status(404).json({ message: error.message });
       } else {
@@ -38,7 +53,7 @@ router.get("/data/:id", async (request, response) => {
 /*<=========================== End.fetch all users  func.===========================>*/
 /*<=========================== START.create new user  func.===========================>*/
 async function verifyToCreateAccount(email) {
-  const users = await userDB.find();
+  const users = await usersDB.find();
   let verified = true;
   users.forEach(item => {
     if (item.email === email) {
@@ -52,7 +67,7 @@ router.post("/new", async (request, response) => {
   const { name, email, password, phone_number } = request.body;
 
   if (await verifyToCreateAccount(email)) {
-    const user = new userDB({
+    const user = new usersDB({
       name,
       email,
       password,
@@ -62,24 +77,21 @@ router.post("/new", async (request, response) => {
     try {
       const newUser = await user.save();
       response.status(201).json(newUser);
-    } 
-    catch (error) {
+    } catch (error) {
       response.status(204).json({ message: error.message });
     }
   } else {
-    response
-      .status(400)
-      .json({
-        message: "please use forget my password",
-        rejection: "email already exists"
-      });
+    response.status(400).json({
+      message: "please use forget my password",
+      rejection: "email already exists"
+    });
   }
 });
 /*<=========================== End.create new user  func.===========================>*/
 
 /*<=========================== Start .verify an existence user  func.===========================>*/
 async function verifyAccount(user) {
-  const users = await userDB.find({});
+  const users = await usersDB.find({});
   let p = new Promise((resolve, reject) => {
     users.forEach(({ _id, name, email, password, phone_number }) => {
       if (email === user.email && password === user.password) {
@@ -100,7 +112,7 @@ router.get("/auth", async (request, response) => {
 /*<=========================== Start .delete an existence user  func.===========================>*/
 router.delete("/delete/:id", async (request, response) => {
   try {
-    await userDB.findByIdAndDelete(request.params.id, (err, doc) => {
+    await usersDB.findByIdAndDelete(request.params.id, (err, doc) => {
       if (err) {
         response.status(400).json({ message: err.message });
       } else {

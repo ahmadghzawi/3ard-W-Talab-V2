@@ -113,7 +113,7 @@ export default class AddPost extends Component {
               </Text>
               <Text style={styles.textWrapper}>
                 <Text style={styles.text}>Bid: </Text>
-                {bid}
+                {bid} JOD
               </Text>
               <View
                 style={{

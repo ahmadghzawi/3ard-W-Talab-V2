@@ -39,16 +39,20 @@ export default class Home extends Component {
 
   getProductsByCategory = category => {
     if (category === "All Categories") {
+      this.setState({ selectedCategory: "All Categories" });
       this.getPosts();
     } else {
-      console.log(category)
+      this.setState({ selectedCategory: category });
       axios
         .get(
           `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProductsByCategory/${category}`
         )
         .then(res => {
-          console.log(res.data)
-          this.setState({ posts: res.data, refreshing: false, selectedCategory: category })})
+          this.setState({
+            posts: res.data,
+            refreshing: false
+          });
+        })
         .catch(err => console.log(err));
     }
   };

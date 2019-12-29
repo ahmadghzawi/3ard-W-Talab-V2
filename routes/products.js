@@ -12,11 +12,11 @@ const cors = require("cors");
 const router = express.Router();
 router.use(cors()); ///middleware for network
 router.use(express.json()); // middleware as well but this will make all responses with json type !
-const productsData = require("../models/productsDatabase");
+const productsDB = require("../models/productsDatabase");
 
 router.get("/categories", async (req, res) => {
   try {
-    let categories = await productsData.distinct("product_category");
+    let categories = await productsDB.distinct("product_category");
     res.status(200).json(categories);
   } catch {
     response.status(500).json({ message: err.message });
@@ -25,7 +25,7 @@ router.get("/categories", async (req, res) => {
 
 router.get("/getProductsByCategory/:category", async (req, res) => {
   try {
-    let products = await productsData.find({product_category: req.params.category})
+    let products = await productsDB.find({product_category: req.params.category})
     res.status(200).json(products);
   } catch {
     response.status(500).json({ message: err.message });
@@ -35,7 +35,7 @@ router.get("/getProductsByCategory/:category", async (req, res) => {
 /*<===========================this method to fetch all post data ===========================*/
 router.get("/data", async (request, response) => {
   try {
-    let data = await productsData.find();
+    let data = await productsDB.find();
     response.status(200).json(data);
   } catch (err) {
     response.status(500).json({ message: err.message });
@@ -67,7 +67,7 @@ router.get("/", async (request, response) => {
         BIG n * 4
 */
 async function categoriesFunc(name) {
-  let Data = await productsData.find(name);
+  let Data = await productsDB.find(name);
   return Data;
 }
 /*<=========================== END. sort in Category  func.===========================>*/
@@ -78,7 +78,7 @@ async function categoriesFunc(name) {
 async function searchFunc(target) {
   // console.log('target', target) // {postCategories: '' }  {location: ''}name additionalInfo etc.
   let arr = target ? [] : "no data found";
-  let data = productsData.find();
+  let data = productsDB.find();
   await data
     .then(DATA => {
       if (target)
@@ -112,7 +112,7 @@ router.get("/getOffers", async (request, response) => {
 async function sellerOffers(seller_id) {
   let arr = [];
   if (seller_id != null) {
-    let data = productsData.find();
+    let data = productsDB.find();
     await data
       .then(DATA => {
         DATA.map(post => {
@@ -145,7 +145,7 @@ async function sellerOffers(seller_id) {
 }
 async function buyerOffers(buyer) {
   let arr = [];
-  let data = productsData.find();
+  let data = productsDB.find();
   await data
     .then(DATA => {
       DATA.map(post => {
@@ -192,7 +192,7 @@ router.post("/newProduct", async (request, response) => {
     bid != null
   ) {
     try {
-      await productsData.create(request.body, (err, doc) => {
+      await productsDB.create(request.body, (err, doc) => {
         if (err) {
           response.status(400).json({ message: err.message });
         } else response.status(201).json(doc);
@@ -212,7 +212,7 @@ router.get("/postOffers", async (request, response) => {
     [buyer]: { price: offer, date: Date(Date.now()), status: "pending" }
   };
   try {
-    await productsData.findByIdAndUpdate(_id, newObj, (err, doc) => {
+    await productsDB.findByIdAndUpdate(_id, newObj, (err, doc) => {
       if (err) {
         response.status(400).json({ message: err.message });
       } else response.status(201).json(doc);
@@ -236,7 +236,7 @@ router.delete("/deleteAtSpecificTime/:id", async (request, response) => {
 const DeleteAtSpecificTime = async id => {
   let output = null;
   try {
-    await productsData.findByIdAndDelete(id, (err, doc) => {
+    await productsDB.findByIdAndDelete(id, (err, doc) => {
       if (err) {
         output = { message: err.message };
       } else {
@@ -261,7 +261,7 @@ const DeleteTimer = setInterval(() => {
 }, 20000);
 
 router.put("/acceptOffer/", async (request, response) => {
-  await productsData.findById(request.body.postId, async (err, doc) => {
+  await productsDB.findById(request.body.postId, async (err, doc) => {
     if (err) response.status(401).json(err);
     else {
       let post = doc._doc;
@@ -277,7 +277,7 @@ router.put("/acceptOffer/", async (request, response) => {
         }
       }
       try {
-        await productsData.findByIdAndUpdate(
+        await productsDB.findByIdAndUpdate(
           request.body.postId,
           newObj,
           (err, doc) => {
@@ -299,7 +299,7 @@ router.put("/deniedOffer/", async (request, response) => {
   // let { offerMaker, postId } = request.body
   let query = request.body.offerMaker + ".status";
   try {
-    await productsData.updateOne(
+    await productsDB.updateOne(
       { _id: request.body.postId },
       { $set: { [query]: "Rejected" } },
       (err, doc) => {
@@ -316,10 +316,10 @@ router.put("/deniedOffer/", async (request, response) => {
 router.put("/deleteOffer/", async (request, response) => {
   let { offerMaker, postId } = request.body;
   // console.log(request.body)
-  let data = await productsData.findById(postId);
+  let data = await productsDB.findById(postId);
   let deleteOffer = { [offerMaker]: data._doc[offerMaker] };
   try {
-    let data2 = await productsData.update(
+    let data2 = await productsDB.update(
       { _id: postId },
       { $unset: deleteOffer }
     );
@@ -332,7 +332,7 @@ router.put("/deleteOffer/", async (request, response) => {
 router.get("/getUserProducts", async (request, response) => {
   try {
     let { seller_id } = request.query;
-    let data = await productsData.find({ seller_id });
+    let data = await productsDB.find({ seller_id });
     response.json(data);
   } catch {
     response.status(500).json({ err: err.message });
@@ -341,7 +341,7 @@ router.get("/getUserProducts", async (request, response) => {
 
 router.delete("/deletePost/:id", async (request, response) => {
   try {
-    await productsData.findByIdAndDelete(request.params.id, (err, doc) => {
+    await productsDB.findByIdAndDelete(request.params.id, (err, doc) => {
       if (err) {
         response.status(404).json(err);
       } else {
@@ -354,7 +354,7 @@ router.delete("/deletePost/:id", async (request, response) => {
 });
 router.delete("/deleteUserproducts/:id", async (request, response) => {
   try {
-    await productsData.deleteMany(
+    await productsDB.deleteMany(
       { sellerID: `${request.params.id}` },
       (err, doc) => {
         if (err) {
@@ -367,7 +367,7 @@ router.delete("/deleteUserproducts/:id", async (request, response) => {
     // response.status(500).json({ message: err.message })
   }
   try {
-    await productsData.updateMany(
+    await productsDB.updateMany(
       {},
       { $unset: { [request.params.id]: {} } },
       (err, doc) => {

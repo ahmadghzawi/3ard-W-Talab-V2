@@ -38,8 +38,8 @@ export default class CameraScreen extends Component {
 
   uploadToFirebase = async blob => {
     let date = Date.now().toString();
-    let name = await AsyncStorage.getItem("user_id") + '_' + date 
-    
+    let name = (await AsyncStorage.getItem("user_id")) + "_" + date;
+
     let status = await storage
       .ref(`uploads/${name}`)
       .put(blob, {
@@ -48,9 +48,10 @@ export default class CameraScreen extends Component {
       .on(
         "state_changed",
         snapshot => {
-          const progress = Math.round(
+          let progressValue = Math.ceil(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
+          let progress = progressValue == 0 ? 1 : progressValue;
           this.setState({ progress });
         },
         error => {
@@ -170,7 +171,10 @@ export default class CameraScreen extends Component {
         </View>
 
         <Modal isVisible={this.state.isVisible}>
-          <AddPost isVisible={this.isVisible} image_path={this.state.image_path} />
+          <AddPost
+            isVisible={this.isVisible}
+            image_path={this.state.image_path}
+          />
         </Modal>
       </View>
     );

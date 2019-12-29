@@ -46,11 +46,25 @@ export default class SignUp extends Component {
     }
   };
 
-  submitHandler = () => {
+  removeSpace = () => {
+    for (let key in this.state) {
+      if (typeof this.state[key] === "string") {
+        while (this.state[key][this.state[key].length - 1] === " ") {
+          this.state[key] = this.state[key].slice(0, -1);
+        }
+      }
+    }
+  };
+
+  submitHandler = async () => {
+    await this.removeSpace();
     const { name, email, password, phone_number } = this.state;
     if (name !== "" && email !== "" && password !== "" && phone_number !== "") {
       axios
-        .post("https://ard-w-talab-version-2.herokuapp.com/users/API/new", this.state)
+        .post(
+          "https://ard-w-talab-version-2.herokuapp.com/users/API/new",
+          this.state
+        )
         .then(async response => {
           const { _id, name, email, phone_number } = response.data;
           await AsyncStorage.setItem("user_id", _id);
@@ -62,7 +76,7 @@ export default class SignUp extends Component {
         .catch(error => alert(error.message));
     }
   };
-  
+
   render() {
     return (
       <ScrollView>
