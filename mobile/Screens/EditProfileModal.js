@@ -61,11 +61,11 @@ export default class SignUp extends Component {
         )
         .then(async response => {
           console.log(response.data);
-          const { name, email, phone_number } = response.data;
+          const { name, email, phone_number } = this.state;
           await AsyncStorage.setItem("phone_number", phone_number);
           await AsyncStorage.setItem("name", name);
           await AsyncStorage.setItem("email", email);
-          this.props.isVisibleHandler(false, this.state);
+          this.props.isVisible(false, this.state);
         })
         .catch(error => alert(error.message));
     }
