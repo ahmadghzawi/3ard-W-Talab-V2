@@ -128,9 +128,8 @@ async function sellerOffers(seller_id) {
                   title: post._doc.title,
                   product_category: post._doc.product_category,
                   location: post._doc.location,
-                  key,
                   buyer: key,
-                  post_id: post._doc[key]._id,
+                  _id: post._doc._id,
                   info: post._doc.info
                 });
               }
@@ -317,7 +316,7 @@ router.put("/deniedOffer/", async (request, response) => {
 
 router.put("/deleteOffer/", async (request, response) => {
   let { buyer, _id } = request.body;
-  await productsDB.updateOne({ _id }, { $unset: [buyer] }, error => {
+  await productsDB.updateOne({ _id }, { $unset: { [buyer]: "" } }, error => {
     if (error) {
       response.status(500).json({ message: error.message });
     } else {
