@@ -14,19 +14,23 @@ router.use(cors()); ///middleware for network
 router.use(express.json()); // middleware as well but this will make all responses with json type !
 const productsData = require("../models/productsDatabase");
 
-router.get('/categories', async (req, res) => {
-  try{
-    let categories = await productsData.distinct("product_category")
-    res.status(200).json(categories)
+router.get("/categories", async (req, res) => {
+  try {
+    let categories = await productsData.distinct("product_category");
+    res.status(200).json(categories);
   } catch {
     response.status(500).json({ message: err.message });
   }
-  
-})
+});
 
-// router.get('/selectCategory', async (req, res) => {
-
-// })
+router.get("/getProductsByCategory/:category", async (req, res) => {
+  try {
+    let products = await productsData.find({product_category: req.params.category})
+    res.status(200).json(products);
+  } catch {
+    response.status(500).json({ message: err.message });
+  }
+});
 
 /*<===========================this method to fetch all post data ===========================*/
 router.get("/data", async (request, response) => {
@@ -103,10 +107,10 @@ router.get("/getOffers", async (request, response) => {
       ? await sellerOffers(request.query.seller_id)
       : await buyerOffers(request.query.buyer)
   );
-}); 
+});
 
 async function sellerOffers(seller_id) {
-  let arr = []; 
+  let arr = [];
   if (seller_id != null) {
     let data = productsData.find();
     await data

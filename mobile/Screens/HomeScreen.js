@@ -33,8 +33,21 @@ export default class Home extends Component {
   getCategories = () => {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/categories")
-      .then(res => console.log(res.data))
+      .then(res => this.setState({ categories: res.data }))
       .catch(err => console.log(err));
+  };
+
+  getProductsByCategory = category => {
+    if (category === "All Categories") {
+      this.getPosts();
+    } else {
+      axios
+        .get(
+          `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProductsByCategory/${category}`
+        )
+        .then(res => this.setState({ posts: res.data, refreshing: false }))
+        .catch(err => console.log(err));
+    }
   };
 
   getPosts = async () => {
@@ -56,14 +69,17 @@ export default class Home extends Component {
   };
 
   render() {
-    let { width, posts, refreshing, selectedCategory } = this.state;
+    let { width, posts, refreshing, selectedCategory, categories } = this.state;
     return (
       <View style={styles.container}>
         <Picker
           style={{ width: Math.floor(Dimensions.get("window").width) }}
-          onValueChange={category => this.setState({ category })}
+          onValueChange={category => this.getProductsByCategory(category)}
         >
           <Picker.Item label={selectedCategory} value={selectedCategory} />
+          {categories.map(category => (
+            <Picker.Item key={category} label={category} value={category} />
+          ))}
         </Picker>
         <FlatList
           keyExtractor={post => post._id}
