@@ -20,7 +20,7 @@ export default class BuyerScreen extends Component {
     isVisible: false,
     refreshing: false
   };
-  
+
   componentDidMount = async () => {
     this.fetchBuyerSellerOffers();
   };
@@ -33,7 +33,6 @@ export default class BuyerScreen extends Component {
         }
       })
       .then(res => {
-        console.log(res.data)
         this.setState({ offers: res.data });
       })
       .catch(err => console.log(err));
@@ -44,13 +43,17 @@ export default class BuyerScreen extends Component {
   };
 
   deleteOfferHandler = async post => {
-    let offerMaker = await AsyncStorage.getItem("userId");
-    let postId = post.id;
+    let buyer = await AsyncStorage.getItem("user_id");
+    console.log(post);
+    let _id = post._id;
     axios
-      .put("https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer/", {
-        postId,
-        offerMaker
-      })
+      .put(
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer/",
+        {
+          _id,
+          buyer
+        }
+      )
       .then(res => {
         console.log(res.data);
         this.fetchBuyerSellerOffers();

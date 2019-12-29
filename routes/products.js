@@ -25,7 +25,9 @@ router.get("/categories", async (req, res) => {
 
 router.get("/getProductsByCategory/:category", async (req, res) => {
   try {
-    let products = await productsDB.find({product_category: req.params.category})
+    let products = await productsDB.find({
+      product_category: req.params.category
+    });
     res.status(200).json(products);
   } catch {
     response.status(500).json({ message: err.message });
@@ -314,19 +316,26 @@ router.put("/deniedOffer/", async (request, response) => {
 });
 
 router.put("/deleteOffer/", async (request, response) => {
-  let { offerMaker, postId } = request.body;
-  // console.log(request.body)
-  let data = await productsDB.findById(postId);
-  let deleteOffer = { [offerMaker]: data._doc[offerMaker] };
-  try {
-    let data2 = await productsDB.update(
-      { _id: postId },
-      { $unset: deleteOffer }
-    );
-    response.status(201).json(data2["ok"]);
-  } catch {
-    response.status(500).json({ message: err.message });
-  }
+  let { buyer, _id } = request.body;
+  await productsDB.updateOne({ _id }, { $unset: [buyer] }, error => {
+    if (error) {
+      response.status(500).json({ message: error.message });
+    } else {
+      response.status(200).json("ok");
+    }
+  });
+
+  // let data = await productsDB.findById(_id);
+  // let deleteOffer = { [buyer]: data._doc[buyer] };
+  // try {
+  //   let data2 = await productsDB.update(
+  //     { _id },
+  //     { $unset: deleteOffer }
+  //   );
+  //   response.status(201).json(data2["ok"]);
+  // } catch {
+  //   response.status(500).json({ message: err.message });
+  // }
 });
 /*<=========================== END. DELETE a Post  func.===========================>*/
 router.get("/getUserProducts", async (request, response) => {

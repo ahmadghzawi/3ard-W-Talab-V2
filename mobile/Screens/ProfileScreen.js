@@ -38,7 +38,6 @@ export default class Profile extends Component {
 
   fetchUsersPosts = async () => {
     let seller_id = this.state.user_id;
-    console.log(seller_id);
     axios
       .get(
         "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserProducts",
@@ -49,7 +48,6 @@ export default class Profile extends Component {
         }
       )
       .then(res => {
-        console.log(res.data);
         this.setState({ posts: res.data });
       })
       .catch(err => console.log(err));
@@ -140,6 +138,7 @@ export default class Profile extends Component {
 
         <View style={styles.header}>
           <TouchableOpacity
+            style={styles.header}
             onPress={() => this.setState({ editModalIsVisible: true })}
           >
             <Text style={styles.name}>{`${this.state.name}`}</Text>
