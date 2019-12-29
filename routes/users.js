@@ -17,9 +17,9 @@ router.put("/editProfile", (req, res) => {
   try {
     const user = usersDB.findByIdAndUpdate(
       { _id: user_id },
-      { $set: { name, email, phone_number } }
+      { name, email, phone_number } 
     );
-    res.status(200).json(user);
+    res.status(200).json(req.body);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
