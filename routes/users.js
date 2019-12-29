@@ -14,15 +14,17 @@ router.use(express.json());
 
 router.put("/editProfile", (req, res) => {
   let { user_id, name, email, phone_number } = req.body;
-  try {
-    usersDB.updateOne(
-      { _id: user_id },
-      { $set: { name, email, phone_number } }
-    );
-    res.status(200).json("ok");
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  usersDB.updateOne(
+    { _id: user_id },
+    { $set: { name, email, phone_number } },
+    error => {
+      if (error) {
+        res.status(500).json({ message: error.message });
+      } else {
+        res.status(200).json(req.body);
+      }
+    }
+  );
 });
 
 /*<=========================== START.fetch all users  func.===========================>*/

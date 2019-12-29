@@ -53,6 +53,7 @@ export default class SignUp extends Component {
   saveHandler = async () => {
     await this.removeSpace();
     const { name, email, phone_number } = this.state;
+    console.log(this.state)
     if (name !== "" && email !== "" && phone_number !== "") {
       axios
         .put(
