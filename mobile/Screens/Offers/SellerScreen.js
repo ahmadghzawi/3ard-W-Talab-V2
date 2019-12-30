@@ -44,18 +44,18 @@ export default class SellerScreen extends Component {
   };
 
   acceptOfferHandler = async post => {
-    let { buyer, post_id } = post;
+    let { buyer, _id } = post;
     let contactNumber = await AsyncStorage.getItem("phone_number");
     axios
       .delete(
-        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteAtSpecificTime/${post_id}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteAtSpecificTime/${_id}`
       )
       .then(res => console.log(res.data))
       .catch(err => console.log(err.message))
       .then(
         axios
           .put("https://ard-w-talab-version-2.herokuapp.com/posts/API/acceptOffer", {
-            post_id,
+            _id,
             buyer,
             contactNumber
           })

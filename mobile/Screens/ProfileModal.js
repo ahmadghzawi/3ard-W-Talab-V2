@@ -50,18 +50,21 @@ export default class BuyerModal extends Component {
                 {this.props.selectedPost.bid}
               </Text>
               <View
-                  style={{
-                    width: vw(80),
-                    borderTopColor: "black",
-                    borderTopWidth: 1,
-                    paddingTop: 10
-                  }}
-                />
+                style={{
+                  width: vw(80),
+                  borderTopColor: "black",
+                  borderTopWidth: 1,
+                  paddingTop: 10
+                }}
+              />
             </View>
 
             <TouchableOpacity
               style={styles.deleteButtonContainer}
-              onPress={() => this.props.deletePost(this.props.selectedPost._id)}
+              onPress={() => {
+                this.props.deletePost(this.props.selectedPost._id);
+                this.props.isVisible(false);
+              }}
             >
               <Text style={{ color: "white" }}>DELETE this Post!</Text>
             </TouchableOpacity>

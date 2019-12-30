@@ -226,7 +226,7 @@ router.get("/postOffers", async (request, response) => {
 /*<=========================== START. DELETE a Post  func.===========================>*/
 let IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:id", async (request, response) => {
-  let ids = request.params.post_id;
+  let ids = request.params._id;
   IdsForDeleteArray.push(ids);
   if (IdsForDeleteArray.length !== 0) {
     DeleteTimer;
@@ -262,14 +262,14 @@ const DeleteTimer = setInterval(() => {
 }, 20000);
 
 router.put("/acceptOffer/", async (request, response) => {
-  await productsDB.findById(request.body.postId, async (err, doc) => {
+  await productsDB.findById(request.body._id, async (err, doc) => {
     if (err) response.status(401).json(err);
     else {
       let post = doc._doc;
       let newObj = {};
       for (key in post) {
         if (typeof post[key] === "object" && key !== "_id") {
-          if (key === request.body.offerMaker) {
+          if (key === request.body.buyer) {
             post[key].status = ["Accepted", request.body.contactNumber];
           } else {
             post[key].status = "Rejected";
@@ -279,7 +279,7 @@ router.put("/acceptOffer/", async (request, response) => {
       }
       try {
         await productsDB.findByIdAndUpdate(
-          request.body.postId,
+          request.body._id,
           newObj,
           (err, doc) => {
             if (err) {
@@ -297,11 +297,11 @@ router.put("/acceptOffer/", async (request, response) => {
 });
 
 router.put("/deniedOffer/", async (request, response) => {
-  // let { offerMaker, postId } = request.body
-  let query = request.body.offerMaker + ".status";
+  // let { buyer, _id } = request.body
+  let query = request.body.buyer + ".status";
   try {
     await productsDB.updateOne(
-      { _id: request.body.postId },
+      { _id: request.body._id },
       { $set: { [query]: "Rejected" } },
       (err, doc) => {
         if (err) {
