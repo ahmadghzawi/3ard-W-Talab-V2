@@ -68,10 +68,10 @@ export default class SellerScreen extends Component {
   };
 
   deniedOfferHandler = post => {
-    let { buyer, post_id } = post;
+    let { buyer, _id } = post;
     axios
       .put("https://ard-w-talab-version-2.herokuapp.com/posts/API/deniedOffer/", {
-        post_id,
+        _id,
         buyer
       })
       .then(res => {

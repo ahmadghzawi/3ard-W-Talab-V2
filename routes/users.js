@@ -12,6 +12,15 @@ const router = express.Router();
 const usersDB = require("./../models/UsersDatabase");
 router.use(express.json());
 
+router.post("/dashboardLogin"),
+  async (req, res) => {
+    const { username, password } = req.body;
+    await usersDB.findOne({ username, password }, { password: 0 }, err => {
+      if (err) res.status(500).json({ message: error.message });
+      else res.status(200).json("ok");
+    });
+  };
+
 router.put(
   "/editProfile/:user_id/:name/:email/:phone_number",
   async (req, res) => {

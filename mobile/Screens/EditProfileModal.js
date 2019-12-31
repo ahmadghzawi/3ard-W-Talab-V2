@@ -20,24 +20,7 @@ export default class SignUp extends Component {
   };
 
   formHandler = (event, name) => {
-    const regexName = /^[a-zA-Z][^#&<>"~;.=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
-    const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-    const regexPhoneNumber = /^[0-9]{9,}$/;
-
-    if (name === "name") {
-      let name = event;
-      if (regexName.test(event)) this.setState({ name });
-    }
-
-    if (name === "email") {
-      let email = event.toLowerCase();
-      if (regexEmail.test(event)) this.setState({ email });
-    }
-
-    if (name === "phone_number") {
-      let phone_number = event;
-      if (regexPhoneNumber.test(event)) this.setState({ phone_number });
-    }
+    this.setState({ [name]: event });
   };
 
   removeSpace = () => {
@@ -50,10 +33,27 @@ export default class SignUp extends Component {
     }
   };
 
+  checkForm = () => {
+    const regexName = /^[a-zA-Z][^#&<>"~;.=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
+    const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+    const regexPhoneNumber = /^[0-9]{9,}$/;
+
+    const { name, email, phone_number } = this.state;
+    if (
+      regexName.test(name) &&
+      regexEmail.test(email) &&
+      regexPhoneNumber.test(phone_number)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   saveHandler = async () => {
     await this.removeSpace();
-    const { user_id, name, email, phone_number } = this.state;
-    if (name !== "" && email !== "" && phone_number !== "") {
+    let toProceed = await this.checkForm();
+    if (toProceed) {
+      const { user_id, name, email, phone_number } = this.state;
       axios
         .put(
           `https://ard-w-talab-version-2.herokuapp.com/users/API/editProfile/${user_id}/${name}/${email}/${phone_number}`
@@ -66,6 +66,8 @@ export default class SignUp extends Component {
           this.props.isVisible(false, this.state);
         })
         .catch(error => alert(error.message));
+    } else {
+      alert("Please check your info fields!");
     }
   };
 
