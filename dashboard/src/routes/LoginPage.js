@@ -17,7 +17,7 @@ export default class LoginPage extends Component {
     let password = event.target["password"].value;
     this.state.username = username;
     this.state.password = password;
-    if (!this.checkForm()) {
+    if (this.checkForm()) {
       axios
         .post(
           "https://ard-w-talab-version-2.herokuapp.com/users/API/dashboardLogin",
@@ -47,9 +47,10 @@ export default class LoginPage extends Component {
     const { username, password } = this.state;
 
     const regUsername = /^[a-zA-Z][^\s#&<>"~;.=+*!@%^&()[\]/,$^%{}?123456789]{2,29}$/;
-    const regPassword = /^[0-9a-zA-Z]{8,}$/;
+    const regPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     const usernameTest = regUsername.test(username);
     const passwordTest = regPassword.test(password);
+    console.log(usernameTest, passwordTest)
 
     if (usernameTest && passwordTest) return true;
 

@@ -14,9 +14,9 @@ router.use(express.json());
 
 router.post("/dashboardLogin", async (req, res) => {
   const { username, password } = req.body;
-  await usersDB.findOne({ username, password }, { password: 0 }, err => {
+  await usersDB.findOne({ username, password }, { password: 0 }, (err, doc) => {
     if (err) res.status(500).json({ message: error.message });
-    else res.status(200).json("ok");
+    else res.status(200).json(doc);
   });
 });
 
