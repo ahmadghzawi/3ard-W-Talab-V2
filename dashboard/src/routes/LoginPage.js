@@ -24,10 +24,13 @@ export default class LoginPage extends Component {
           { username, password }
         )
         .then(res => {
+          console.log(res.data)
           if (res.data !== null) {
             return <Redirect to="/dashboard" />;
           } else {
             this.setState({
+              usernameMsg: null,
+              passwordMsg: null,
               invalid: (
                 <p style={{ color: "red", fontWeight: "bold" }}>
                   Invalid Email or Password
