@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BrowserRouter as Redirect } from "react-router-dom";
 import axios from "axios";
 
 export default class LoginPage extends Component {
@@ -17,22 +16,30 @@ export default class LoginPage extends Component {
     let password = event.target["password"].value;
     this.state.username = username;
     this.state.password = password;
-    if (this.checkForm()) {
+    if (this.checkForm())
       axios
         .post(
           "https://ard-w-talab-version-2.herokuapp.com/users/API/dashboardLogin",
           { username, password }
         )
-        .then(res => {
-          console.log(res.data)
+        .then(async res => {
           if (res.data !== null) {
-            return <Redirect to="/dashboard" />;
+            const { _id, role } = res.data;
+            await this.props.cookies.set("user", _id, { path: "/" });
+            await this.props.cookies.set("role", role, { path: "/" });
+            this.props.history.push("/dashboard");
           } else {
             this.setState({
               usernameMsg: null,
               passwordMsg: null,
               invalid: (
-                <p style={{ color: "red", fontWeight: "bold" }}>
+                <p
+                  style={{
+                    color: "red",
+                    fontWeight: "bold",
+                    textAlign: "center"
+                  }}
+                >
                   Invalid Email or Password
                 </p>
               )
@@ -40,7 +47,6 @@ export default class LoginPage extends Component {
           }
         })
         .catch(err => console.log(err.message));
-    }
   };
 
   checkForm = () => {
@@ -50,12 +56,12 @@ export default class LoginPage extends Component {
     const regPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     const usernameTest = regUsername.test(username);
     const passwordTest = regPassword.test(password);
-    console.log(usernameTest, passwordTest)
 
     if (usernameTest && passwordTest) return true;
 
     if (!usernameTest)
       this.setState({
+        invalid: null,
         usernameMsg: (
           <ul style={{ color: "red", textAlign: "left" }}>
             Username is Invalid!
@@ -67,6 +73,7 @@ export default class LoginPage extends Component {
 
     if (!passwordTest)
       this.setState({
+        invalid: null,
         passwordMsg: (
           <ul style={{ color: "red", textAlign: "left" }}>
             Password is Invalid! <li>must be at least 8 characters long</li>
