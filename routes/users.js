@@ -20,21 +20,21 @@ router.post("/dashboardLogin", async (req, res) => {
   });
 });
 
-router.post("/dashboardAdd", async (req, res) => {
-  const { username, password, role } = req.body;
+// router.post("/dashboardAdd", async (req, res) => {
+//   const { username, password, role } = req.body;
 
-  await usersDB.findOne({ username }, (err, doc) => {
-    if (err) res.status(500).json({ message: error.message });
-    else {
-      if(!doc){
-        await usersDB.create({ username, password, role }, err => {
-          if (err) res.status(500).json({ message: error.message });
-          else res.status(200).json('ok');
-        })
-      } else res.status(200).json('user already exists');
-    }
-  });
-});
+//   await usersDB.findOne({ username }, (err, doc) => {
+//     if (err) res.status(500).json({ message: error.message });
+//     else {
+//       if(!doc){
+//         await usersDB.create({ username, password, role }, err => {
+//           if (err) res.status(500).json({ message: error.message });
+//           else res.status(200).json('ok');
+//         })
+//       } else res.status(200).json('user already exists');
+//     }
+//   });
+// });
 
 router.put(
   "/editProfile/:user_id/:name/:email/:phone_number",
