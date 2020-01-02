@@ -6,7 +6,14 @@ const User = props => (
     <td>{props.data.email}</td>
     <td>{props.data.password}</td>
     <td>{props.data.phone_number}</td>
-    <td>actions</td>
+    <td>
+      <button
+        className="btn btn-danger ml-2"
+        onClick={() => props.deleteUser(props.data._id)}
+      >
+        X
+      </button>
+    </td>
   </tr>
 );
 

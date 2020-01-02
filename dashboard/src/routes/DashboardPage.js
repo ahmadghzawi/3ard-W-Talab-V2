@@ -106,6 +106,7 @@ export default class DashboardPage extends Component {
     this.state.role = roleInput;
     await this.removeSpace();
     const { username, password, role } = this.state;
+    console.log(_id)
 
     if (this.checkForm())
       axios
@@ -123,7 +124,7 @@ export default class DashboardPage extends Component {
     else alert(this.state.msg);
   };
 
-  deleteAdmin = _id =>
+  deleteUser = _id =>
     axios
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
@@ -146,10 +147,13 @@ export default class DashboardPage extends Component {
         key={admin._id}
         data={admin}
         editAdmin={this.editAdmin}
+        deleteUser={this.deleteUser}
         msg={msg}
       />
     ));
-    const usersToShow = users.map(user => <User key={user._id} data={user} />);
+    const usersToShow = users.map(user => (
+      <User key={user._id} data={user} deleteUser={this.deleteUser} />
+    ));
     const productsToShow = products.map(product => (
       <Product key={product._id} data={product} />
     ));

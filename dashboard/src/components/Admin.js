@@ -3,6 +3,16 @@ import React, { Component } from "react";
 class Admin extends Component {
   state = { edit: false };
 
+  edit = () => {
+    this.props.editAdmin(
+      this.props.data._id,
+      this.usernameInput.value,
+      this.passwordInput.value,
+      this.roleInput.value
+    );
+    this.setState({ edit: false });
+  };
+
   render() {
     const { _id, username, password, role } = this.props.data;
     return (
@@ -40,17 +50,7 @@ class Admin extends Component {
               </select>
             </td>
             <td className="d-flex justify-content-center">
-              <button
-                className="btn btn-success mr-2"
-                onClick={() =>
-                  this.props.editAdmin(
-                    _id,
-                    this.usernameInput.value,
-                    this.passwordInput.value,
-                    this.roleInput.value
-                  )
-                }
-              >
+              <button className="btn btn-success mr-2" onClick={this.edit}>
                 UPDATE
               </button>
               <button
@@ -75,7 +75,7 @@ class Admin extends Component {
               </button>
               <button
                 className="btn btn-danger ml-2"
-                onClick={() => this.props.deleteAdmin(_id)}
+                onClick={() => this.props.deleteUser(_id)}
               >
                 DELETE!
               </button>
