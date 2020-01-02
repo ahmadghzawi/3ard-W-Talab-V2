@@ -8,8 +8,10 @@
     404 Not Found
  */
 const express = require("express");
+const cors = require("cors");
 const router = express.Router();
 const usersDB = require("./../models/UsersDatabase");
+router.use(cors());
 router.use(express.json());
 
 router.post("/dashboardLogin", async (req, res) => {

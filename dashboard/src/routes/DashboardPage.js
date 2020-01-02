@@ -75,6 +75,7 @@ export default class DashboardPage extends Component {
             { username, password, role }
           )
           .then(async res => {
+            console.log(res.data);
             if (res.data === "ok") {
               let allUsers = [
                 ...this.state.allUsers,
@@ -127,7 +128,11 @@ export default class DashboardPage extends Component {
           <>
             <Add add={this.add} />
             <div className="row">
-              <Container className="col-md-12 mt-4" title="All Admins & Owners" height='500px'>
+              <Container
+                className="col-md-12 mt-4"
+                title="All Admins & Owners"
+                height="500px"
+              >
                 <table className="table">
                   <thead className="thead-dark">
                     <tr>
