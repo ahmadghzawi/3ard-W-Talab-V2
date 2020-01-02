@@ -13,6 +13,7 @@ const usersSchema = new mongoose.Schema({
   password: String,
   name: String,
   email: String,
+  role: String,
   phone_number: String
 });
 
