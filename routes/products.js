@@ -10,8 +10,8 @@
 const express = require("express");
 const cors = require("cors");
 const router = express.Router();
-router.use(cors());
-router.options('*', cors())
+
+
 // router.use((request, response, next) => {
 //   response.header(`Access-Control-Allow-Origin`, `*`);
 //   response.header(

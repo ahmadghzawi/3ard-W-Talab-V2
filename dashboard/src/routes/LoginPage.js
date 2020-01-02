@@ -36,7 +36,7 @@ export default class LoginPage extends Component {
     if (this.checkForm())
       axios
         .post(
-          "https://ard-w-talab-version-2.herokuapp.com/users/API/dashboardLogin",
+          "/users/API/dashboardLogin",
           { username, password }
         )
         .then(async res => {
