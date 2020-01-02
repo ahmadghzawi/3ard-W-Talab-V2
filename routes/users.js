@@ -10,17 +10,17 @@
 const express = require("express");
 const cors = require("cors");
 const router = express.Router();
-const usersDB = require("./../models/UsersDatabase");
 router.use(cors());
-router.use((request, response, next) => {
-  response.header(`Access-Control-Allow-Origin`, `*`);
-  response.header(
-    `Access-Control-Allow-Headers`,
-    `Origin, X-Requested-with, Content-Type, Accept`
-  );
-  next();
-});
+// router.use((request, response, next) => {
+//   response.header(`Access-Control-Allow-Origin`, `*`);
+//   response.header(
+//     `Access-Control-Allow-Headers`,
+//     `Origin, X-Requested-with, Content-Type, Accept`
+//   );
+//   next();
+// });
 router.use(express.json());
+const usersDB = require("./../models/UsersDatabase");
 
 router.post("/dashboardLogin", async (req, res) => {
   const { username, password } = req.body;
