@@ -1,18 +1,3 @@
-// router.post("/dashboardAdd", async (req, res) => {
-//   const { username, password, role } = req.body;
-
-//   await usersDB.findOne({ username }, (err, doc) => {
-//     if (err) res.status(500).json({ message: error.message });
-//     else {
-//       if(!doc){
-//         await usersDB.create({ username, password, role }, err => {
-//           if (err) res.status(500).json({ message: error.message });
-//           else res.status(200).json('ok');
-//         })
-//       } else res.status(200).json('user already exists');
-//     }
-//   });
-// });
 /**
  * description: this is a  micro service for users and services
  *  200 OK
@@ -24,8 +9,8 @@
  */
 const express = require("express");
 const router = express.Router();
-const usersDB = require("./../models/UsersDatabase");
 router.use(express.json());
+const usersDB = require("./../models/UsersDatabase");
 
 router.post("/dashboardLogin", async (req, res) => {
   const { username, password } = req.body;
