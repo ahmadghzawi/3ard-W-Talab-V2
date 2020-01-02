@@ -5,6 +5,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => res.json("test working"));
+
 const userRouter = require("./routes/users");
 const postRouter = require("./routes/products");
 
@@ -18,6 +20,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 9000;
 
 app.listen(PORT, () => console.log(`server started on port ${PORT}`));
