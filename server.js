@@ -4,7 +4,20 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 app.options("*", cors());
+
+app.use((request, response, next) => {
+  response.header(`Access-Control-Allow-Origin`, `*`);
+  response.header(
+    `Access-Control-Allow-Headers`,
+    `Origin, X-Requested-with, Content-Type, Accept`
+  );
+  next();
+});
+
 app.use(express.json());
+
+app.get("/", (req, res) => res.json("test working"));
+
 
 const userRouter = require("./routes/users");
 const postRouter = require("./routes/products");
