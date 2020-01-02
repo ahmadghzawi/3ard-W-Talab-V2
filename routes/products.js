@@ -7,20 +7,11 @@
     400 Bad Request
     404 Not Found
  */
-const express = require("express");
+const express = require("express"); // express js
 const cors = require("cors");
 const router = express.Router();
-
-
-// router.use((request, response, next) => {
-//   response.header(`Access-Control-Allow-Origin`, `*`);
-//   response.header(
-//     `Access-Control-Allow-Headers`,
-//     `Origin, X-Requested-with, Content-Type, Accept`
-//   );
-//   next();
-// });
-router.use(express.json());
+router.use(cors()); ///middleware for network
+router.use(express.json()); // middleware as well but this will make all responses with json type !
 const productsDB = require("../models/productsDatabase");
 
 router.get("/categories", async (req, res) => {
