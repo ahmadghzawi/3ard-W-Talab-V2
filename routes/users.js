@@ -36,6 +36,24 @@ router.post("/dashboardAdd", (req, res) => {
   });
 });
 
+router.post(
+  "/editAdmin",
+  async (req, res) => {
+    let { _id, username, password, role } = req.body;
+    await usersDB.updateOne(
+      { _id },
+      { $set: { username, password, role } },
+      error => {
+        if (error) {
+          res.status(500).json({ message: error.message });
+        } else {
+          res.status(200).json("ok");
+        }
+      }
+    );
+  }
+);
+
 router.put(
   "/editProfile/:user_id/:name/:email/:phone_number",
   async (req, res) => {

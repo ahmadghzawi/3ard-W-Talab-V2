@@ -75,24 +75,17 @@ export default class DashboardPage extends Component {
             { username, password, role }
           )
           .then(async res => {
-            console.log(res.data);
             if (res.data === "ok") {
               let allUsers = [
                 ...this.state.allUsers,
                 { username, password, role }
               ];
               this.setState({ allUsers });
-            } else {
-              alert("User already exists");
-            }
+            } else alert("User already exists");
           })
           .catch(err => console.log(err.message));
-      else {
-        alert(this.state.msg);
-      }
-    } else {
-      alert("Kindly, select a role!");
-    }
+      else alert(this.state.msg);
+    } else alert("Kindly, select a role!");
   };
 
   checkForm = () => {
@@ -107,15 +100,54 @@ export default class DashboardPage extends Component {
     return false;
   };
 
+  editAdmin = async (_id, usernameInput, passwordInput, roleInput) => {
+    this.state.username = usernameInput;
+    this.state.password = passwordInput;
+    this.state.role = roleInput;
+    await this.removeSpace();
+    const { username, password, role } = this.state;
+
+    if (this.checkForm())
+      axios
+        .post(
+          "https://ard-w-talab-version-2.herokuapp.com/users/API/editAdmin",
+          { _id, username, password, role }
+        )
+        .then(() => {
+          let allUsers = this.state.allUsers.filter(user => user._id !== _id);
+          this.setState({
+            allUsers: [...allUsers, { _id, username, password, role }]
+          });
+        })
+        .catch(err => console.log(err.message));
+    else alert(this.state.msg);
+  };
+
+  deleteAdmin = _id =>
+    axios
+      .delete(
+        `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
+      )
+      .then(() => {
+        let allUsers = this.state.allUsers.filter(user => user._id !== _id);
+        this.setState({ allUsers });
+      })
+      .catch(err => console.log(err.message));
+
   render() {
     const { role } = this.props.cookies.cookies;
-    const { allUsers, products } = this.state;
+    const { allUsers, products, msg } = this.state;
 
     const admins = allUsers.filter(user => user.username !== undefined);
     const users = allUsers.filter(user => user.username === undefined);
 
     const adminsToShow = admins.map(admin => (
-      <Admin key={admin._id} data={admin} />
+      <Admin
+        key={admin._id}
+        data={admin}
+        editAdmin={this.editAdmin}
+        msg={msg}
+      />
     ));
     const usersToShow = users.map(user => <User key={user._id} data={user} />);
     const productsToShow = products.map(product => (
@@ -139,7 +171,9 @@ export default class DashboardPage extends Component {
                       <th scope="col">Username</th>
                       <th scope="col">Password</th>
                       <th scope="col">Role</th>
-                      <th scope="col">Action</th>
+                      <th scope="col" className="text-center">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>{adminsToShow}</tbody>
@@ -149,8 +183,8 @@ export default class DashboardPage extends Component {
           </>
         )}
         <hr />
-        <div className="row  mt-4">
-          <Container className="col-md-6" title="All Users">
+        <div className="row">
+          <Container className="col-md-6 mt-4" title="All Users">
             <table className="table">
               <thead className="thead-dark">
                 <tr>
@@ -165,7 +199,7 @@ export default class DashboardPage extends Component {
             </table>
           </Container>
 
-          <Container className="col-md-6" title="All Products">
+          <Container className="col-md-6 mt-4" title="All Products">
             {productsToShow}
           </Container>
         </div>
