@@ -10,12 +10,29 @@ export default class LoginPage extends Component {
     invalid: null
   };
 
+  UNSAFE_componentWillMount() {
+    if (this.props.cookies.get("user")) this.props.history.push("/dashboard");
+  }
+
+  removeSpace = () => {
+    for (let key in this.state) {
+      if (typeof this.state[key] === "string") {
+        let value = this.state[key];
+        while (value[value.length - 1] === " ") {
+          value = value.slice(0, -1);
+        }
+        this.setState({ [key]: value });
+      }
+    }
+  };
+
   submitForm = async event => {
     event.preventDefault();
-    let username = event.target["username"].value;
-    let password = event.target["password"].value;
-    this.state.username = username;
-    this.state.password = password;
+    this.state.username = event.target["username"].value;
+    this.state.password = event.target["password"].value;
+    await this.removeSpace();
+    const { username, password } = this.state;
+
     if (this.checkForm())
       axios
         .post(

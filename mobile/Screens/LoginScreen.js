@@ -49,7 +49,6 @@ export default class LoginScreen extends Component {
 
   submitHandler = async () => {
     await this.removeSpace();
-    console.log(this.state);
     const { email, password } = this.state;
     if (email !== "" && password !== "") {
       axios
