@@ -17,7 +17,7 @@ const Add = props => (
             </div>
             <div className="col">
               <input
-                type="password"
+                type="text"
                 className="form-control"
                 placeholder="password"
                 name="password"

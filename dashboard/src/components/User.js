@@ -4,8 +4,9 @@ const User = props => (
   <tr>
     <td>{props.data.name}</td>
     <td>{props.data.email}</td>
-    <td>{props.data.password}</td>
+    {props.role === "owner" ? <td>{props.data.password}</td> : null}
     <td>{props.data.phone_number}</td>
+
     <td>
       <button
         className="btn btn-danger ml-2"

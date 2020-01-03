@@ -7,9 +7,9 @@
     400 Bad Request
     404 Not Found
  */
-const express = require("express"); 
+const express = require("express");
 const router = express.Router();
-router.use(express.json()); 
+router.use(express.json());
 const productsDB = require("../models/productsDatabase");
 
 router.get("/categories", async (req, res) => {
@@ -37,7 +37,7 @@ router.get("/data", async (request, response) => {
   try {
     let products = await productsDB.find();
     let categories = await productsDB.distinct("product_category");
-    response.status(200).json({products, categories});
+    response.status(200).json({ products, categories });
     // response.status(200).json();
   } catch (err) {
     response.status(500).json({ message: err.message });
@@ -351,16 +351,17 @@ router.delete("/deletePost/:id", async (request, response) => {
 router.delete("/deleteUserPosts/:id", async (request, response) => {
   try {
     await productsDB.deleteMany(
-      { sellerID: `${request.params.id}` },
+      { seller_id: `${request.params.id}` },
       (err, doc) => {
         if (err) {
           response.status(204).json({ err: err.message });
+        } else {
+          response.status(201).json(doc);
         }
-        // else { response.status(201).json(doc) }
       }
     );
   } catch (err) {
-    // response.status(500).json({ message: err.message })
+    response.status(500).json({ message: err.message });
   }
   try {
     await productsDB.updateMany(

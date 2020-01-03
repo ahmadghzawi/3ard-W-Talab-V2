@@ -125,7 +125,7 @@ export default class DashboardPage extends Component {
                 ...this.state.admins,
                 { _id: res.data._id, username, password, role }
               ];
-              console.log(res.data)
+              console.log(res.data);
               this.setState({ admins });
             } else alert(res.data);
           })
@@ -180,9 +180,11 @@ export default class DashboardPage extends Component {
 
   deleteUser = _id => {
     let user = this.state.admins.filter(user => user._id === _id);
-    if(user.length === 0){
-      this.deleteProduct(_id)
-    } 
+    console.log(user)
+    if (user.length === 0) {
+      console.log('object')
+      this.deleteProducts(_id);
+    }
     axios
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
@@ -237,7 +239,12 @@ export default class DashboardPage extends Component {
     ));
 
     const usersToShow = users.map(user => (
-      <User key={user._id} data={user} deleteUser={this.deleteUser} />
+      <User
+        key={user._id}
+        data={user}
+        deleteUser={this.deleteUser}
+        role={role}
+      />
     ));
 
     const productsToShow = selectedProducts.map(product => (
@@ -303,7 +310,7 @@ export default class DashboardPage extends Component {
                 <tr>
                   <th scope="col">Full Name</th>
                   <th scope="col">Email</th>
-                  <th scope="col">Password</th>
+                  {role === "owner" ? <th scope="col">Password</th> : null}
                   <th scope="col">Phone No.</th>
                   <th scope="col">Action</th>
                 </tr>
