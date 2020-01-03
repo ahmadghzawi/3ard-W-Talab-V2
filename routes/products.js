@@ -347,15 +347,17 @@ router.delete("/deletePost/:id", async (request, response) => {
 });
 router.delete("/deleteUserPosts/:id", async (request, response) => {
   let seller_id = request.params.id;
-
-  await productsDB.deleteMany({ seller_id }, err => {
-    if (err) response.status(204).json({ err });
-    else response.status(201).json(seller_id);
-  });
-
-  await productsDB.updateMany({}, { $unset: { [seller_id]: "" } }, err => {
-    if (err) response.status(400).json({ err });
-    else response.status(201).json(seller_id);
-  });
+  try {
+    await productsDB.deleteMany({ seller_id });
+    response.status(201).json(seller_id);
+  } catch (err) {
+    response.status(404).json({ err });
+  }
+  try {
+    await productsDB.updateMany({}, { $unset: { [seller_id]: "" } });
+    response.status(201).json(seller_id);
+  } catch (err) {
+    response.status(404).json({ err });
+  }
 });
 module.exports = router;
