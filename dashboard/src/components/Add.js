@@ -2,7 +2,7 @@ import React from "react";
 
 const Add = props => (
   <div className="container">
-    <div className="row mt-3">
+    <div className="row">
       <div className="col-md-12">
         <form onSubmit={props.add}>
           <div className="form-row">

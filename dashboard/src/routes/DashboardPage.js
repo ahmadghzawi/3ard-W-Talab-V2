@@ -8,11 +8,13 @@ import Product from "../components/Product";
 
 export default class DashboardPage extends Component {
   state = {
-    allUsers: [],
+    admins: [],
+    users: [],
     products: [],
     username: "",
     password: "",
     role: "",
+    edit: null,
     msg:
       "Username:\n" +
       "\t\t\tmust be at least 3 characters long without spaces\n" +
@@ -36,7 +38,15 @@ export default class DashboardPage extends Component {
   getUsers = () => {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/users/API/data")
-      .then(res => this.setState({ allUsers: res.data }))
+      .then(res => {
+        let admins = [];
+        let users = [];
+        res.data.forEach(user => {
+          if (!user.username) users.push(user);
+          else admins.push(user);
+        });
+        this.setState({ admins, users });
+      })
       .catch(err => console.log(err));
   };
 
@@ -75,13 +85,13 @@ export default class DashboardPage extends Component {
             { username, password, role }
           )
           .then(async res => {
-            if (res.data === "ok") {
-              let allUsers = [
-                ...this.state.allUsers,
-                { username, password, role }
+            if (res.data !== "User already exists") {
+              let admins = [
+                ...this.state.admins,
+                { _id: res.data._id, username, password, role }
               ];
-              this.setState({ allUsers });
-            } else alert("User already exists");
+              this.setState({ admins });
+            } else alert(res.data);
           })
           .catch(err => console.log(err.message));
       else alert(this.state.msg);
@@ -106,7 +116,6 @@ export default class DashboardPage extends Component {
     this.state.role = roleInput;
     await this.removeSpace();
     const { username, password, role } = this.state;
-    console.log(_id)
 
     if (this.checkForm())
       axios
@@ -124,23 +133,46 @@ export default class DashboardPage extends Component {
     else alert(this.state.msg);
   };
 
-  deleteUser = _id =>
+  deleteUser = _id => {
     axios
       .delete(
-        `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${_id}`
+      )
+      .then()
+      .catch(err => console.log(err))
+      .then(
+        axios
+          .delete(
+            `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
+          )
+          .then(() => {
+            let admins = this.state.admins.filter(user => user._id !== _id);
+            let users = this.state.users.filter(user => user._id !== _id);
+            this.setState({ admins, users });
+          })
+          .catch(err => console.log(err.message))
+      );
+  };
+
+  deleteProduct = _id => {
+    axios
+      .delete(
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${_id}`
       )
       .then(() => {
-        let allUsers = this.state.allUsers.filter(user => user._id !== _id);
-        this.setState({ allUsers });
+        let products = this.state.products.filter(
+          product => product._id !== _id
+        );
+        this.setState({ products });
       })
       .catch(err => console.log(err.message));
+  };
+
+  redirectToProductPage = () => this.props.history.push("/product");
 
   render() {
     const { role } = this.props.cookies.cookies;
-    const { allUsers, products, msg } = this.state;
-
-    const admins = allUsers.filter(user => user.username !== undefined);
-    const users = allUsers.filter(user => user.username === undefined);
+    const { admins, users, products, msg } = this.state;
 
     const adminsToShow = admins.map(admin => (
       <Admin
@@ -155,37 +187,54 @@ export default class DashboardPage extends Component {
       <User key={user._id} data={user} deleteUser={this.deleteUser} />
     ));
     const productsToShow = products.map(product => (
-      <Product key={product._id} data={product} />
+      <Product
+        key={product._id}
+        data={product}
+        deleteProduct={this.deleteProduct}
+        redirectToProductPage={this.redirectToProductPage}
+      />
     ));
 
     return (
       <div className="container-fluid">
+        <div className="row  mt-3">
+          <div className="col-md-2"></div>
+          <div className="col-md-8">
+            {role === "owner" && <Add add={this.add} />}
+          </div>
+          <div className="col-md-2">
+            <button
+              className="btn btn-info float-right w-50"
+              onClick={() => this.props.history.push("/logout")}
+            >
+              LogOut
+            </button>
+          </div>
+        </div>
         {role === "owner" && (
-          <>
-            <Add add={this.add} />
-            <div className="row">
-              <Container
-                className="col-md-12 mt-4"
-                title="All Admins & Owners"
-                height="500px"
-              >
-                <table className="table">
-                  <thead className="thead-dark">
-                    <tr>
-                      <th scope="col">Username</th>
-                      <th scope="col">Password</th>
-                      <th scope="col">Role</th>
-                      <th scope="col" className="text-center">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>{adminsToShow}</tbody>
-                </table>
-              </Container>
-            </div>
-          </>
+          <div className="row">
+            <Container
+              className="col-md-12 mt-4"
+              title="All Admins & Owners"
+              height="400px"
+            >
+              <table className="table">
+                <thead className="thead-dark">
+                  <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Role</th>
+                    <th scope="col" className="text-center">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>{adminsToShow}</tbody>
+              </table>
+            </Container>
+          </div>
         )}
+
         <hr />
         <div className="row">
           <Container className="col-md-6 mt-4" title="All Users">

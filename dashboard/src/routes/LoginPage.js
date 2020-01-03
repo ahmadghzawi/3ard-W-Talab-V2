@@ -110,7 +110,7 @@ export default class LoginPage extends Component {
       <div className="login-form">
         <form onSubmit={this.submitForm} method="post">
           <h2 className="text-center font-weight-bold">3ard w Talab</h2>
-          <h4 className="text-center">Log in</h4>
+          <h4 className="text-center">Dashboard</h4>
           <div className="form-group">
             <input
               type="text"

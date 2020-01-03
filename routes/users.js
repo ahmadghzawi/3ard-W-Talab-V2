@@ -27,9 +27,9 @@ router.post("/dashboardAdd", (req, res) => {
     if (err) res.status(500).json({ message: error.message });
     else {
       if (!doc) {
-        usersDB.create({ username, password, role }, err => {
+        usersDB.create({ username, password, role }, (err, doc) => {
           if (err) res.status(500).json({ message: error.message });
-          else res.status(200).json("ok");
+          else res.status(200).json(doc._id);
         });
       } else res.status(200).json("user already exists");
     }

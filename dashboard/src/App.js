@@ -5,6 +5,7 @@ import { CookiesProvider, withCookies } from "react-cookie";
 import LoginPage from "./routes/LoginPage";
 import LogoutPage from "./routes/LogoutPage";
 import DashboardPage from "./routes/DashboardPage";
+import ProductPage from "./routes/ProductPage";
 
 class App extends Component {
   render = () => (
@@ -19,6 +20,13 @@ class App extends Component {
         ></Route>
         <Route
           exact
+          path="/logout"
+          render={routerProps => (
+            <LogoutPage {...routerProps} cookies={this.props.cookies} />
+          )}
+        ></Route>
+        <Route
+          exact
           path="/dashboard"
           render={routerProps => (
             <DashboardPage {...routerProps} cookies={this.props.cookies} />
@@ -26,11 +34,12 @@ class App extends Component {
         ></Route>
         <Route
           exact
-          path="/logout"
+          path="/product"
           render={routerProps => (
-            <LogoutPage {...routerProps} cookies={this.props.cookies} />
+            <ProductPage {...routerProps} cookies={this.props.cookies} />
           )}
         ></Route>
+        
       </Router>
     </CookiesProvider>
   );
