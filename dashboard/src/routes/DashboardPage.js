@@ -11,6 +11,8 @@ export default class DashboardPage extends Component {
     admins: [],
     users: [],
     products: [],
+    selectedCategory: "All Categories",
+    categories: [],
     username: "",
     password: "",
     role: "",
@@ -30,10 +32,10 @@ export default class DashboardPage extends Component {
     if (!this.props.cookies.get("user")) this.props.history.push("/");
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.getUsers();
     this.getProducts();
-  }
+  };
 
   getUsers = () => {
     axios
@@ -54,8 +56,19 @@ export default class DashboardPage extends Component {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(res => this.setState({ products: res.data }))
+      .then(res => this.setState({ categories: res.data }))
       .catch(err => console.log(err));
+    console.log("pro");
   };
+
+  // getCategories = () => {
+  //   let categories = {};
+  //   this.state.products.forEach(product => {
+  //     let key = product.product_category;
+  //     if (!categories[key]) categories[key] = 0;
+  //   });
+
+  // };
 
   removeSpace = () => {
     for (let key in this.state) {
@@ -253,6 +266,16 @@ export default class DashboardPage extends Component {
           </Container>
 
           <Container className="col-md-6 mt-4" title="All Products">
+            <select
+              className="custom-select"
+              name="role"
+              ref={role => (this.roleInput = role)}
+            >
+              <option defaultValue="All Categories">All Categories</option>
+              <option value={role === "owner" ? "admin" : "owner"}>
+                {role === "owner" ? "admin" : "owner"}
+              </option>
+            </select>
             {productsToShow}
           </Container>
         </div>

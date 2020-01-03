@@ -30,12 +30,12 @@ export default class Home extends Component {
     this.getCategories();
   }
 
-  getCategories = () => {
-    axios
-      .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/categories")
-      .then(res => this.setState({ categories: res.data }))
-      .catch(err => console.log(err));
-  };
+  // getCategories = () => {
+  //   axios
+  //     .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/categories")
+  //     .then(res => this.setState({ categories: res.data }))
+  //     .catch(err => console.log(err));
+  // };
 
   getProductsByCategory = category => {
     if (category === "All Categories") {
@@ -68,6 +68,7 @@ export default class Home extends Component {
           refreshing: false
         });
       })
+      .then(res => this.setState({ categories: res.data }))
       .catch(err => console.log({ message: err.message }));
   };
 
