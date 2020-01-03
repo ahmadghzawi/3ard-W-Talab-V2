@@ -314,14 +314,11 @@ router.put("/deniedOffer/", async (request, response) => {
   }
 });
 
-router.put("/deleteOffer/", async (request, response) => {
+router.put("/deleteOffer/", (request, response) => {
   let { buyer, _id } = request.body;
-  await productsDB.updateOne({ _id }, { $unset: { [buyer]: "" } }, error => {
-    if (error) {
-      response.status(500).json({ message: error.message });
-    } else {
-      response.status(200).json("ok");
-    }
+  productsDB.updateOne({ _id }, { $unset: { [buyer]: "" } }, error => {
+    if (error) response.status(500).json({ message: error.message });
+    else response.status(200).json("ok");
   });
 });
 /*<=========================== END. DELETE a Post  func.===========================>*/
@@ -348,35 +345,17 @@ router.delete("/deletePost/:id", async (request, response) => {
     response.status(500).json(err);
   }
 });
-router.delete("/deleteUserPosts/:id", async (request, response) => {
-  try {
-    await productsDB.deleteMany(
-      { seller_id: `${request.params.id}` },
-      (err, doc) => {
-        if (err) {
-          response.status(204).json({ err: err.message });
-        } else {
-          response.status(201).json(doc);
-        }
-      }
-    );
-  } catch (err) {
-    // response.status(500).json({ message: err.message });
-  }
-  try {
-    await productsDB.updateMany(
-      {},
-      { $unset: { [request.params.id]: '' } },
-      (err, doc) => {
-        if (err) {
-          response.status(400).json({ message: err.message });
-        } else {
-          response.status(201).json(doc.nModified);
-        }
-      }
-    );
-  } catch (err) {
-    response.status(500).json({ message: err.message });
-  }
+router.delete("/deleteUserPosts/:id", (request, response) => {
+  let seller_id = request.params.id;
+
+  productsDB.delete({ seller_id }, err => {
+    if (err) response.status(204).json({ err: err.message });
+    else response.status(201).json("ok");
+  });
+
+  productsDB.update({}, { $unset: { [seller_id]: "" } }, err => {
+    if (err) response.status(400).json({ message: err.message });
+    else response.status(201).json("ok");
+  });
 });
 module.exports = router;
