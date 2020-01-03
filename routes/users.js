@@ -36,23 +36,20 @@ router.post("/dashboardAdd", (req, res) => {
   });
 });
 
-router.post(
-  "/editAdmin",
-  async (req, res) => {
-    let { _id, username, password, role } = req.body;
-    await usersDB.updateOne(
-      { _id },
-      { $set: { username, password, role } },
-      error => {
-        if (error) {
-          res.status(500).json({ message: error.message });
-        } else {
-          res.status(200).json("ok");
-        }
+router.post("/editAdmin", async (req, res) => {
+  let { _id, username, password, role } = req.body;
+  await usersDB.updateOne(
+    { _id },
+    { $set: { username, password, role } },
+    error => {
+      if (error) {
+        res.status(500).json({ message: error.message });
+      } else {
+        res.status(200).json("ok");
       }
-    );
-  }
-);
+    }
+  );
+});
 
 router.put(
   "/editProfile/:user_id/:name/:email/:phone_number",
@@ -157,18 +154,12 @@ router.get("/auth", async (request, response) => {
 /*<=========================== End .verify an existence user  func.===========================>*/
 
 /*<=========================== Start .delete an existence user  func.===========================>*/
-router.delete("/delete/:id", async (request, response) => {
-  try {
-    await usersDB.findByIdAndDelete(request.params.id, (err, doc) => {
-      if (err) {
-        response.status(400).json({ message: err.message });
-      } else {
-        response.status(202).json({ deletion: doc });
-      }
-    });
-  } catch (error) {
-    response.status(500).json({ message: error.error });
-  }
+router.delete("/delete/:_id", (request, response) => {
+  let _id = request.params._id;
+  usersDB.deleteOne({ _id }, (err, doc) => {
+    if (err) response.status(400).json({ error: _id });
+    else response.status(202).json({ deletion: _id });
+  });
 });
 /*<=========================== Start .delete an existence user  func.===========================>*/
 
