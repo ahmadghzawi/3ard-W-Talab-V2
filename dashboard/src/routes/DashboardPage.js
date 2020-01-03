@@ -125,6 +125,7 @@ export default class DashboardPage extends Component {
                 ...this.state.admins,
                 { _id: res.data._id, username, password, role }
               ];
+              console.log(res.data)
               this.setState({ admins });
             } else alert(res.data);
           })
