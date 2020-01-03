@@ -159,9 +159,9 @@ export default class DashboardPage extends Component {
           { _id, username, password, role }
         )
         .then(() => {
-          let allUsers = this.state.allUsers.filter(user => user._id !== _id);
+          let admins = this.state.admins.filter(user => user._id !== _id);
           this.setState({
-            allUsers: [...allUsers, { _id, username, password, role }]
+            admins: [...admins, { _id, username, password, role }]
           });
         })
         .catch(err => console.log(err.message));
