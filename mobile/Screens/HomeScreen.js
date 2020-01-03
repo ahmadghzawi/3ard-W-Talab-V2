@@ -26,16 +26,8 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    this.getPosts();
-    this.getCategories();
+    this.getPostsAndCategories();
   }
-
-  // getCategories = () => {
-  //   axios
-  //     .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/categories")
-  //     .then(res => this.setState({ categories: res.data }))
-  //     .catch(err => console.log(err));
-  // };
 
   getProductsByCategory = category => {
     if (category === "All Categories") {
@@ -57,18 +49,19 @@ export default class Home extends Component {
     }
   };
 
-  getPosts = async () => {
+  getPostsAndCategories = async () => {
     let user_id = await AsyncStorage.getItem("user_id");
     this.setState({ user_id });
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(res => {
         this.setState({
-          posts: res.data,
+          posts: res.data.products,
+          categories: res.data.categories,
           refreshing: false
         });
       })
-      .then(res => this.setState({ categories: res.data }))
+      
       .catch(err => console.log({ message: err.message }));
   };
 

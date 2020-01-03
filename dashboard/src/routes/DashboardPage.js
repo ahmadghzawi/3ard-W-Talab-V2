@@ -34,7 +34,7 @@ export default class DashboardPage extends Component {
 
   componentDidMount = () => {
     this.getUsers();
-    this.getProducts();
+    this.getProductsAndCategories();
   };
 
   getUsers = () => {
@@ -52,26 +52,15 @@ export default class DashboardPage extends Component {
       .catch(err => console.log(err));
   };
 
-  getProducts = () => {
+  getProductsAndCategories = () => {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(res => {
-        console.log(res.data);
-        this.setState({ products: res.data });
+        this.setState({ products: res.data.products, categories: res.data.categories });
       })
-      .then(res => this.setState({ categories: res.data }))
       .catch(err => console.log(err));
     console.log("pro");
   };
-
-  // getCategories = () => {
-  //   let categories = {};
-  //   this.state.products.forEach(product => {
-  //     let key = product.product_category;
-  //     if (!categories[key]) categories[key] = 0;
-  //   });
-
-  // };
 
   removeSpace = () => {
     for (let key in this.state) {

@@ -35,9 +35,9 @@ router.get("/getProductsByCategory/:category", async (req, res) => {
 /*<===========================this method to fetch all post data ===========================*/
 router.get("/data", async (request, response) => {
   try {
-    let data = await productsDB.find();
+    let products = await productsDB.find();
     let categories = await productsDB.distinct("product_category");
-    response.status(200).json({data, categories});
+    response.status(200).json({products, categories});
     // response.status(200).json();
   } catch (err) {
     response.status(500).json({ message: err.message });
