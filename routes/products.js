@@ -348,14 +348,14 @@ router.delete("/deletePost/:id", async (request, response) => {
 router.delete("/deleteUserPosts/:id", (request, response) => {
   let seller_id = request.params.id;
 
-  productsDB.delete({ seller_id }, err => {
+  productsDB.deleteMany({ seller_id }, err => {
     if (err) response.status(204).json({ err: err.message });
-    else response.status(201).json("ok");
+    else response.status(201).json(seller_id);
   });
 
-  productsDB.update({}, { $unset: { [seller_id]: "" } }, err => {
+  productsDB.updateMany({}, { $unset: { [seller_id]: "" } }, err => {
     if (err) response.status(400).json({ message: err.message });
-    else response.status(201).json("ok");
+    else response.status(201).json(seller_id);
   });
 });
 module.exports = router;
