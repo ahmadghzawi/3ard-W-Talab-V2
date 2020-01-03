@@ -13,38 +13,35 @@ class Product extends Component {
       bid
     } = this.props.data;
     return (
-      <>
+      <div className="card m-3 overflow-hidden" style={{ height: "250px" }}>
         <div
-          className="card m-3 overflow-hidden product"
-          style={{ height: "250px" }}
+          className="row no-gutters product"
           onClick={this.props.redirectToProductPage}
         >
-          <div className="row no-gutters">
-            <div className="col-md-4">
-              <img src={image_path} className="card-img" alt={title} />
-            </div>
-            <div className="col-md-8">
-              <div className="card-body">
-                <h5 className="card-title">
-                  <b>{title}</b>
-                </h5>
-                <p className="card-text">
-                  <b>Category:</b> {product_category}
-                </p>
-                <p className="card-text">
-                  <b>Location:</b> {location}
-                </p>
-                <p className="card-text">
-                  <b>Info:</b> {info}
-                </p>
-                <p className="card-text float-left">
-                  <b>Bid:</b> {bid}JOD
-                </p>
+          <div className="col-md-4">
+            <img src={image_path} className="card-img" alt={title} />
+          </div>
+          <div className="col-md-8">
+            <div className="card-body">
+              <h5 className="card-title">
+                <b>{title}</b>
+              </h5>
+              <p className="card-text">
+                <b>Category:</b> {product_category}
+              </p>
+              <p className="card-text">
+                <b>Location:</b> {location}
+              </p>
+              <p className="card-text">
+                <b>Info:</b> {info}
+              </p>
+              <p className="card-text float-left">
+                <b>Bid:</b> {bid}JOD
+              </p>
 
-                <p className="card-text" style={{ clear: "left" }}>
-                  <small className="text-muted">{seller_id}</small>
-                </p>
-              </div>
+              <p className="card-text" style={{ clear: "left" }}>
+                <small className="text-muted">{seller_id}</small>
+              </p>
             </div>
           </div>
         </div>
@@ -55,7 +52,7 @@ class Product extends Component {
         >
           DELETE
         </button>
-      </>
+      </div>
     );
   }
 }

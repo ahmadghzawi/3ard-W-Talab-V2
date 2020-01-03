@@ -32,7 +32,7 @@ export default class Home extends Component {
   getProductsByCategory = category => {
     if (category === "All Categories") {
       this.setState({ selectedCategory: "All Categories" });
-      this.getPosts();
+      this.getPostsAndCategories();
     } else {
       this.setState({ selectedCategory: category });
       axios
@@ -99,13 +99,13 @@ export default class Home extends Component {
             );
           }}
           refreshing={refreshing}
-          onRefresh={this.getPosts}
+          onRefresh={this.getPostsAndCategories}
         />
         <Modal isVisible={this.state.isVisible}>
           <PostScreen
             isVisible={this.isVisible}
             post={this.state.post}
-            getPosts={this.getPosts}
+            getPosts={this.getPostsAndCategories}
             user_id={this.state.user_id}
           />
         </Modal>

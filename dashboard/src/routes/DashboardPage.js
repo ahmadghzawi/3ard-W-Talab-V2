@@ -11,6 +11,7 @@ export default class DashboardPage extends Component {
     admins: [],
     users: [],
     products: [],
+    selectedProducts: [],
     selectedCategory: "All Categories",
     categories: [],
     username: "",
@@ -56,10 +57,39 @@ export default class DashboardPage extends Component {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(res => {
-        this.setState({ products: res.data.products, categories: res.data.categories });
+        this.setState({
+          products: res.data.products,
+          selectedProducts: res.data.products,
+          categories: res.data.categories
+        });
       })
       .catch(err => console.log(err));
-    console.log("pro");
+  };
+
+  getCategories = () => {
+    let categories = {};
+    this.state.products.forEach(product => {
+      let key = product.product_category;
+      if (!categories[key]) categories[key] = 1;
+    });
+    categories = Object.keys(categories);
+    this.setState({ categories });
+  };
+
+  getProductsByCategory = event => {
+    event.preventDefault();
+    let selectedCategory = event.target.value;
+    if (selectedCategory === "All Categories") {
+      this.setState({
+        selectedCategory,
+        selectedProducts: [...this.state.products]
+      });
+    } else {
+      let selectedProducts = this.state.products.filter(
+        product => product.product_category === selectedCategory
+      );
+      this.setState({ selectedProducts, selectedCategory });
+    }
   };
 
   removeSpace = () => {
@@ -138,25 +168,30 @@ export default class DashboardPage extends Component {
     else alert(this.state.msg);
   };
 
-  deleteUser = _id => {
+  deleteProducts = _id => {
     axios
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${_id}`
       )
       .then()
-      .catch(err => console.log(err))
-      .then(
-        axios
-          .delete(
-            `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
-          )
-          .then(() => {
-            let admins = this.state.admins.filter(user => user._id !== _id);
-            let users = this.state.users.filter(user => user._id !== _id);
-            this.setState({ admins, users });
-          })
-          .catch(err => console.log(err.message))
-      );
+      .catch(err => console.log(err));
+  };
+
+  deleteUser = _id => {
+    let user = this.state.admins.filter(user => user._id === _id);
+    if(user.length === 0){
+      this.deleteProduct(_id)
+    } 
+    axios
+      .delete(
+        `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
+      )
+      .then(() => {
+        let admins = this.state.admins.filter(user => user._id !== _id);
+        let users = this.state.users.filter(user => user._id !== _id);
+        this.setState({ admins, users });
+      })
+      .catch(err => console.log(err.message));
   };
 
   deleteProduct = _id => {
@@ -164,11 +199,15 @@ export default class DashboardPage extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${_id}`
       )
-      .then(() => {
+      .then(async () => {
         let products = this.state.products.filter(
           product => product._id !== _id
         );
-        this.setState({ products });
+        let selectedProducts = this.state.selectedProducts.filter(
+          product => product._id !== _id
+        );
+        await this.setState({ products, selectedProducts });
+        this.getCategories();
       })
       .catch(err => console.log(err.message));
   };
@@ -177,7 +216,14 @@ export default class DashboardPage extends Component {
 
   render() {
     const { role } = this.props.cookies.cookies;
-    const { admins, users, products, msg } = this.state;
+    const {
+      admins,
+      users,
+      selectedProducts,
+      categories,
+      msg,
+      selectedCategory
+    } = this.state;
 
     const adminsToShow = admins.map(admin => (
       <Admin
@@ -188,16 +234,24 @@ export default class DashboardPage extends Component {
         msg={msg}
       />
     ));
+
     const usersToShow = users.map(user => (
       <User key={user._id} data={user} deleteUser={this.deleteUser} />
     ));
-    const productsToShow = products.map(product => (
+
+    const productsToShow = selectedProducts.map(product => (
       <Product
         key={product._id}
         data={product}
         deleteProduct={this.deleteProduct}
         redirectToProductPage={this.redirectToProductPage}
       />
+    ));
+
+    const categoriesToSelect = categories.map((category, index) => (
+      <option key={index} value={category}>
+        {category}
+      </option>
     ));
 
     return (
@@ -220,7 +274,7 @@ export default class DashboardPage extends Component {
           <div className="row">
             <Container
               className="col-md-12 mt-4"
-              title="All Admins & Owners"
+              title="Admins & Owners"
               height="400px"
             >
               <table className="table">
@@ -242,7 +296,7 @@ export default class DashboardPage extends Component {
 
         <hr />
         <div className="row">
-          <Container className="col-md-6 mt-4" title="All Users">
+          <Container className="col-md-6 mt-4" title="Users">
             <table className="table">
               <thead className="thead-dark">
                 <tr>
@@ -257,16 +311,15 @@ export default class DashboardPage extends Component {
             </table>
           </Container>
 
-          <Container className="col-md-6 mt-4" title="All Products">
+          <Container className="col-md-6 mt-4" title="Products">
             <select
               className="custom-select"
               name="role"
-              ref={role => (this.roleInput = role)}
+              defaultValue={selectedCategory}
+              onChange={event => this.getProductsByCategory(event)}
             >
               <option defaultValue="All Categories">All Categories</option>
-              <option value={role === "owner" ? "admin" : "owner"}>
-                {role === "owner" ? "admin" : "owner"}
-              </option>
+              {categoriesToSelect}
             </select>
             {productsToShow}
           </Container>

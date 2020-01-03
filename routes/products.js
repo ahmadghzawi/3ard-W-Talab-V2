@@ -348,7 +348,7 @@ router.delete("/deletePost/:id", async (request, response) => {
     response.status(500).json(err);
   }
 });
-router.delete("/deleteUserproducts/:id", async (request, response) => {
+router.delete("/deleteUserPosts/:id", async (request, response) => {
   try {
     await productsDB.deleteMany(
       { sellerID: `${request.params.id}` },
