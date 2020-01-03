@@ -92,16 +92,6 @@ export default class DashboardPage extends Component {
     }
   };
 
-  updateProductsAndCategories = async _id => {
-    console.log(_id);
-    let products = this.state.products.filter(product => product._id !== _id);
-    let selectedProducts = this.state.selectedProducts.filter(
-      product => product._id !== _id
-    );
-    await this.setState({ products, selectedProducts });
-    this.getCategories();
-  };
-
   removeSpace = () => {
     for (let key in this.state) {
       if (typeof this.state[key] === "string") {
@@ -183,7 +173,16 @@ export default class DashboardPage extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${_id}`
       )
-      .then(() => this.updateProductsAndCategories(_id))
+      .then(async () => {
+        let products = this.state.products.filter(
+          product => product.seller_id !== _id
+        );
+        let selectedProducts = this.state.selectedProducts.filter(
+          product => product.seller_id !== _id
+        );
+        await this.setState({ products, selectedProducts });
+        this.getCategories();
+      })
       .catch(err => console.log(err));
   };
 
@@ -209,7 +208,16 @@ export default class DashboardPage extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${_id}`
       )
-      .then(() => this.updateProductsAndCategories(_id))
+      .then(async () => {
+        let products = this.state.products.filter(
+          product => product._id !== _id
+        );
+        let selectedProducts = this.state.selectedProducts.filter(
+          product => product._id !== _id
+        );
+        await this.setState({ products, selectedProducts });
+        this.getCategories();
+      })
       .catch(err => console.log(err.message));
   };
 
