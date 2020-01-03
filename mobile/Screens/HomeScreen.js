@@ -77,6 +77,7 @@ export default class Home extends Component {
   };
 
   render() {
+    console.log(this.state);
     let { width, posts, refreshing, selectedCategory, categories } = this.state;
     return (
       <View style={styles.container}>

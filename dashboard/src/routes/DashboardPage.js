@@ -55,7 +55,10 @@ export default class DashboardPage extends Component {
   getProducts = () => {
     axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
-      .then(res => this.setState({ products: res.data }))
+      .then(res => {
+        console.log(res.data);
+        this.setState({ products: res.data });
+      })
       .then(res => this.setState({ categories: res.data }))
       .catch(err => console.log(err));
     console.log("pro");
