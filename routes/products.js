@@ -361,12 +361,12 @@ router.delete("/deleteUserPosts/:id", async (request, response) => {
       }
     );
   } catch (err) {
-    response.status(500).json({ message: err.message });
+    // response.status(500).json({ message: err.message });
   }
   try {
     await productsDB.updateMany(
       {},
-      { $unset: { [request.params.id]: {} } },
+      { $unset: { [request.params.id]: '' } },
       (err, doc) => {
         if (err) {
           response.status(400).json({ message: err.message });

@@ -92,6 +92,15 @@ export default class DashboardPage extends Component {
     }
   };
 
+  updateProductsAndCategories = async _id => {
+    let products = this.state.products.filter(product => product._id !== _id);
+    let selectedProducts = this.state.selectedProducts.filter(
+      product => product._id !== _id
+    );
+    await this.setState({ products, selectedProducts });
+    this.getCategories();
+  };
+
   removeSpace = () => {
     for (let key in this.state) {
       if (typeof this.state[key] === "string") {
@@ -174,15 +183,13 @@ export default class DashboardPage extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${_id}`
       )
-      .then()
+      .then(this.updateProductsAndCategories)
       .catch(err => console.log(err));
   };
 
   deleteUser = _id => {
     let user = this.state.admins.filter(user => user._id === _id);
-    console.log(user)
     if (user.length === 0) {
-      console.log('object')
       this.deleteProducts(_id);
     }
     axios
@@ -202,16 +209,7 @@ export default class DashboardPage extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${_id}`
       )
-      .then(async () => {
-        let products = this.state.products.filter(
-          product => product._id !== _id
-        );
-        let selectedProducts = this.state.selectedProducts.filter(
-          product => product._id !== _id
-        );
-        await this.setState({ products, selectedProducts });
-        this.getCategories();
-      })
+      .then(this.updateProductsAndCategories)
       .catch(err => console.log(err.message));
   };
 
