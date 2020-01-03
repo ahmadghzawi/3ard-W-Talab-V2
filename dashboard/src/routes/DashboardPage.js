@@ -191,6 +191,7 @@ export default class DashboardPage extends Component {
     if (user.length === 0) {
       this.deleteProducts(_id);
     }
+    console.log(_id)
     axios
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`

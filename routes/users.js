@@ -154,9 +154,9 @@ router.get("/auth", async (request, response) => {
 /*<=========================== End .verify an existence user  func.===========================>*/
 
 /*<=========================== Start .delete an existence user  func.===========================>*/
-router.delete("/delete/:_id", (request, response) => {
+router.delete("/delete/:_id", async (request, response) => {
   let _id = request.params._id;
-  usersDB.deleteOne({ _id }, (err, doc) => {
+  await usersDB.deleteOne({ _id }, err => {
     if (err) response.status(400).json({ error: _id });
     else response.status(202).json({ deletion: _id });
   });
