@@ -345,16 +345,16 @@ router.delete("/deletePost/:id", async (request, response) => {
     response.status(500).json(err);
   }
 });
-router.delete("/deleteUserPosts/:id", (request, response) => {
+router.delete("/deleteUserPosts/:id", async (request, response) => {
   let seller_id = request.params.id;
 
-  productsDB.deleteMany({ seller_id }, err => {
-    if (err) response.status(204).json({ err: err.message });
+  await productsDB.deleteMany({ seller_id }, err => {
+    if (err) response.status(204).json({ err });
     else response.status(201).json(seller_id);
   });
 
-  productsDB.updateMany({}, { $unset: { [seller_id]: "" } }, err => {
-    if (err) response.status(400).json({ message: err.message });
+  await productsDB.updateMany({}, { $unset: { [seller_id]: "" } }, err => {
+    if (err) response.status(400).json({ err });
     else response.status(201).json(seller_id);
   });
 });

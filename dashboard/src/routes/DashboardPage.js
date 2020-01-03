@@ -189,9 +189,10 @@ export default class DashboardPage extends Component {
   deleteUser = _id => {
     let user = this.state.admins.filter(user => user._id === _id);
     if (user.length === 0) {
+      console.log(_id)
       this.deleteProducts(_id);
     }
-    console.log(_id)
+    
     axios
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
