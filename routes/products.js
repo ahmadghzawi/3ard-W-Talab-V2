@@ -12,6 +12,14 @@ const router = express.Router();
 router.use(express.json());
 const productsDB = require("../models/productsDatabase");
 
+router.get('/getProduct/:_id', (req, res) => {
+  let _id = req.params._id
+  productsDB.findOne({_id}, (err, product) => {
+    if(err) res.status(400).json(err)
+    else res.status(200).json(product)
+  })
+})
+
 router.get("/categories", async (req, res) => {
   try {
     let categories = await productsDB.distinct("product_category");

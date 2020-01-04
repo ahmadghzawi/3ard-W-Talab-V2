@@ -36,8 +36,6 @@ export default class DashboardPage extends Component {
   componentDidMount = async () => {
     await this.getUsers();
     await this.getProductsAndCategories();
-    if (this.props.location.state !== undefined)
-      this.redirectToProductPage(this.props.location.state.productInfo);
   };
 
   getUsers = async () => {
@@ -227,22 +225,13 @@ export default class DashboardPage extends Component {
 
   redirectToProductPage = productInfo => {
     let { users } = this.state;
-    let product = {};
-    let offers = [];
-    for (let key in productInfo) {
-      if (typeof productInfo[key] === "object") {
-        offers.push({ [key]: productInfo[key] });
-      } else {
-        product[key] = productInfo[key];
-      }
-    }
     let seller = this.state.users.filter(
-      user => user._id === product.seller_id
+      user => user._id === productInfo.seller_id
     );
     seller = seller[0];
     this.props.history.push({
       pathname: "/product",
-      state: { product, offers, seller, users, productInfo }
+      state: { seller, users, productId : productInfo._id }
     });
   };
 
@@ -294,14 +283,14 @@ export default class DashboardPage extends Component {
     if (this.props.location.state !== undefined) return null;
     return (
       <div className="container-fluid">
-        <div className="row mt-3">
+        <div className="row">
           <div className="col-md-2"></div>
-          <div className="col-md-8">
+          <div className="col-md-8 mt-3">
             {role === "owner" && <Add add={this.add} />}
           </div>
-          <div className="col-md-2">
+          <div className="col-md-2 mt-3 d-flex justify-content-center">
             <button
-              className="btn btn-info float-right"
+              className="btn btn-info"
               onClick={() => this.props.history.push("/logout")}
             >
               LogOut
@@ -349,7 +338,7 @@ export default class DashboardPage extends Component {
             </table>
           </Container>
 
-          <Container className="col-md-6 mt-4" title="Products">
+          <Container className="col-md-6 mt-4 mb-4" title="Products">
             <select
               className="custom-select"
               name="role"

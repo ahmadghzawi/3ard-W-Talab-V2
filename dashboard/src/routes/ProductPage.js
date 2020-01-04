@@ -5,7 +5,9 @@ import Offer from "../components/Offer";
 
 export default class ProductPage extends Component {
   state = {
-    ...this.props.location.state
+    ...this.props.location.state,
+    product: {},
+    offers: []
   };
 
   deleteProduct = _id => {
@@ -17,6 +19,30 @@ export default class ProductPage extends Component {
       .catch(err => console.log(err.message));
   };
 
+  componentDidMount = () => {
+    this.getProductAndOffers();
+  };
+
+  getProductAndOffers = () => {
+    let _id = this.state.productId;
+    axios
+      .get(
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProduct/${_id}`
+      )
+      .then(({ data }) => {
+        let product = {};
+        let offers = [];
+        for (let key in data) {
+          if (typeof data[key] === "object") {
+            offers.push({ [key]: data[key] });
+          } else {
+            product[key] = data[key];
+          }
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
   deleteOffer = (buyer, _id) => {
     axios
       .put(
@@ -24,19 +50,14 @@ export default class ProductPage extends Component {
         { buyer, _id }
       )
       .then(() => {
-        let productInfo = this.props.location.state.productInfo
-        delete productInfo[buyer]
-        this.props.history.push({
-          pathname: "/dashboard",
-          state: { productInfo }
-        });
+        let offers = this.state.offers.filter(offer=>Object.keys(offer)[0] !== buyer)
+        this.setState({offers})
         
       })
       .catch(err => console.log(err.message));
   };
 
   render() {
-    console.log(this.props.location.state);
     const { product, offers, seller, users } = this.state;
     const offersToShow = offers.map((offer, index) => (
       <Offer

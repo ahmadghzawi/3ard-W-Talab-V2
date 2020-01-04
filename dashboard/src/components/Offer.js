@@ -35,7 +35,7 @@ const Offer = props => {
         </div>
         <button
           className="btn btn-danger position-absolute"
-          style={{ fontSize: 20, bottom: "25px", right: "25px" }}
+          style={{ bottom: "25px", right: "25px" }}
           onClick={() => deleteOffer(buyer._id, product_id)}
         >
           DELETE
