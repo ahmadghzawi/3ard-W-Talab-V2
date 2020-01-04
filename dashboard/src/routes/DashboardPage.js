@@ -33,31 +33,33 @@ export default class DashboardPage extends Component {
     if (!this.props.cookies.get("user")) this.props.history.push("/");
   }
 
-  componentDidMount = () => {
-    this.getUsers();
-    this.getProductsAndCategories();
+  componentDidMount = async () => {
+    await this.getUsers();
+    await this.getProductsAndCategories();
+    if (this.props.location.state !== undefined)
+      this.redirectToProductPage(this.props.location.state.productInfo);
   };
 
-  getUsers = () => {
-    axios
+  getUsers = async () => {
+    await axios
       .get("https://ard-w-talab-version-2.herokuapp.com/users/API/data")
-      .then(res => {
+      .then(async res => {
         let admins = [];
         let users = [];
         res.data.forEach(user => {
           if (!user.username) users.push(user);
           else admins.push(user);
         });
-        this.setState({ admins, users });
+        await this.setState({ admins, users });
       })
       .catch(err => console.log(err));
   };
 
-  getProductsAndCategories = () => {
-    axios
+  getProductsAndCategories = async () => {
+    await axios
       .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
-      .then(res => {
-        this.setState({
+      .then(async res => {
+        await this.setState({
           products: res.data.products,
           selectedProducts: res.data.products,
           categories: res.data.categories
@@ -120,7 +122,7 @@ export default class DashboardPage extends Component {
             { username, password, role }
           )
           .then(async res => {
-            if (res.data !== "User already exists") {
+            if (res.data !== "user already exists") {
               let admins = [
                 ...this.state.admins,
                 { _id: res.data._id, username, password, role }
@@ -223,7 +225,26 @@ export default class DashboardPage extends Component {
       .catch(err => console.log(err.message));
   };
 
-  redirectToProductPage = () => this.props.history.push("/product");
+  redirectToProductPage = productInfo => {
+    let { users } = this.state;
+    let product = {};
+    let offers = [];
+    for (let key in productInfo) {
+      if (typeof productInfo[key] === "object") {
+        offers.push({ [key]: productInfo[key] });
+      } else {
+        product[key] = productInfo[key];
+      }
+    }
+    let seller = this.state.users.filter(
+      user => user._id === product.seller_id
+    );
+    seller = seller[0];
+    this.props.history.push({
+      pathname: "/product",
+      state: { product, offers, seller, users, productInfo }
+    });
+  };
 
   render() {
     const { role } = this.props.cookies.cookies;
@@ -270,16 +291,17 @@ export default class DashboardPage extends Component {
       </option>
     ));
 
+    if (this.props.location.state !== undefined) return null;
     return (
       <div className="container-fluid">
-        <div className="row  mt-3">
+        <div className="row mt-3">
           <div className="col-md-2"></div>
           <div className="col-md-8">
             {role === "owner" && <Add add={this.add} />}
           </div>
           <div className="col-md-2">
             <button
-              className="btn btn-info float-right w-50"
+              className="btn btn-info float-right"
               onClick={() => this.props.history.push("/logout")}
             >
               LogOut
@@ -287,9 +309,9 @@ export default class DashboardPage extends Component {
           </div>
         </div>
         {role === "owner" && (
-          <div className="row">
+          <div className="row mt-4">
             <Container
-              className="col-md-12 mt-4"
+              className="col-md-12"
               title="Admins & Owners"
               height="400px"
             >
