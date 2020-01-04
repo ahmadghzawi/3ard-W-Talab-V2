@@ -1,7 +1,7 @@
 import React from "react";
 
 const Offer = props => {
-  const { data, users, deleteOffer, product_id } = props;
+  const { data, users, deleteOffer, product_id, redirectToOfferPage } = props;
   let buyer = users.filter(user => user._id === Object.keys(data)[0]);
   buyer = buyer[0];
 
@@ -11,7 +11,7 @@ const Offer = props => {
   return (
     <div className="col-md-4">
       <div className="card m-3">
-        <div className="row no-gutters product" onClick={() => {}}>
+        <div className="row no-gutters product" onClick={() => redirectToOfferPage(buyer, data[buyer._id])}>
           <div className="col-md-12">
             <div className="card-body">
               <p className="card-text">

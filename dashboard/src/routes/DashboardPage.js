@@ -288,9 +288,9 @@ export default class DashboardPage extends Component {
           <div className="col-md-8 mt-3">
             {role === "owner" && <Add add={this.add} />}
           </div>
-          <div className="col-md-2 mt-3 d-flex justify-content-center">
-            <button
-              className="btn btn-info"
+          <div className="col-md-2 mt-3">
+          <button
+              className="btn btn-info float-right"
               onClick={() => this.props.history.push("/logout")}
             >
               LogOut

@@ -6,6 +6,7 @@ import LoginPage from "./routes/LoginPage";
 import LogoutPage from "./routes/LogoutPage";
 import DashboardPage from "./routes/DashboardPage";
 import ProductPage from "./routes/ProductPage";
+import OfferPage from "./routes/OfferPage";
 
 class App extends Component {
   render = () => (
@@ -37,6 +38,13 @@ class App extends Component {
           path="/product"
           render={routerProps => (
             <ProductPage {...routerProps} cookies={this.props.cookies} />
+          )}
+        ></Route>
+        <Route
+          exact
+          path="/offer"
+          render={routerProps => (
+            <OfferPage {...routerProps} cookies={this.props.cookies} />
           )}
         ></Route>
         
