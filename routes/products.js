@@ -12,13 +12,13 @@ const router = express.Router();
 router.use(express.json());
 const productsDB = require("../models/productsDatabase");
 
-router.get('/getProduct/:_id', (req, res) => {
-  let _id = req.params._id
-  productsDB.findOne({_id}, (err, product) => {
-    if(err) res.status(400).json(err)
-    else res.status(200).json(product)
-  })
-})
+router.get("/getProduct/:_id", (req, res) => {
+  let _id = req.params._id;
+  productsDB.findOne({ _id }, (err, product) => {
+    if (err) res.status(400).json(err);
+    else res.status(200).json(product);
+  });
+});
 
 router.get("/categories", async (req, res) => {
   try {
@@ -204,8 +204,9 @@ const DeleteTimer = setInterval(() => {
       await DeleteAtSpecificTime(id);
       console.log("deleted items", await DeleteAtSpecificTime());
     });
+    IdsForDeleteArray = [];
   }
-}, 20000);
+}, 50000);
 
 router.put("/acceptOffer/", async (request, response) => {
   await productsDB.findById(request.body._id, async (err, doc) => {
