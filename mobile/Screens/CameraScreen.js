@@ -133,8 +133,8 @@ export default class CameraScreen extends Component {
     }
   };
 
-  isVisible = (isVisible, from) => {
-    this.setState({ isVisible, progress: 0 });
+  isVisible = async (isVisible, from) => {
+    await this.setState({ isVisible, progress: 0 });
     if (from !== "cancel") {
       this.props.navigation.navigate("landingStack");
     }

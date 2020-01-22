@@ -51,9 +51,7 @@ router.post("/editAdmin", async (req, res) => {
   );
 });
 
-router.put(
-  "/editProfile/:user_id/:name/:email/:phone_number",
-  async (req, res) => {
+router.put("/editProfile/:user_id/:name/:email/:phone_number",async (req, res) => {
     let { user_id, name, email, phone_number } = req.params;
     await usersDB.updateOne(
       { _id: user_id },
@@ -66,10 +64,9 @@ router.put(
         }
       }
     );
-  }
-);
+});
 
-/*<=========================== START.fetch all users  func.===========================>*/
+/*<=========================== fetch all users  func.===========================>*/
 router.get("/data", async (request, response) => {
   try {
     const users = await usersDB.find();
@@ -94,8 +91,8 @@ router.get("/data/:id", async (request, response) => {
   }
 });
 
-/*<=========================== End.fetch all users  func.===========================>*/
-/*<=========================== START.create new user  func.===========================>*/
+
+/*<=========================== create new user  func.===========================>*/
 async function verifyToCreateAccount(email) {
   const users = await usersDB.find();
   let verified = true;
@@ -126,14 +123,12 @@ router.post("/new", async (request, response) => {
     }
   } else {
     response.status(400).json({
-      message: "please use forget my password",
       rejection: "email already exists"
     });
   }
 });
-/*<=========================== End.create new user  func.===========================>*/
 
-/*<=========================== Start .verify an existence user  func.===========================>*/
+/*<=========================== verify an existence user  func.===========================>*/
 async function verifyAccount(user) {
   const users = await usersDB.find({});
   let p = new Promise((resolve, reject) => {
@@ -151,9 +146,8 @@ router.get("/auth", async (request, response) => {
     .then(user => response.status(202).json(user))
     .catch(error => response.status(400).json({ message: error }));
 });
-/*<=========================== End .verify an existence user  func.===========================>*/
 
-/*<=========================== Start .delete an existence user  func.===========================>*/
+/*<=========================== delete an existence user  func.===========================>*/
 router.delete("/delete/:id", async (request, response) => {
   let _id = request.params.id;
   await usersDB.deleteOne({ _id }, err => {
@@ -161,6 +155,5 @@ router.delete("/delete/:id", async (request, response) => {
     else response.status(202).json({ deletion: _id });
   });
 });
-/*<=========================== Start .delete an existence user  func.===========================>*/
 
 module.exports = router;

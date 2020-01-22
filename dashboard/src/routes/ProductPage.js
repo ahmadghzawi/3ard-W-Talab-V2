@@ -48,20 +48,20 @@ export default class ProductPage extends Component {
       .catch(err => console.log(err.message));
   };
 
-  deleteOffer = (buyer, _id) => {
-    axios
-      .put(
-        "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer",
-        { buyer, _id }
-      )
-      .then(() => {
-        let offers = this.state.offers.filter(
-          offer => Object.keys(offer)[0] !== buyer
-        );
-        this.setState({ offers });
-      })
-      .catch(err => console.log(err.message));
-  };
+  // deleteOffer = (buyer, _id) => {
+  //   axios
+  //     .put(
+  //       "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer",
+  //       { buyer, _id }
+  //     )
+  //     .then(() => {
+  //       let offers = this.state.offers.filter(
+  //         offer => Object.keys(offer)[0] !== buyer
+  //       );
+  //       this.setState({ offers });
+  //     })
+  //     .catch(err => console.log(err.message));
+  // };
 
   redirectToOfferPage = (buyer, offer) => {
     const { product, offers } = this.state;
@@ -78,7 +78,7 @@ export default class ProductPage extends Component {
         key={index}
         data={offer}
         users={users}
-        deleteOffer={this.deleteOffer}
+        // deleteOffer={this.deleteOffer}
         product_id={product._id}
         redirectToOfferPage={this.redirectToOfferPage}
       />

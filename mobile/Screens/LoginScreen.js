@@ -19,7 +19,16 @@ export default class LoginScreen extends Component {
     isLoggedIn: false,
     email: "",
     password: "",
-    isVisible: false
+    isVisible: false,
+    msg:
+      "Email:\n" +
+      "\t\t\tmust follow 'username@your-domain.com'\n" +
+      "\n" +
+      "Password:\n" +
+      "\t\t\tmust be at least 8 characters long\n" +
+      "\t\t\tmust contain at least one digit\n" +
+      "\t\t\tmust contain at least one lower case\n" +
+      "\t\t\tmust contain at least one upper case\n"
   };
 
   authHandler = (event, name) => {
@@ -29,11 +38,13 @@ export default class LoginScreen extends Component {
     if (name === "email") {
       let email = event.toLowerCase();
       if (regexEmail.test(event)) this.setState({ email });
+      else this.setState({ email: "" });
     }
 
     if (name === "password") {
       let password = event;
       if (regexPassword.test(event)) this.setState({ password });
+      else this.setState({ password: "" });
     }
   };
 
@@ -67,7 +78,8 @@ export default class LoginScreen extends Component {
         })
         .catch(error => alert("Invalid Email or Password!"));
     } else {
-      alert("Please enter Email & Password");
+      // alert("Please enter Email & Password");
+      alert(this.state.msg);
     }
   };
 

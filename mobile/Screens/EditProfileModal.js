@@ -16,7 +16,22 @@ export default class SignUp extends Component {
     user_id: this.props.info.user_id,
     name: this.props.info.name,
     email: this.props.info.email,
-    phone_number: this.props.info.phone_number
+    phone_number: this.props.info.phone_number,
+    msg:
+      "Full Name:\n" +
+      "\t\t\tmust at least 3 characters long (only letters)\n" +
+      "\n" +
+      "Email:\n" +
+      "\t\t\tmust follow 'username@your-domain.com'\n" +
+      "\n" +
+      "Password:\n" +
+      "\t\t\tmust be at least 8 characters long\n" +
+      "\t\t\tmust contain at least one digit\n" +
+      "\t\t\tmust contain at least one lower case\n" +
+      "\t\t\tmust contain at least one upper case\n" +
+      "\n" +
+      "Phone Number:\n" +
+      "\t\t\tmust be at least 9 digits long'\n"
   };
 
   formHandler = (event, name) => {
@@ -67,7 +82,7 @@ export default class SignUp extends Component {
         })
         .catch(error => alert(error.message));
     } else {
-      alert("Please check your info fields!");
+      alert("Please check your info fields!\n\n" + this.state.msg);
     }
   };
 

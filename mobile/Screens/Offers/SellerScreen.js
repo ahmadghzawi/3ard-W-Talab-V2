@@ -50,7 +50,7 @@ export default class SellerScreen extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteAtSpecificTime/${_id}`
       )
-      .then(res => console.log(res.data))
+      .then()
       .catch(err => console.log(err.message))
       .then(
         axios
@@ -84,7 +84,6 @@ export default class SellerScreen extends Component {
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
-    console.log(this.state)
     return (
       <View style={{ margin: 10, flex: 1 }}>
         <Modal isVisible={this.state.isVisible}>

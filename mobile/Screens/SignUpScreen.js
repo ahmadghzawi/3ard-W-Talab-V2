@@ -16,7 +16,22 @@ export default class SignUp extends Component {
     name: "",
     email: "",
     password: "",
-    phone_number: ""
+    phone_number: "",
+    msg:
+      "Full Name:\n" +
+      "\t\t\tmust at least 3 characters long (only letters)\n" +
+      "\n" +
+      "Email:\n" +
+      "\t\t\tmust follow 'username@your-domain.com'\n" +
+      "\n" +
+      "Password:\n" +
+      "\t\t\tmust be at least 8 characters long\n" +
+      "\t\t\tmust contain at least one digit\n" +
+      "\t\t\tmust contain at least one lower case\n" +
+      "\t\t\tmust contain at least one upper case\n" +
+      "\n" +
+      "Phone Number:\n" +
+      "\t\t\tmust be at least 9 digits long'\n"
   };
 
   formHandler = (event, name) => {
@@ -28,21 +43,25 @@ export default class SignUp extends Component {
     if (name === "name") {
       let name = event;
       if (regexName.test(event)) this.setState({ name });
+      else this.setState({ name: "" });
     }
 
     if (name === "email") {
       let email = event.toLowerCase();
       if (regexEmail.test(event)) this.setState({ email });
+      else this.setState({ email: "" });
     }
 
     if (name === "password") {
       let password = event;
       if (regexPassword.test(event)) this.setState({ password });
+      else this.setState({ password: "" });
     }
 
     if (name === "phone_number") {
       let phone_number = event;
       if (regexPhoneNumber.test(event)) this.setState({ phone_number });
+      else this.setState({ phone_number: "" });
     }
   };
 
@@ -73,8 +92,8 @@ export default class SignUp extends Component {
           await AsyncStorage.setItem("email", email);
           this.props.isVisibleHandler(false, true);
         })
-        .catch(error => alert(error.message));
-    }
+        .catch(error => alert("Email already exists "));
+    } else alert(this.state.msg);
   };
 
   render() {

@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-export default class LoginPage extends Component {
+export default class LogoutPage extends Component {
   state = {};
 
   componentDidMount() {

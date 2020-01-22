@@ -40,7 +40,7 @@ router.get("/getProductsByCategory/:category", async (req, res) => {
   }
 });
 
-/*<===========================this method to fetch all post data ===========================*/
+/*<===========================fetch all posts===========================*/
 router.get("/data", async (request, response) => {
   try {
     let products = await productsDB.find();
@@ -51,65 +51,6 @@ router.get("/data", async (request, response) => {
     response.status(500).json({ message: err.message });
   }
 });
-/*<=========================== END.  fetch all   func.===========================>*/
-
-/*<=====================this path will take the root path======================>*/
-/*<===========================this method to search and sort categories all post  ===========================*/
-router.get("/", async (request, response) => {
-  var arr = [];
-  if (Object.keys(request.query).length !== 0) {
-    if (request.query.q != null) {
-      arr = await searchFunc(request.query.q);
-    }
-    if (request.query.q === undefined) {
-      arr = await categoriesFunc(request.query);
-    }
-  }
-  arr = arr.length === 0 ? "no request data found" : arr;
-  response.json(arr);
-});
-/*<=========================== START. sort in Category has been applied in following func.===========================>*/
-/*  params:
-        postCategories
-        location
-        name
-        additionalInfo 
-        BIG n * 4
-*/
-async function categoriesFunc(name) {
-  let Data = await productsDB.find(name);
-  return Data;
-}
-/*<=========================== END. sort in Category  func.===========================>*/
-/*<=========================== START. search operation has been applied in following func.===========================>*/
-/*  params:
-        {q:''}
-*/
-async function searchFunc(target) {
-  // console.log('target', target) // {postCategories: '' }  {location: ''}name additionalInfo etc.
-  let arr = target ? [] : "no data found";
-  let data = productsDB.find();
-  await data
-    .then(DATA => {
-      if (target)
-        DATA.map(post => {
-          Object.values(post._doc).map(nested => {
-            if (typeof nested === "string" && nested != null && target != null)
-              if (nested.toLowerCase().includes(target.toLowerCase())) {
-                // console.log(post._doc)
-                arr.push(post._doc);
-              }
-          });
-        });
-    })
-    .catch(err => {
-      return { message: err.message };
-    });
-  return arr;
-}
-/*<=========================== END. Search  func.===========================>*/
-
-/*<=========================== START.get products API has been applied in following func.===========================>*/
 
 router.get("/getOffers", async (request, response) => {
   response.json(
@@ -118,7 +59,6 @@ router.get("/getOffers", async (request, response) => {
       : await buyerOffers(request.query.buyer)
   );
 });
-
 async function sellerOffers(seller_id) {
   let arr = [];
   if (seller_id != null) {
@@ -177,9 +117,8 @@ async function buyerOffers(buyer) {
 
   return arr;
 }
-/*<=========================== END.get products API   func.===========================>*/
 
-/*<=========================== START.add new products API has been applied in following func.===========================>*/
+/*<=========================== add new products ===========================>*/
 router.post("/newProduct", async (request, response) => {
   // console.log(request.body)
   let {
@@ -212,8 +151,7 @@ router.post("/newProduct", async (request, response) => {
   }
 });
 
-/*<=========================== END. add new products  func.===========================>*/
-/*<=========================== START.add new offer to particular post   func.===========================>*/
+/*<=========================== add offer ===========================>*/
 router.get("/postOffers", async (request, response) => {
   let { _id, buyer, offer } = request.query;
   let newObj = {
@@ -230,8 +168,8 @@ router.get("/postOffers", async (request, response) => {
     response.status(500).json({ message: err.message });
   }
 });
-/*<=========================== END. add new products  func.===========================>*/
-/*<=========================== START. DELETE a Post  func.===========================>*/
+
+/*<=========================== DELETE a Post  func.===========================>*/
 let IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:id", async (request, response) => {
   let ids = request.params._id;
@@ -329,7 +267,7 @@ router.put("/deleteOffer/", (request, response) => {
     else response.status(200).json("ok");
   });
 });
-/*<=========================== END. DELETE a Post  func.===========================>*/
+/*<=========================== DELETE a Post  func.===========================>*/
 router.get("/getUserProducts", async (request, response) => {
   try {
     let { seller_id } = request.query;
@@ -368,4 +306,5 @@ router.delete("/deleteUserPosts/:id", async (request, response) => {
     response.status(404).json({ err });
   }
 });
+
 module.exports = router;

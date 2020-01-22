@@ -1,7 +1,7 @@
 import React from "react";
 
 const Offer = props => {
-  const { data, users, deleteOffer, product_id, redirectToOfferPage } = props;
+  const { data, users, redirectToOfferPage } = props;
   let buyer = users.filter(user => user._id === Object.keys(data)[0]);
   buyer = buyer[0];
 
@@ -33,13 +33,13 @@ const Offer = props => {
             </div>
           </div>
         </div>
-        <button
+        {/* <button
           className="btn btn-danger position-absolute"
           style={{ bottom: "25px", right: "25px" }}
           onClick={() => deleteOffer(buyer._id, product_id)}
         >
           DELETE
-        </button>
+        </button> */}
       </div>
     </div>
   );

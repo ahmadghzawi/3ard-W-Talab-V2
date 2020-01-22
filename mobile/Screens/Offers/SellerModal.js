@@ -11,7 +11,6 @@ import { vw, vh } from "react-native-expo-viewport-units";
 
 export default class SellerModal extends Component {
   render() {
-    console.log(this.props.post)
     return (
       <ScrollView>
         <View style={styles.container}>

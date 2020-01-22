@@ -85,7 +85,7 @@ export default class BuyerModal extends Component {
                 {this.props.post.price}JOD
               </Text>
             </View>
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 width: "100%",
@@ -101,7 +101,7 @@ export default class BuyerModal extends Component {
                   Delete this Offer!
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>

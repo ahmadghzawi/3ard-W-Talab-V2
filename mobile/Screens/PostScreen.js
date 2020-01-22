@@ -54,7 +54,6 @@ export default class AddPost extends Component {
             }
           )
           .then(res => {
-            console.log(res.data);
             this.setState({ offer, showOffer: true });
             this.props.getPosts();
           })

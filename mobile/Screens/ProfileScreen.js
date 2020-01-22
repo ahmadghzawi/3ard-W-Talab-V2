@@ -71,7 +71,7 @@ export default class Profile extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${id}`
       )
-      .then(res => console.log(res.data))
+      .then()
       .catch(err => alert(err.message))
       .then(() => {
         this.fetchUsersPosts();
@@ -93,14 +93,14 @@ export default class Profile extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${this.state.user_id}`
       )
-      .then(res => console.log(res.data))
+      .then()
       .catch(err => console.log(err))
       .then(
         axios
           .delete(
             `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${this.state.user_id}`
           )
-          .then(res => console.log(res))
+          .then()
           .catch(err => console.log(err))
       )
       .then(() => this.logOut());
@@ -144,7 +144,13 @@ export default class Profile extends Component {
             <Text style={styles.name}>{`${this.state.phone_number}`}</Text>
             <Text style={styles.name}>{`${this.state.email}`}</Text>
           </TouchableOpacity>
-          <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10, }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10
+            }}
+          >
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={this.logOut}

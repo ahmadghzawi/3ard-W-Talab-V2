@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Container from "../components/Container";
-import axios from "axios";
+// import axios from "axios";
 
-export default class ProductPage extends Component {
+export default class OfferPage extends Component {
   state = {
     ...this.props.location.state
   };
@@ -11,19 +11,19 @@ export default class ProductPage extends Component {
     if (!this.props.cookies.get("user")) this.props.history.push("/");
   }
 
-  deleteOffer = () => {
-    const buyer = this.state.buyer._id;
-    const _id = this.state.product._id;
-    axios
-      .put(
-        "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer",
-        { buyer, _id }
-      )
-      .then(() => {
-        this.props.history.goBack();
-      })
-      .catch(err => console.log(err.message));
-  };
+  // deleteOffer = () => {
+  //   const buyer = this.state.buyer._id;
+  //   const _id = this.state.product._id;
+  //   axios
+  //     .put(
+  //       "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer",
+  //       { buyer, _id }
+  //     )
+  //     .then(() => {
+  //       this.props.history.goBack();
+  //     })
+  //     .catch(err => console.log(err.message));
+  // };
 
   render() {
     const { product, offers, buyer, offer } = this.state;
@@ -105,7 +105,7 @@ export default class ProductPage extends Component {
                     <b>Highest Price:</b> {highestPrice} JOD
                   </p>
                 </div>
-                <div className="col-md-1">
+                {/* <div className="col-md-1">
                   <button
                     className="btn btn-danger position-absolute"
                     style={{ fontSize: 20, bottom: "10px", right: "25px" }}
@@ -113,7 +113,7 @@ export default class ProductPage extends Component {
                   >
                     DELETE
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </Container>

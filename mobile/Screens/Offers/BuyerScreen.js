@@ -42,32 +42,31 @@ export default class BuyerScreen extends Component {
     this.setState({ post, isVisible });
   };
 
-  deleteOfferHandler = async post => {
-    let buyer = await AsyncStorage.getItem("user_id");
-    console.log(post);
-    let _id = post._id;
-    axios
-      .put(
-        "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer/",
-        {
-          _id,
-          buyer
-        }
-      )
-      .then(res => {
-        console.log(res.data);
-        this.fetchBuyerSellerOffers();
-      })
-      .catch(err => console.log(err))
-      .then(() => {
-        this.isVisible(false);
-      });
-  };
+  // deleteOfferHandler = async post => {
+  //   let buyer = await AsyncStorage.getItem("user_id");
+  //   console.log(post);
+  //   let _id = post._id;
+  //   axios
+  //     .put(
+  //       "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer/",
+  //       {
+  //         _id,
+  //         buyer
+  //       }
+  //     )
+  //     .then(res => {
+  //       console.log(res.data);
+  //       this.fetchBuyerSellerOffers();
+  //     })
+  //     .catch(err => console.log(err))
+  //     .then(() => {
+  //       this.isVisible(false);
+  //     });
+  // };
 
   isVisible = isVisible => this.setState({ isVisible });
 
   render() {
-    console.log(this.state.offers)
     return (
       <View style={{ margin: 10, flex: 1 }}>
         <Modal isVisible={this.state.isVisible}>
