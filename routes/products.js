@@ -177,7 +177,7 @@ router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
     DeleteTimer;
   }
   date = new Date();
-  let hours = date.getHours();
+  let hours = date.getMinutes();
   response.json(hours);
 });
 
