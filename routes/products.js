@@ -171,6 +171,7 @@ router.get("/postOffers", async (request, response) => {
 
 /*<=========================== DELETE a Post  func.===========================>*/
 IdsForDeleteArray = [];
+console.log('restart')
 router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
   IdsForDeleteArray.push(request.params._id);
   
