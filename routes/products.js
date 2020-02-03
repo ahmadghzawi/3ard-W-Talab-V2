@@ -170,38 +170,20 @@ router.get("/postOffers", async (request, response) => {
 });
 
 /*<=========================== DELETE a Post  func.===========================>*/
-let IdsForDeleteArray = [];
+IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
   IdsForDeleteArray.push(request.params._id);
   if (IdsForDeleteArray.length !== 0) {
-    DeleteTimer;
+    DeleteTimer();
   }
   response.json(request.params._id);
 });
 
-const DeleteAtSpecificTime = async id => {
-  let output = null;
-  try {
-    await productsDB.findByIdAndDelete(id, (err, doc) => {
-      if (err) {
-        output = { message: err.message };
-      } else {
-        output = { deletion: doc };
-        IdsForDeleteArray.shift();
-      }
-    });
-  } catch (error) {
-    output = { message: error.message };
-  }
-  return output;
-};
-
 const DeleteTimer = setInterval(() => {
   var date = new Date();
-  if (date.getHours() === 22 && date.getMinutes() === 52) {
-    IdsForDeleteArray.forEach(async id => {
-      await DeleteAtSpecificTime(id);
-      console.log("deleted items", await DeleteAtSpecificTime());
+  if (date.getHours() === 23 && date.getMinutes() === 26) {
+    IdsForDeleteArray.forEach(async _id => {
+      await productsDB.deleteOne(_id)
     });
     IdsForDeleteArray = [];
   }
