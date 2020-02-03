@@ -111,6 +111,7 @@ export default class DashboardPage extends Component {
       this.state.password = event.target["password"].value;
       this.state.role = event.target["role"].value;
       await this.removeSpace();
+
       const { username, password, role } = this.state;
 
       if (this.checkForm())
@@ -125,7 +126,7 @@ export default class DashboardPage extends Component {
                 ...this.state.admins,
                 { _id: res.data._id, username, password, role }
               ];
-              this.setState({ admins });
+              this.setState({ admins});
             } else alert(res.data);
           })
           .catch(err => console.log(err.message));
@@ -243,7 +244,9 @@ export default class DashboardPage extends Component {
       selectedProducts,
       categories,
       msg,
-      selectedCategory
+      selectedCategory,
+      username,
+      password
     } = this.state;
 
     const adminsToShow = admins.map(admin => (
@@ -286,7 +289,7 @@ export default class DashboardPage extends Component {
         <div className="row">
           <div className="col-md-2"></div>
           <div className="col-md-8 mt-3">
-            {role === "owner" && <Add add={this.add} />}
+            {role === "owner" && <Add add={this.add}/>}
           </div>
           <div className="col-md-2 mt-3">
           <button

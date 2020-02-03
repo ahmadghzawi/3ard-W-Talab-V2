@@ -22,7 +22,6 @@ router.post("/dashboardLogin", async (req, res) => {
 
 router.post("/dashboardAdd", (req, res) => {
   const { username, password, role } = req.body;
-
   usersDB.findOne({ username }, (err, doc) => {
     if (err) res.status(500).json({ message: error.message });
     else {

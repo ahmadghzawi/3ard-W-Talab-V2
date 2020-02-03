@@ -172,8 +172,7 @@ router.get("/postOffers", async (request, response) => {
 /*<=========================== DELETE a Post  func.===========================>*/
 let IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:id", async (request, response) => {
-  let ids = request.params._id;
-  IdsForDeleteArray.push(ids);
+  IdsForDeleteArray.push(request.params.id);
   if (IdsForDeleteArray.length !== 0) {
     DeleteTimer;
   }
@@ -199,14 +198,14 @@ const DeleteAtSpecificTime = async id => {
 
 const DeleteTimer = setInterval(() => {
   var date = new Date();
-  if (date.getHours() === 0 && date.getMinutes() === 0) {
+  if (date.getHours() === 22 && date.getMinutes() === 40) {
     IdsForDeleteArray.forEach(async id => {
       await DeleteAtSpecificTime(id);
       console.log("deleted items", await DeleteAtSpecificTime());
     });
     IdsForDeleteArray = [];
   }
-}, 50000);
+}, 59000);
 
 router.put("/acceptOffer/", async (request, response) => {
   await productsDB.findById(request.body._id, async (err, doc) => {
