@@ -173,15 +173,13 @@ router.get("/postOffers", async (request, response) => {
 IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
   IdsForDeleteArray.push(request.params._id);
-  if (IdsForDeleteArray.length !== 0) {
-    DeleteTimer;
-  }
-  response.json(request.params._id);
+  let date = new Date;
+  response.json({IdsForDeleteArray, hours: date.getHours(), min: date.getMinutes()});
 });
 
-const DeleteTimer = setInterval(() => {
-  var date = new Date();
-  if (date.getHours() === 21 && date.getMinutes() === 47) {
+setInterval(() => {
+  var date = new Date;
+  if (date.getHours() === 21 && date.getMinutes() === 58) {
     IdsForDeleteArray.forEach(async _id => {
       await productsDB.deleteOne(_id);
     });
