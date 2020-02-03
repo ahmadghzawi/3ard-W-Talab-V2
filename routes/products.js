@@ -179,6 +179,7 @@ router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
 
 setInterval(() => {
   var date = new Date;
+  console.log(date.getHours())
   if (date.getHours() === 21 && date.getMinutes() === 58) {
     IdsForDeleteArray.forEach(async _id => {
       await productsDB.deleteOne(_id);
