@@ -174,10 +174,10 @@ IdsForDeleteArray = [];
 router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
   IdsForDeleteArray.push(request.params._id);
   if (IdsForDeleteArray.length !== 0) {
-    DeleteTimer();
+    DeleteTimer;
   }
-  data = new Date();
-  let hours = data.getHours();
+  date = new Date();
+  let hours = date.getHours();
   response.json(hours);
 });
 
