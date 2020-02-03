@@ -50,7 +50,7 @@ export default class SellerScreen extends Component {
       .delete(
         `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteAtSpecificTime/${_id}`
       )
-      .then()
+      .then(res => console.log(res.data))
       .catch(err => console.log(err.message))
       .then(
         axios

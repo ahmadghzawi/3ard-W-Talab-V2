@@ -171,12 +171,12 @@ router.get("/postOffers", async (request, response) => {
 
 /*<=========================== DELETE a Post  func.===========================>*/
 let IdsForDeleteArray = [];
-router.delete("/deleteAtSpecificTime/:id", async (request, response) => {
-  IdsForDeleteArray.push(request.params.id);
+router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
+  IdsForDeleteArray.push(request.params._id);
   if (IdsForDeleteArray.length !== 0) {
     DeleteTimer;
   }
-  response.json("it will be deleted at 12 AM");
+  response.json(request.params._id);
 });
 
 const DeleteAtSpecificTime = async id => {
@@ -198,7 +198,7 @@ const DeleteAtSpecificTime = async id => {
 
 const DeleteTimer = setInterval(() => {
   var date = new Date();
-  if (date.getHours() === 22 && date.getMinutes() === 40) {
+  if (date.getHours() === 22 && date.getMinutes() === 52) {
     IdsForDeleteArray.forEach(async id => {
       await DeleteAtSpecificTime(id);
       console.log("deleted items", await DeleteAtSpecificTime());
