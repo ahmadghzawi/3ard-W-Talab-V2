@@ -170,20 +170,11 @@ router.get("/postOffers", async (request, response) => {
 });
 
 /*<=========================== DELETE a Post  func.===========================>*/
-IdsForDeleteArray = [];
-deleteTimer(IdsForDeleteArray)
-
-router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
-  IdsForDeleteArray.push(request.params._id);
-  let date = new Date;
-  response.json({IdsForDeleteArray, hours: date.getHours(), min: date.getMinutes()});
-});
-
 const deleteTimer = ids => setInterval(() => {
   var date = new Date;
   console.log('begin:  ', ids)
   console.log(date.getHours())
-  if (date.getHours() === 22 && date.getMinutes() === 43) {
+  if (date.getHours() === 23 && date.getMinutes() === 3) {
     console.log('delete me')
     ids.forEach(async _id => {
       console.log('inside for each')
@@ -194,6 +185,16 @@ const deleteTimer = ids => setInterval(() => {
   }
   console.log('is empty?:  ', ids)
 }, 10000);
+
+IdsForDeleteArray = [];
+deleteTimer(IdsForDeleteArray)
+
+router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
+  IdsForDeleteArray.push(request.params._id);
+  let date = new Date;
+  response.json({IdsForDeleteArray, hours: date.getHours(), min: date.getMinutes()});
+});
+
 
 router.put("/acceptOffer/", async (request, response) => {
   await productsDB.findById(request.body._id, async (err, doc) => {
