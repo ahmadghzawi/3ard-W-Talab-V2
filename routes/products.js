@@ -180,12 +180,17 @@ router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
 setInterval(() => {
   var date = new Date;
   console.log(date.getHours())
-  if (date.getHours() === 21 && date.getMinutes() === 58) {
+  if (date.getHours() === 22 && date.getMinutes() === 20) {
+    console.log('delete me')
     IdsForDeleteArray.forEach(async _id => {
+      console.log('inside for each')
       await productsDB.deleteOne(_id);
+
     });
+    console.log('ids:  ', IdsForDeleteArray)
     IdsForDeleteArray = [];
   }
+  console.log('is empty?:  ', IdsForDeleteArray)
 }, 59000);
 
 router.put("/acceptOffer/", async (request, response) => {
