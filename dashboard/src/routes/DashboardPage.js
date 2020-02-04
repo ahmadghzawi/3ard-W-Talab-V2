@@ -40,7 +40,7 @@ export default class DashboardPage extends Component {
 
   getUsers = async () => {
     await axios
-      .get("https://ard-w-talab.herokuapp.com/users/API/data")
+      .get("https://ard-w-talab-version-2.herokuapp.com/users/API/data")
       .then(async res => {
         let admins = [];
         let users = [];
@@ -55,7 +55,7 @@ export default class DashboardPage extends Component {
 
   getProductsAndCategories = async () => {
     await axios
-      .get("https://ard-w-talab.herokuapp.com/posts/API/data")
+      .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(async res => {
         await this.setState({
           products: res.data.products,
@@ -117,7 +117,7 @@ export default class DashboardPage extends Component {
       if (this.checkForm())
         axios
           .post(
-            "https://ard-w-talab.herokuapp.com/users/API/dashboardAdd",
+            "https://ard-w-talab-version-2.herokuapp.com/users/API/dashboardAdd",
             { username, password, role }
           )
           .then(async res => {
@@ -156,7 +156,7 @@ export default class DashboardPage extends Component {
     if (this.checkForm())
       axios
         .post(
-          "https://ard-w-talab.herokuapp.com/users/API/editAdmin",
+          "https://ard-w-talab-version-2.herokuapp.com/users/API/editAdmin",
           { _id, username, password, role }
         )
         .then(() => {
@@ -172,7 +172,7 @@ export default class DashboardPage extends Component {
   deleteProducts = _id => {
     axios
       .delete(
-        `https://ard-w-talab.herokuapp.com/posts/API/deleteUserPosts/${_id}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${_id}`
       )
       .then(async res => {
         let products = this.state.products.filter(
@@ -196,7 +196,7 @@ export default class DashboardPage extends Component {
 
     axios
       .delete(
-        `https://ard-w-talab.herokuapp.com/users/API/delete/${_id}`
+        `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${_id}`
       )
       .then(() => {
         let admins = this.state.admins.filter(user => user._id !== _id);
@@ -209,7 +209,7 @@ export default class DashboardPage extends Component {
   deleteProduct = _id => {
     axios
       .delete(
-        `https://ard-w-talab.herokuapp.com/posts/API/deletePost/${_id}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${_id}`
       )
       .then(async () => {
         let products = this.state.products.filter(

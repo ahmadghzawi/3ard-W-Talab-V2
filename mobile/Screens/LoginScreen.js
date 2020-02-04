@@ -33,7 +33,7 @@ export default class LoginScreen extends Component {
 
   authHandler = (event, name) => {
     const regexEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-    const regexPassword = /^[0-9a-zA-Z]{8,}$/;
+    const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
 
     if (name === "email") {
       let email = event.toLowerCase();
@@ -63,7 +63,7 @@ export default class LoginScreen extends Component {
     const { email, password } = this.state;
     if (email !== "" && password !== "") {
       axios
-        .post("https://ard-w-talab.herokuapp.com/users/API/auth", {
+        .post("https://ard-w-talab-version-2.herokuapp.com/users/API/auth", {
           email,
           password
         })

@@ -37,7 +37,7 @@ export default class Home extends Component {
       this.setState({ selectedCategory: category });
       axios
         .get(
-          `https://ard-w-talab.herokuapp.com/posts/API/getProductsByCategory/${category}`
+          `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProductsByCategory/${category}`
         )
         .then(res => {
           this.setState({
@@ -53,7 +53,7 @@ export default class Home extends Component {
     let user_id = await AsyncStorage.getItem("user_id");
     this.setState({ user_id });
     axios
-      .get("https://ard-w-talab.herokuapp.com/posts/API/data")
+      .get("https://ard-w-talab-version-2.herokuapp.com/posts/API/data")
       .then(res => {
         this.setState({
           posts: res.data.products,

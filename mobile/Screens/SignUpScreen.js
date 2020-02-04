@@ -81,7 +81,7 @@ export default class SignUp extends Component {
     if (name !== "" && email !== "" && password !== "" && phone_number !== "") {
       axios
         .post(
-          "https://ard-w-talab.herokuapp.com/users/API/new",
+          "https://ard-w-talab-version-2.herokuapp.com/users/API/new",
           this.state
         )
         .then(async response => {

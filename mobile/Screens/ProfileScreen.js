@@ -40,7 +40,7 @@ export default class Profile extends Component {
     let seller_id = this.state.user_id;
     axios
       .get(
-        "https://ard-w-talab.herokuapp.com/posts/API/getUserProducts",
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/getUserProducts",
         {
           params: {
             seller_id
@@ -69,7 +69,7 @@ export default class Profile extends Component {
   deletePost = id => {
     axios
       .delete(
-        `https://ard-w-talab.herokuapp.com/posts/API/deletePost/${id}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${id}`
       )
       .then()
       .catch(err => alert(err.message))
@@ -91,14 +91,14 @@ export default class Profile extends Component {
   deactivateAccountHandler = async () => {
     axios
       .delete(
-        `https://ard-w-talab.herokuapp.com/posts/API/deleteUserPosts/${this.state.user_id}`
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteUserPosts/${this.state.user_id}`
       )
       .then()
       .catch(err => console.log(err))
       .then(
         axios
           .delete(
-            `https://ard-w-talab.herokuapp.com/users/API/delete/${this.state.user_id}`
+            `https://ard-w-talab-version-2.herokuapp.com/users/API/delete/${this.state.user_id}`
           )
           .then()
           .catch(err => console.log(err))

@@ -44,7 +44,7 @@ export default class AddPost extends Component {
       if (offer > this.props.post.bid) {
         axios
           .get(
-            "https://ard-w-talab.herokuapp.com/posts/API/postOffers",
+            "https://ard-w-talab-version-2.herokuapp.com/posts/API/postOffers",
             {
               params: {
                 _id,

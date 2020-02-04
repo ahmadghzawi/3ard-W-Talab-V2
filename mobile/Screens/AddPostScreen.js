@@ -46,7 +46,7 @@ export default class AddPost extends Component {
     await this.removeSpace();
     axios
       .post(
-        "https://ard-w-talab.herokuapp.com/posts/API/newProduct",
+        "https://ard-w-talab-version-2.herokuapp.com/posts/API/newProduct",
         this.state
       )
       .then()

@@ -6,6 +6,7 @@
     204 No Content
     400 Bad Request
     404 Not Found
+    500 Internal Server Error
  */
 const express = require("express");
 const router = express.Router();
@@ -65,19 +66,11 @@ router.get("/data", async (request, response) => {
   });
 });
 
-router.get("/data/:_id", (request, response) => {
-  const { _id } = request.params;
-  usersDB.findOne({ _id }, (err, res) => {
-    if (err) response.status(404).json({ message: error });
-    else response.json(res);
-  });
-});
-
 router.post("/new", (request, response) => {
   const { name, email, password, phone_number } = request.body;
   usersDB.findOne({ email }, (error, doc) => {
     if (error) {
-      response.status(404).json({ message: error });
+      response.status(500).json({ message: error });
     } else {
       if (!doc) {
         usersDB.create(
@@ -95,8 +88,8 @@ router.post("/new", (request, response) => {
 router.post("/auth", (request, response) => {
   const { email, password } = request.body;
   usersDB.findOne({ email, password }, { password: 0 }, (error, doc) => {
-    if (error) response.status(404).json({ message: error });
-    else if (doc == null) response.status(404).json({ message: error });
+    if (error) response.status(500).json({ message: error });
+    else if (doc == null) response.status(500).json({ message: error });
     else response.status(200).json(doc);
   });
 });

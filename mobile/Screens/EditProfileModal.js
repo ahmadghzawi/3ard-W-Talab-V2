@@ -71,7 +71,7 @@ export default class SignUp extends Component {
       const { user_id, name, email, phone_number } = this.state;
       axios
         .put(
-          `https://ard-w-talab.herokuapp.com/users/API/editProfile/${user_id}/${name}/${email}/${phone_number}`
+          `https://ard-w-talab-version-2.herokuapp.com/users/API/editProfile/${user_id}/${name}/${email}/${phone_number}`
         )
         .then(async response => {
           const { name, email, phone_number } = this.state;

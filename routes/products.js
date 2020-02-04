@@ -6,6 +6,7 @@
     204 No Content
     400 Bad Request
     404 Not Found
+    500 Internal Server Error
  */
 const express = require("express");
 const router = express.Router();
@@ -172,35 +173,21 @@ router.get("/postOffers", async (request, response) => {
 /*<=========================== DELETE a Post  func.===========================>*/
 IdsForDeleteArray = [];
 
-const timer = setInterval(() => {
-  var date = new Date();
-  console.log("begin:  ", IdsForDeleteArray);
-  console.log(date.getMinutes());
-  if (date.getHours() === 23 && date.getMinutes() === 15) {
-    console.log("delete me");
-    IdsForDeleteArray.forEach(async _id => {
-      console.log("inside for each");
-      await productsDB.deleteOne({ _id });
-    });
-    console.log("ids:  ", IdsForDeleteArray);
-    IdsForDeleteArray = [];
-  }
-  console.log("is empty?:  ", IdsForDeleteArray);
-}, 10000);
+const timer = () => {
+  setInterval(() => {
+    var date = new Date();
+    if (date.getHours() === 15 && date.getMinutes() === 15) {
+      IdsForDeleteArray.forEach(_id => productsDB.deleteOne({ _id }));
+      IdsForDeleteArray = [];
+    }
+  }, 10000);
+};
+clearInterval(timer);
 
-router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
+router.delete("/deleteAtSpecificTime/:_id", request => {
   IdsForDeleteArray.push(request.params._id);
-  console.log("accepted ids:  ", IdsForDeleteArray);
-
   if (IdsForDeleteArray.length === 0) clearInterval(timer);
   else timer;
-
-  let date = new Date();
-  response.json({
-    IdsForDeleteArray,
-    hours: date.getHours(),
-    min: date.getMinutes()
-  });
 });
 
 router.put("/acceptOffer/", async (request, response) => {
