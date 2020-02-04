@@ -188,11 +188,13 @@ const timer = setInterval(() => {
   console.log("is empty?:  ", IdsForDeleteArray);
 }, 10000);
 
-if (IdsForDeleteArray.length === 0) clearInterval(timer);
-
 router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
   IdsForDeleteArray.push(request.params._id);
   console.log("accepted ids:  ", IdsForDeleteArray);
+
+  if (IdsForDeleteArray.length === 0) clearInterval(timer);
+  else timer;
+
   let date = new Date();
   response.json({
     IdsForDeleteArray,

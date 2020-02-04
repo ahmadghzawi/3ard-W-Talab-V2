@@ -96,8 +96,11 @@ router.get("/auth", (request, response) => {
   const { email, password } = request.body;
   usersDB.findOne({ email, password }, { password: 0 }, (error, doc) => {
     if (error) response.status(404).json({ message: error });
-    else if (doc == null) response.status(404).json({ message: error });
-    else response.status(200).json(doc);
+    else {
+      console.log(doc)
+      if (doc == null) response.status(404).json({ message: error });
+      else response.status(200).json(doc);
+    }
   });
 });
 
