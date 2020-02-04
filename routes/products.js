@@ -179,8 +179,9 @@ setInterval(() => {
   }
 }, 59000);
 
-router.delete("/deleteAtSpecificTime/:_id", request => {
+router.delete("/deleteAtSpecificTime/:_id", (request, response) => {
   IdsForDeleteArray.push(request.params._id);
+  response.status(200).json('ok')
 });
 
 router.put("/acceptOffer/", async (request, response) => {
