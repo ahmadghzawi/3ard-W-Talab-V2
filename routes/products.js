@@ -177,15 +177,15 @@ const timer = () => {
     if (date.getHours() === 15 && date.getMinutes() === 15) {
       IdsForDeleteArray.forEach(_id => productsDB.deleteOne({ _id }));
       IdsForDeleteArray = [];
+      clearInterval(timer);
     }
-  }, 10000);
+  }, 59000);
 };
 clearInterval(timer);
 
 router.delete("/deleteAtSpecificTime/:_id", request => {
   IdsForDeleteArray.push(request.params._id);
-  if (IdsForDeleteArray.length === 0) clearInterval(timer);
-  else timer;
+  timer;
 });
 
 router.put("/acceptOffer/", async (request, response) => {
