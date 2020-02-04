@@ -181,7 +181,7 @@ router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
 setInterval(() => {
   var date = new Date;
   console.log('begin:  ', IdsForDeleteArray)
-  console.log(date.getHours())
+  console.log(date.getMinutes())
   if (date.getHours() === 23 && date.getMinutes() === 15) {
     console.log('delete me')
     IdsForDeleteArray.forEach(async _id => {
