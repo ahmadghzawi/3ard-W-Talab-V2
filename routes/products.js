@@ -168,24 +168,19 @@ router.get("/postOffers", async (request, response) => {
   }
 });
 
-//delete product 
+//delete product
 IdsForDeleteArray = [];
 
-const timer = () => {
-  setInterval(() => {
-    var date = new Date();
-    if (date.getHours() === 15 && date.getMinutes() === 15) {
-      IdsForDeleteArray.forEach(_id => productsDB.deleteOne({ _id }));
-      IdsForDeleteArray = [];
-      clearInterval(timer);
-    }
-  }, 59000);
-};
-clearInterval(timer);
+setInterval(() => {
+  let date = new Date();
+  if (date.getHours() === 15 && date.getMinutes() === 15) {
+    IdsForDeleteArray.forEach(_id => productsDB.deleteOne({ _id }));
+    IdsForDeleteArray = [];
+  }
+}, 59000);
 
 router.delete("/deleteAtSpecificTime/:_id", request => {
   IdsForDeleteArray.push(request.params._id);
-  timer;
 });
 
 router.put("/acceptOffer/", async (request, response) => {
