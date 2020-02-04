@@ -22,7 +22,8 @@ export default class Home extends Component {
     refreshing: false,
     user_id: null,
     selectedCategory: "All Categories",
-    categories: []
+    categories: [],
+    priceFilter: null
   };
 
   componentDidMount() {
@@ -49,6 +50,26 @@ export default class Home extends Component {
     }
   };
 
+  getProductsLessThan = () => {
+    const price = this.state.priceFilter;
+    console.log(price)
+    axios
+      .get(
+        `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProductsLessThan/${price}`
+      )
+      .then(res => {
+        this.setState({
+          posts: res.data,
+          refreshing: false
+        });
+      })
+      .catch(err => console.log(err));
+  };
+
+  getFilterPrice = priceFilter => {
+    this.setState({ priceFilter });
+  };
+
   getPostsAndCategories = async () => {
     let user_id = await AsyncStorage.getItem("user_id");
     this.setState({ user_id });
@@ -61,7 +82,7 @@ export default class Home extends Component {
           refreshing: false
         });
       })
-      
+
       .catch(err => console.log({ message: err.message }));
   };
 
@@ -83,6 +104,26 @@ export default class Home extends Component {
             <Picker.Item key={index} label={category} value={category} />
           ))}
         </Picker>
+
+        <TextInput
+          placeholder="  filter by price"
+          placeholderTextColor="darkgrey"
+          blurOnSubmit
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="number-pad"
+          onChangeText={price => this.getFilterPrice(price)}
+        ></TextInput>
+
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={this.getProductsLessThan}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            filter by price
+          </Text>
+        </TouchableOpacity>
+
         <FlatList
           keyExtractor={post => post._id}
           data={posts}
@@ -122,5 +163,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
     alignItems: "center"
+  },
+  buttonContainer: {
+    marginTop: 10,
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: "90%",
+    borderRadius: 10,
+    backgroundColor: "#00BFFF"
   }
 });

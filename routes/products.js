@@ -41,6 +41,14 @@ router.get("/getProductsByCategory/:category", (req, res) => {
   );
 });
 
+router.get("/getProductsLessThan/:price", (req, res) => {
+  const { price } = req.params;
+  productsDB.find({ bid: { $lt: price } }, (err, docs) => {
+    if (err) res.json("error");
+    else res.json(docs);
+  });
+});
+
 //fetch all posts
 router.get("/data", async (request, response) => {
   try {
