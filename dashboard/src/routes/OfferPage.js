@@ -16,7 +16,7 @@ export default class OfferPage extends Component {
   //   const _id = this.state.product._id;
   //   axios
   //     .put(
-  //       "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer",
+  //       "https://ard-w-talab.herokuapp.com/posts/API/deleteOffer",
   //       { buyer, _id }
   //     )
   //     .then(() => {

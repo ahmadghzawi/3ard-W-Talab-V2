@@ -22,7 +22,7 @@ export default class ProductPage extends Component {
     let _id = this.state.productId;
     axios
       .get(
-        `https://ard-w-talab-version-2.herokuapp.com/posts/API/getProduct/${_id}`
+        `https://ard-w-talab.herokuapp.com/posts/API/getProduct/${_id}`
       )
       .then(({ data }) => {
         let product = {};
@@ -42,7 +42,7 @@ export default class ProductPage extends Component {
   deleteProduct = _id => {
     axios
       .delete(
-        `https://ard-w-talab-version-2.herokuapp.com/posts/API/deletePost/${_id}`
+        `https://ard-w-talab.herokuapp.com/posts/API/deletePost/${_id}`
       )
       .then(() => this.props.history.push("/dashboard"))
       .catch(err => console.log(err.message));
@@ -51,7 +51,7 @@ export default class ProductPage extends Component {
   // deleteOffer = (buyer, _id) => {
   //   axios
   //     .put(
-  //       "https://ard-w-talab-version-2.herokuapp.com/posts/API/deleteOffer",
+  //       "https://ard-w-talab.herokuapp.com/posts/API/deleteOffer",
   //       { buyer, _id }
   //     )
   //     .then(() => {
