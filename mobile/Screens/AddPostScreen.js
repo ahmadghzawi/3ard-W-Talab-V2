@@ -50,7 +50,7 @@ export default class AddPost extends Component {
         this.state
       )
       .then()
-      .catch(err => console.log(err));
+      .catch(err => alert("Please, fill the details"));
     this.props.isVisible(false, "submitted");
   };
 
