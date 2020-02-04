@@ -63,8 +63,9 @@ export default class LoginScreen extends Component {
     const { email, password } = this.state;
     if (email !== "" && password !== "") {
       axios
-        .get("https://ard-w-talab.herokuapp.com/users/API/auth", {
-          params: { email, password }
+        .post("https://ard-w-talab.herokuapp.com/users/API/auth", {
+          email,
+          password
         })
         .then(async response => {
           const { _id, name, email, phone_number } = response.data;

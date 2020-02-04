@@ -93,7 +93,7 @@ router.post("/new", (request, response) => {
 });
 
 router.get("/auth", (request, response) => {
-  const { email, password } = request.params;
+  const { email, password } = request.body;
   usersDB.findOne({ email, password }, { password: 0 }, (error, doc) => {
     if (error) response.status(404).json({ message: error });
     else if (doc == null) response.status(404).json({ message: error });

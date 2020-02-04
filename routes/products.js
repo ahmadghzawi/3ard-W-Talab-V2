@@ -171,28 +171,35 @@ router.get("/postOffers", async (request, response) => {
 
 /*<=========================== DELETE a Post  func.===========================>*/
 IdsForDeleteArray = [];
-router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
-  IdsForDeleteArray.push(request.params._id);
-  console.log('accepted ids:  ', IdsForDeleteArray)
-  let date = new Date;
-  response.json({IdsForDeleteArray, hours: date.getHours(), min: date.getMinutes()});
-});
 
-setInterval(() => {
-  var date = new Date;
-  console.log('begin:  ', IdsForDeleteArray)
-  console.log(date.getMinutes())
+const timer = setInterval(() => {
+  var date = new Date();
+  console.log("begin:  ", IdsForDeleteArray);
+  console.log(date.getMinutes());
   if (date.getHours() === 23 && date.getMinutes() === 15) {
-    console.log('delete me')
+    console.log("delete me");
     IdsForDeleteArray.forEach(async _id => {
-      console.log('inside for each')
-      await productsDB.deleteOne({_id});
+      console.log("inside for each");
+      await productsDB.deleteOne({ _id });
     });
-    console.log('ids:  ', IdsForDeleteArray)
+    console.log("ids:  ", IdsForDeleteArray);
     IdsForDeleteArray = [];
   }
-  console.log('is empty?:  ', IdsForDeleteArray)
+  console.log("is empty?:  ", IdsForDeleteArray);
 }, 10000);
+
+if (IdsForDeleteArray.length === 0) clearInterval(timer);
+
+router.delete("/deleteAtSpecificTime/:_id", async (request, response) => {
+  IdsForDeleteArray.push(request.params._id);
+  console.log("accepted ids:  ", IdsForDeleteArray);
+  let date = new Date();
+  response.json({
+    IdsForDeleteArray,
+    hours: date.getHours(),
+    min: date.getMinutes()
+  });
+});
 
 router.put("/acceptOffer/", async (request, response) => {
   await productsDB.findById(request.body._id, async (err, doc) => {
