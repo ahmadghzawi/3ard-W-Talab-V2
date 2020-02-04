@@ -92,15 +92,12 @@ router.post("/new", (request, response) => {
   });
 });
 
-router.get("/auth", (request, response) => {
+router.post("/auth", (request, response) => {
   const { email, password } = request.body;
   usersDB.findOne({ email, password }, { password: 0 }, (error, doc) => {
     if (error) response.status(404).json({ message: error });
-    else {
-      console.log(doc)
-      if (doc == null) response.status(404).json({ message: error });
-      else response.status(200).json(doc);
-    }
+    else if (doc == null) response.status(404).json({ message: error });
+    else response.status(200).json(doc);
   });
 });
 
